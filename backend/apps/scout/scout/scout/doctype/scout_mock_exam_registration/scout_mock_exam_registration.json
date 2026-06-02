@@ -1,0 +1,26 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "MOCK-REG-.#####",
+ "creation": "2026-05-18 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["mock_exam", "student_user", "fee_inr", "payment_order_id", "payment_status", "score_percent", "passed", "pri_applied"],
+ "fields": [
+  {"fieldname": "mock_exam", "fieldtype": "Link", "label": "Mock Exam", "options": "Scout Mock Exam", "reqd": 1},
+  {"fieldname": "student_user", "fieldtype": "Link", "label": "Student", "options": "User", "reqd": 1},
+  {"fieldname": "fee_inr", "fieldtype": "Currency", "label": "Fee paid"},
+  {"fieldname": "payment_order_id", "fieldtype": "Link", "label": "Payment Order", "options": "Scout Payment Order"},
+  {"default": "Pending", "fieldname": "payment_status", "fieldtype": "Select", "label": "Payment", "options": "Pending\nPaid\nWaived"},
+  {"fieldname": "score_percent", "fieldtype": "Percent", "label": "Score %"},
+  {"default": "0", "fieldname": "passed", "fieldtype": "Check", "label": "Passed"},
+  {"default": "0", "fieldname": "pri_applied", "fieldtype": "Check", "label": "PRI applied", "read_only": 1}
+ ],
+ "module": "Scout",
+ "name": "Scout Mock Exam Registration",
+ "permissions": [
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "Student", "read": 1, "write": 1, "create": 1}
+ ]
+}

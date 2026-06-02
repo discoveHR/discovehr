@@ -1,0 +1,134 @@
+{
+ "actions": [],
+ "autoname": "FR-.YYYY.-.#####",
+ "creation": "2026-05-27 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "job_id",
+  "job_title",
+  "referred_by_user",
+  "referred_by_name",
+  "candidate_name",
+  "candidate_email",
+  "candidate_phone",
+  "status",
+  "notes",
+  "uploaded_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "job_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job",
+   "options": "Scout Job",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "job_id.title",
+   "fieldname": "job_title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Job Title",
+   "read_only": 1
+  },
+  {
+   "fieldname": "referred_by_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Referred By (User)",
+   "options": "User",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "referred_by_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Recruiter Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "candidate_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Candidate Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "candidate_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Candidate Email",
+   "options": "Email",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "candidate_phone",
+   "fieldtype": "Data",
+   "label": "Candidate Phone"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Pending\nContacted\nApplied\nRejected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Admin Notes"
+  },
+  {
+   "fieldname": "uploaded_at",
+   "fieldtype": "Datetime",
+   "label": "Uploaded At",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-27 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Freelancer Referral",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 0,
+   "export": 0,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Freelancer",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "uploaded_at",
+ "sort_order": "DESC",
+ "states": []
+}

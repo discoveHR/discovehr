@@ -1,0 +1,171 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "APT-ASM-.#####",
+ "creation": "2026-05-21 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "description",
+  "duration_minutes",
+  "status",
+  "created_by_admin",
+  "created_by_tpo",
+  "tpo_user",
+  "scout_college",
+  "college_name",
+  "payment_order_id",
+  "tao_test_id",
+  "tao_sync_status",
+  "tao_sync_message"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "default": "45",
+   "fieldname": "duration_minutes",
+   "fieldtype": "Int",
+   "label": "Duration (Minutes)",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nPublished\nClosed",
+   "reqd": 1
+  },
+  {
+   "fieldname": "created_by_admin",
+   "fieldtype": "Link",
+   "label": "Created By Admin",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "created_by_tpo",
+   "fieldtype": "Check",
+   "label": "Created By TPO",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tpo_user",
+   "fieldtype": "Link",
+   "label": "TPO User",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "scout_college",
+   "fieldtype": "Link",
+   "label": "Scout College",
+   "options": "Scout College",
+   "read_only": 1
+  },
+  {
+   "fieldname": "college_name",
+   "fieldtype": "Data",
+   "label": "College Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_order_id",
+   "fieldtype": "Link",
+   "label": "Payment Order",
+   "options": "Scout Payment Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tao_test_id",
+   "fieldtype": "Data",
+   "label": "TAO Test ID",
+   "read_only": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "tao_sync_status",
+   "fieldtype": "Select",
+   "label": "TAO Sync Status",
+   "options": "Pending\nSkipped\nSynced\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tao_sync_message",
+   "fieldtype": "Small Text",
+   "label": "TAO Sync Message",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-21 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Aptitude Assessment",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Training & Placement Officer",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Student"
+  },
+  {
+   "read": 1,
+   "role": "Job Seeker"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

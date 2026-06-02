@@ -1,0 +1,152 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "INT-.#####",
+ "creation": "2026-05-18 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company_user",
+  "application_id",
+  "job_id",
+  "student_user",
+  "title",
+  "interview_type",
+  "start_datetime",
+  "end_datetime",
+  "meeting_link",
+  "location",
+  "interviewer_name",
+  "interviewer_email",
+  "freelancer_interviewer_user",
+  "hr_notify_emails",
+  "notes",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "label": "Company User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "application_id",
+   "fieldtype": "Link",
+   "label": "Application",
+   "options": "Scout Application",
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_id",
+   "fieldtype": "Link",
+   "label": "Job",
+   "options": "Scout Job",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "label": "Student User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "default": "Video",
+   "fieldname": "interview_type",
+   "fieldtype": "Select",
+   "label": "Interview Type",
+   "options": "Video\nIn-person\nPhone\nFreelancer",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "start_datetime",
+   "fieldtype": "Datetime",
+   "label": "Start",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "end_datetime",
+   "fieldtype": "Datetime",
+   "label": "End",
+   "reqd": 1
+  },
+  {
+   "fieldname": "meeting_link",
+   "fieldtype": "Data",
+   "label": "Meeting Link"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "interviewer_name",
+   "fieldtype": "Data",
+   "label": "Interviewer Name"
+  },
+  {
+   "fieldname": "interviewer_email",
+   "fieldtype": "Data",
+   "label": "Interviewer Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "freelancer_interviewer_user",
+   "fieldtype": "Link",
+   "label": "Freelancer Interviewer",
+   "options": "User",
+   "search_index": 1
+  },
+  {
+   "fieldname": "hr_notify_emails",
+   "fieldtype": "Small Text",
+   "label": "HR Team Emails (comma-separated)"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "default": "Scheduled",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Scheduled\nCompleted\nCancelled",
+   "reqd": 1,
+   "in_list_view": 1
+  }
+ ],
+ "module": "Scout",
+ "name": "Scout Company Interview",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "Company",
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "read": 1,
+   "role": "System Manager",
+   "write": 1
+  }
+ ]
+}

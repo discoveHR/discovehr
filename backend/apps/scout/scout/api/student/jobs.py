@@ -1,0 +1,269 @@
+"""Paginated public job board for students."""
+
+import frappe
+from frappe import _
+
+from scout.api.common import get_student_session_user, row_to_job
+from scout.api.pagination_utils import pagination_from_request, pagination_meta
+from scout.api.student.inbound_suggestions import inbound_suggested_job_ids_for_student
+
+JOB_FIELDS = [
+    "name",
+    "company_user",
+    "title",
+    "opportunity_type",
+    "location_type",
+    "openings",
+    "skills",
+    "min_experience",
+    "status",
+    "total_views",
+    "applications",
+    "description",
+    "creation",
+]
+
+DEFAULT_STUDENT_JOBS_PAGE_SIZE = 30
+MAX_STUDENT_JOBS_PAGE_SIZE = 100
+SUGGESTED_JOBS_LIMIT = 4
+HOME_JOBS_LIMIT = 6
+MAX_APPLICATION_STATUS_ROWS = 200
+
+
+def _student_application_map(user_id: str) -> dict[str, dict]:
+    rows = frappe.get_all(
+        "Scout Application",
+        filters={"student_user": user_id},
+        fields=["name", "job_id", "application_status", "creation"],
+        order_by="creation desc",
+        limit_page_length=5000,
+    )
+    return {row.get("job_id"): row for row in rows if row.get("job_id")}
+
+
+def _enrich_jobs(jobs: list[dict], application_by_job: dict[str, dict], inbound_ids: set[str]) -> list[dict]:
+    for job in jobs:
+        applied = application_by_job.get(job.get("id"))
+        job["isApplied"] = bool(applied)
+        job["applicationStatus"] = applied.get("application_status") if applied else "Not Applied"
+        job["suggestedByTpo"] = job.get("id") in inbound_ids
+    return jobs
+
+
+def _base_job_filters() -> dict:
+    filters: dict = {"status": "Active"}
+    location = (frappe.form_dict.get("locationType") or "").strip()
+    if location and location != "All":
+        filters["location_type"] = location
+    opp = (frappe.form_dict.get("opportunityType") or "").strip()
+    if opp and opp != "All":
+        filters["opportunity_type"] = opp
+    exp = (frappe.form_dict.get("minExperience") or "").strip()
+    if exp and exp != "All":
+        filters["min_experience"] = exp
+    return filters
+
+
+def _job_list_filters() -> dict:
+    filters = _base_job_filters()
+    q = (frappe.form_dict.get("q") or "").strip()
+    if q:
+        filters["title"] = ["like", f"%{q}%"]
+    return filters
+
+
+def _fulltext_job_search(q: str, *, limit: int, offset: int) -> tuple[list[str], int] | None:
+    try:
+        rows = frappe.db.sql(
+            """
+            SELECT name,
+                   MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE) AS relevance
+            FROM `tabScout Job`
+            WHERE status = 'Active'
+              AND MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE)
+            ORDER BY relevance DESC, creation DESC
+            LIMIT %s OFFSET %s
+            """,
+            (q, q, limit, offset),
+            as_dict=True,
+        )
+        count_row = frappe.db.sql(
+            """
+            SELECT COUNT(*) AS total
+            FROM `tabScout Job`
+            WHERE status = 'Active'
+              AND MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE)
+            """,
+            (q,),
+            as_dict=True,
+        )
+        total = int((count_row[0] or {}).get("total") or 0) if count_row else 0
+        return [r["name"] for r in rows if r.get("name")], total
+    except Exception:
+        return None
+
+
+def _fetch_active_jobs(*, limit: int, offset: int = 0, filters: dict | None = None) -> list[dict]:
+    rows = frappe.get_all(
+        "Scout Job",
+        filters=filters or {"status": "Active"},
+        fields=JOB_FIELDS,
+        order_by="creation desc",
+        limit_start=offset,
+        limit_page_length=limit,
+    )
+    return [row_to_job(row) for row in rows]
+
+
+def _active_jobs_total(filters: dict | None = None) -> int:
+    return int(frappe.db.count("Scout Job", filters=filters or {"status": "Active"}))
+
+
+def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> list[dict]:
+    inbound_ids = inbound_suggested_job_ids_for_student(user_id)
+    if inbound_ids:
+        rows = frappe.get_all(
+            "Scout Job",
+            filters={"name": ["in", list(inbound_ids)], "status": "Active"},
+            fields=JOB_FIELDS,
+            order_by="creation desc",
+            limit_page_length=SUGGESTED_JOBS_LIMIT,
+        )
+        jobs = _enrich_jobs([row_to_job(r) for r in rows], application_by_job, inbound_ids)
+        return jobs[:SUGGESTED_JOBS_LIMIT]
+
+    rows = frappe.get_all(
+        "Scout Job",
+        filters={"status": "Active", "skills": ["like", "%python%"]},
+        fields=JOB_FIELDS,
+        order_by="creation desc",
+        limit_page_length=SUGGESTED_JOBS_LIMIT,
+    )
+    if not rows:
+        rows = frappe.get_all(
+            "Scout Job",
+            filters={"status": "Active"},
+            fields=JOB_FIELDS,
+            order_by="creation desc",
+            limit_page_length=SUGGESTED_JOBS_LIMIT,
+        )
+    return _enrich_jobs([row_to_job(r) for r in rows], application_by_job, inbound_ids)
+
+
+def application_status_for_student(user_id: str) -> tuple[list[dict], bool]:
+    application_rows = frappe.get_all(
+        "Scout Application",
+        filters={"student_user": user_id},
+        fields=["name", "job_id", "application_status", "creation"],
+        order_by="creation desc",
+        limit_page_length=MAX_APPLICATION_STATUS_ROWS + 1,
+    )
+    truncated = len(application_rows) > MAX_APPLICATION_STATUS_ROWS
+    application_rows = application_rows[:MAX_APPLICATION_STATUS_ROWS]
+    job_ids = [r.get("job_id") for r in application_rows if r.get("job_id")]
+    title_map: dict[str, str] = {}
+    if job_ids:
+        for row in frappe.get_all(
+            "Scout Job",
+            filters={"name": ["in", job_ids]},
+            fields=["name", "title"],
+            limit_page_length=len(job_ids),
+        ):
+            title_map[row["name"]] = row.get("title") or ""
+
+    return (
+        [
+            {
+                "applicationId": row.get("name"),
+                "jobId": row.get("job_id"),
+                "jobTitle": title_map.get(row.get("job_id"), ""),
+                "status": row.get("application_status"),
+                "appliedOn": frappe.utils.formatdate(row.get("creation"), "dd MMM yyyy"),
+            }
+            for row in application_rows
+        ],
+        truncated,
+    )
+
+
+@frappe.whitelist(methods=["GET"])
+def list_student_jobs():
+    user_id, err = get_student_session_user()
+    if err:
+        return err
+
+    page, page_size, offset = pagination_from_request(
+        default_page_size=DEFAULT_STUDENT_JOBS_PAGE_SIZE,
+        max_page_size=MAX_STUDENT_JOBS_PAGE_SIZE,
+    )
+    q = (frappe.form_dict.get("q") or "").strip()
+    base_filters = _base_job_filters()
+    application_by_job = _student_application_map(user_id)
+    inbound_ids = inbound_suggested_job_ids_for_student(user_id)
+
+    jobs: list[dict] = []
+    total = 0
+
+    if q:
+        from scout.services.search_client import search_jobs as meili_search_jobs
+
+        meili = meili_search_jobs(q, limit=page_size, offset=offset)
+        if meili:
+            job_ids, total = meili
+            filters = {**base_filters, "name": ["in", job_ids]} if job_ids else {"name": ("in", ["__none__"])}
+            rows = frappe.get_all(
+                "Scout Job",
+                filters=filters,
+                fields=JOB_FIELDS,
+                order_by="creation desc",
+                limit_page_length=page_size,
+            )
+            by_id = {row["name"]: row for row in rows}
+            jobs = _enrich_jobs(
+                [row_to_job(by_id[jid]) for jid in job_ids if jid in by_id],
+                application_by_job,
+                inbound_ids,
+            )
+        else:
+            ft = _fulltext_job_search(q, limit=page_size, offset=offset)
+            if ft:
+                job_ids, total = ft
+                if job_ids:
+                    rows = frappe.get_all(
+                        "Scout Job",
+                        filters={"name": ["in", job_ids], **base_filters},
+                        fields=JOB_FIELDS,
+                        limit_page_length=len(job_ids),
+                    )
+                    by_id = {row["name"]: row for row in rows}
+                    jobs = _enrich_jobs(
+                        [row_to_job(by_id[jid]) for jid in job_ids if jid in by_id],
+                        application_by_job,
+                        inbound_ids,
+                    )
+                else:
+                    jobs = []
+            else:
+                filters = _job_list_filters()
+                total = _active_jobs_total(filters)
+                jobs = _enrich_jobs(
+                    _fetch_active_jobs(limit=page_size, offset=offset, filters=filters),
+                    application_by_job,
+                    inbound_ids,
+                )
+    else:
+        filters = base_filters
+        total = _active_jobs_total(filters)
+        jobs = _enrich_jobs(
+            _fetch_active_jobs(limit=page_size, offset=offset, filters=filters),
+            application_by_job,
+            inbound_ids,
+        )
+
+    return {
+        "ok": True,
+        "data": {
+            "jobs": jobs,
+            "pagination": pagination_meta(page, page_size, total),
+        },
+    }

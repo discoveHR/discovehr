@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "PORT-TKN-.#####",
+ "creation": "2026-05-18 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["token_hash", "user", "token_type", "roles_json", "expires_at"],
+ "fields": [
+  {
+   "fieldname": "token_hash",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Token Hash",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "token_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "Access\nRefresh",
+   "reqd": 1
+  },
+  {
+   "fieldname": "roles_json",
+   "fieldtype": "Small Text",
+   "label": "Roles JSON"
+  },
+  {
+   "fieldname": "expires_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Expires At",
+   "reqd": 1
+  }
+ ],
+ "module": "Scout",
+ "name": "Scout Portal Auth Token",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  }
+ ]
+}

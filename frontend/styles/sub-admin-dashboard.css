@@ -1,0 +1,270 @@
+/* Sub-Admin Dashboard — extends company-dashboard.css */
+
+.sub-admin-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.sub-admin-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sub-admin-panel-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  font-family: "Fraunces", Georgia, serif;
+}
+
+.sub-admin-panel-sub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--dhr-ink);
+  opacity: 0.6;
+}
+
+.sub-admin-count-chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--dhr-blue);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Loading */
+.sub-admin-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 3rem;
+  justify-content: center;
+  opacity: 0.55;
+}
+
+.sub-admin-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid #e0e4ef;
+  border-top-color: var(--dhr-blue);
+  border-radius: 50%;
+  animation: sub-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes sub-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty state */
+.sub-admin-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  opacity: 0.5;
+  gap: 0.5rem;
+}
+
+.sub-admin-empty-state p { margin: 0; font-size: 0.9rem; }
+
+/* Pagination */
+.sub-admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Link style */
+.sub-admin-link {
+  color: var(--dhr-blue);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.sub-admin-link:hover { text-decoration: underline; }
+
+/* ===== Schedule Interview Modal ===== */
+.sub-admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 11, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.sub-admin-modal {
+  background: var(--dhr-paper);
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 620px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modal-in 0.2s ease;
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sub-admin-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.sub-admin-modal-header h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: "Fraunces", Georgia, serif;
+  color: var(--dhr-ink);
+}
+
+.sub-admin-modal-sub {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.6;
+  color: var(--dhr-ink);
+}
+
+.sub-admin-modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 6px;
+  color: var(--dhr-ink);
+  opacity: 0.5;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.sub-admin-modal-close:hover { opacity: 1; }
+
+.sub-admin-schedule-form {
+  padding: 1.2rem 1.5rem 1.5rem;
+}
+
+.sub-admin-textarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: inherit;
+}
+
+.sub-admin-topbar {
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.sub-admin-company-label {
+  margin: 0 0 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dhr-blue);
+  opacity: 0.85;
+}
+
+.sub-admin-company-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  font-family: "Fraunces", Georgia, serif;
+  line-height: 1.15;
+}
+
+.sub-admin-topbar-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--dhr-ink);
+  opacity: 0.62;
+}
+
+.sub-admin-topbar-user {
+  text-align: right;
+  font-size: 0.8rem;
+}
+
+.sub-admin-topbar-user-name {
+  display: block;
+  font-weight: 600;
+  color: var(--dhr-ink);
+}
+
+.sub-admin-topbar-user-email {
+  display: block;
+  opacity: 0.55;
+  margin-top: 0.15rem;
+}
+
+.sub-admin-sidebar-company {
+  margin: 0.35rem 0 0.15rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--dhr-ink);
+  line-height: 1.3;
+}
+
+.sub-admin-sidebar-user {
+  margin: 0;
+  font-size: 0.78rem;
+  opacity: 0.65;
+}
+
+.sub-admin-sidebar-district {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  opacity: 0.55;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .sub-admin-modal {
+    background: #16161a;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  }
+
+  .sub-admin-modal-header {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .sub-admin-panel-title,
+  .sub-admin-modal-header h3,
+  .sub-admin-modal-close {
+    color: #f0f0f5;
+  }
+
+  .sub-admin-panel-sub,
+  .sub-admin-modal-sub {
+    color: #a0a0b0;
+  }
+}

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiscoveHR — Talent Discovery. Simplified. Decentralized.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Space+Grotesk:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #ffffff;
+    --paper: #fbfbfd;
+    --ink: #0a0a0b;
+    --ink-soft: #1a1a1e;
+    --grey: #6c6c78;
+    --grey-light: #9a9aa6;
+    --line: #e8e8ee;
+    --line-soft: #f0f0f4;
+    --blue: #0047ff;
+    --blue-bright: #2563ff;
+    --blue-deep: #0033cc;
+    --blue-wash: #f0f4ff;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter Tight', sans-serif;
+    --font-mono: 'Space Grotesk', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--blue); color: var(--white); }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled { border-bottom-color: var(--line); }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.1rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .brand-mark {
+    width: 26px; height: 26px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .brand-mark svg { width: 100%; height: 100%; display: block; }
+
+  .brand-name {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .brand-name b { color: var(--blue); font-weight: 600; }
+
+  .nav-center {
+    display: flex;
+    gap: 2.4rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-center a {
+    font-size: 0.86rem;
+    font-weight: 450;
+    color: var(--grey);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .nav-center a:hover { color: var(--ink); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
+  }
+
+  .nav-login {
+    font-size: 0.86rem;
+    font-weight: 450;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .nav-login:hover { color: var(--blue); }
+
+  .btn-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--blue);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-blue:hover { background: var(--blue-deep); transform: translateY(-1px); }
+  .btn-blue svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s; }
+  .btn-blue:hover svg { transform: translateX(3px); }
+
+  /* ============ 9-DOT LAUNCHER ============ */
+  .grid-launcher {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .grid-launcher:hover { background: var(--line-soft); }
+
+  .grid-launcher .dots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    width: 18px; height: 18px;
+  }
+  .grid-launcher .dots span {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--grey);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .grid-launcher:hover .dots span { background: var(--blue); }
+
+  .launcher-panel {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    width: 360px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px -12px rgba(10,10,30,0.18), 0 4px 16px -4px rgba(10,10,30,0.08);
+    padding: 1.4rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.97);
+    transform-origin: top right;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+  }
+  .launcher-panel.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+
+  .launcher-panel-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    padding: 0 0.4rem 0.9rem;
+  }
+
+  .launcher-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+  }
+
+  .launcher-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 0.5rem;
+    border-radius: 14px;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.18s;
+  }
+  .launcher-item:hover { background: var(--blue-wash); }
+
+  .launcher-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .launcher-item:hover .launcher-icon { border-color: var(--blue); background: var(--white); }
+  .launcher-icon svg { width: 20px; height: 20px; stroke: var(--ink); fill: none; stroke-width: 1.6; }
+  .launcher-item:hover .launcher-icon svg { stroke: var(--blue); }
+
+  .launcher-name {
+    font-size: 0.74rem;
+    font-weight: 450;
+    color: var(--ink-soft);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  .launcher-footer {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+  .launcher-footer span { font-size: 0.74rem; color: var(--grey); }
+  .launcher-footer a { font-size: 0.74rem; color: var(--blue); text-decoration: none; font-weight: 500; }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 12rem 0 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50vw; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    top: -20%; right: -10%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,71,255,0.06) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, var(--line-soft) 1px, transparent 1px);
+    background-size: 6.5rem 100%;
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, black, transparent 70%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 70%);
+  }
+
+  .hero-inner { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.5rem;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    color: var(--grey);
+    margin-bottom: 2.2rem;
+    font-weight: 450;
+  }
+  .hero-tag b {
+    background: var(--blue);
+    color: var(--white);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 100px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 6.5vw, 6rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    max-width: 16ch;
+    margin-bottom: 1.8rem;
+  }
+  .hero-title .blue { color: var(--blue); font-style: italic; font-weight: 300; }
+  .hero-title .period { color: var(--blue); }
+
+  .hero-sub {
+    font-size: 1.18rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--grey);
+    max-width: 46ch;
+    margin-bottom: 2.8rem;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .btn-blue-lg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--blue);
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 0.95rem 1.7rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 24px -8px rgba(0,71,255,0.4);
+  }
+  .btn-blue-lg:hover { background: var(--blue-deep); transform: translateY(-2px); box-shadow: 0 14px 32px -8px rgba(0,71,255,0.5); }
+  .btn-blue-lg svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s; }
+  .btn-blue-lg:hover svg { transform: translateX(4px); }
+
+  .btn-ghost-lg {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ink);
+    font-size: 1rem;
+    font-weight: 450;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .btn-ghost-lg:hover { color: var(--blue); }
+  .btn-ghost-lg .play {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s;
+  }
+  .btn-ghost-lg:hover .play { border-color: var(--blue); }
+  .btn-ghost-lg .play svg { width: 10px; height: 10px; fill: var(--ink); stroke: none; margin-left: 1px; }
+  .btn-ghost-lg:hover .play svg { fill: var(--blue); }
+
+  /* ============ LOGO STRIP ============ */
+  .trust {
+    padding: 4rem 0 2rem;
+    border-top: 1px solid var(--line-soft);
+    margin-top: 5rem;
+  }
+  .trust-label {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    margin-bottom: 2.2rem;
+  }
+  .trust-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .trust-logo {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--grey-light);
+    letter-spacing: -0.01em;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .trust-logo:hover { opacity: 1; color: var(--ink); }
+
+  /* ============ SECTION SHELL ============ */
+  section { position: relative; }
+
+  .sec-head { max-width: 640px; margin-bottom: 4rem; }
+
+  .sec-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 1.2rem;
+  }
+  .sec-eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--blue); }
+
+  .sec-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+  .sec-title em { font-style: italic; font-weight: 300; color: var(--blue); }
+
+  .sec-body {
+    font-size: 1.08rem;
+    color: var(--grey);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============ STATEMENT BAND ============ */
+  .statement {
+    padding: 7rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .statement-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.4vw, 2.9rem);
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    max-width: 24ch;
+  }
+  .statement-text .dim { color: var(--grey-light); }
+  .statement-text .blue { color: var(--blue); font-style: italic; font-weight: 300; }
+
+  /* ============ FEATURES ============ */
+  .features { padding: 7rem 0; border-top: 1px solid var(--line-soft); }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--white);
+  }
+
+  .feature {
+    padding: 2.8rem 2.6rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .feature:nth-child(2n) { border-right: none; }
+  .feature:nth-last-child(-n+2) { border-bottom: none; }
+  .feature:hover { background: var(--paper); }
+
+  .feature-num {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--grey-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.6rem;
+    display: block;
+  }
+
+  .feature-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: var(--blue-wash);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.4rem;
+  }
+  .feature-icon svg { width: 22px; height: 22px; stroke: var(--blue); fill: none; stroke-width: 1.6; }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 0.7rem;
+    line-height: 1.15;
+  }
+
+  .feature-desc {
+    font-size: 0.95rem;
+    color: var(--grey);
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============ SCALE / METRICS ============ */
+  .scale {
+    padding: 7rem 0;
+    border-top: 1px solid var(--line-soft);
+    background: var(--ink);
+    color: var(--white);
+  }
+  .scale .sec-eyebrow { color: #6f9bff; }
+  .scale .sec-eyebrow::before { background: #6f9bff; }
+  .scale .sec-title { color: var(--white); }
+  .scale .sec-body { color: var(--grey-light); }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+  }
+  .metric {
+    padding: 0 2rem;
+    border-left: 1px solid rgba(255,255,255,0.12);
+  }
+  .metric:first-child { padding-left: 0; border-left: none; }
+  .metric-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+  }
+  .metric-num .blue { color: #6f9bff; }
+  .metric-label {
+    font-size: 0.9rem;
+    color: var(--grey-light);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============ ECOSYSTEM (launcher mirror) ============ */
+  .ecosystem { padding: 7rem 0; border-top: 1px solid var(--line-soft); }
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .eco-card {
+    padding: 2rem 1.6rem;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    text-decoration: none;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .eco-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -16px rgba(0,71,255,0.25);
+  }
+  .eco-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--blue-wash);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .eco-card-icon svg { width: 19px; height: 19px; stroke: var(--blue); fill: none; stroke-width: 1.6; }
+  .eco-card-name {
+    font-size: 1.05rem;
+    font-weight: 550;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .eco-card-desc {
+    font-size: 0.84rem;
+    color: var(--grey);
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+  }
+  .eco-card-link {
+    font-size: 0.8rem;
+    color: var(--blue);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: auto;
+  }
+  .eco-card-link svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s; }
+  .eco-card:hover .eco-card-link svg { transform: translateX(3px); }
+
+  /* ============ CTA ============ */
+  .cta { padding: 8rem 0; border-top: 1px solid var(--line-soft); }
+  .cta-box {
+    background: var(--blue);
+    border-radius: 32px;
+    padding: 5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
+    border-radius: 50%;
+  }
+  .cta-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 5rem 100%;
+    opacity: 0.5;
+  }
+  .cta-content { position: relative; z-index: 2; max-width: 620px; }
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+  }
+  .cta-title em { font-style: italic; font-weight: 300; color: rgba(255,255,255,0.85); }
+  .cta-sub {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    margin-bottom: 2.4rem;
+    letter-spacing: -0.01em;
+  }
+  .btn-white {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--white);
+    color: var(--blue);
+    font-size: 1rem;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    padding: 0.95rem 1.8rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -8px rgba(0,0,0,0.25); }
+  .btn-white svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform 0.2s; }
+  .btn-white:hover svg { transform: translateX(4px); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 5rem 0 3rem;
+    border-top: 1px solid var(--line);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .footer-brand-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .footer-brand-name b { color: var(--blue); }
+  .footer-tagline {
+    font-size: 0.92rem;
+    color: var(--grey);
+    line-height: 1.6;
+    max-width: 30ch;
+    letter-spacing: -0.01em;
+  }
+  .footer-col h4 {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey-light);
+    margin-bottom: 1.2rem;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--grey);
+    text-decoration: none;
+    margin-bottom: 0.7rem;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--blue); }
+  .footer-bottom {
+    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-copy { font-size: 0.82rem; color: var(--grey-light); letter-spacing: -0.01em; }
+  .footer-legal { display: flex; gap: 1.8rem; }
+  .footer-legal a { font-size: 0.82rem; color: var(--grey-light); text-decoration: none; transition: color 0.2s; }
+  .footer-legal a:hover { color: var(--ink); }
+
+  /* ============ ANIMATIONS ============ */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .rise { opacity: 0; animation: rise 0.8s cubic-bezier(0.2,0.7,0.2,1) forwards; }
+  .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.18s; }
+  .d3 { animation-delay: 0.28s; } .d4 { animation-delay: 0.4s; } .d5 { animation-delay: 0.52s; }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.2,0.7,0.2,1), transform 0.7s cubic-bezier(0.2,0.7,0.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1000px) {
+    .nav-center { display: none; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .feature { border-right: none; }
+    .feature:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+    .metrics { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 0; }
+    .metric:nth-child(3) { padding-left: 0; border-left: none; }
+    .eco-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  }
+  @media (max-width: 600px) {
+    .wrap, .nav-inner, .hero-inner { padding-left: 1.4rem; padding-right: 1.4rem; }
+    .hero { padding-top: 9rem; }
+    .launcher-panel { width: calc(100vw - 2rem); right: -1rem; }
+    .metrics { grid-template-columns: 1fr; gap: 2.2rem; }
+    .metric { padding-left: 0; border-left: none; }
+    .eco-grid { grid-template-columns: 1fr; }
+    .cta-box { padding: 3rem 2rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .trust-row { gap: 1.2rem; }
+    .trust-logo { flex: 0 0 40%; font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#0047ff" stroke-width="2" fill="none"/>
+          <circle cx="16" cy="16" r="5" fill="#0047ff"/>
+          <circle cx="26" cy="9" r="2.6" fill="#0a0a0b"/>
+        </svg>
+      </span>
+      <span class="brand-name">Discove<b>HR</b></span>
+    </a>
+
+    <div class="nav-center">
+      <a href="#platform">Platform</a>
+      <a href="#features">Capabilities</a>
+      <a href="#scale">Scale</a>
+      <a href="#ecosystem">Ecosystem</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="#login" class="nav-login">Sign in</a>
+      <a href="#demo" class="btn-blue">
+        Book a demo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <button class="grid-launcher" id="launcher" aria-label="Open app launcher">
+        <span class="dots">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </span>
+        <div class="launcher-panel" id="launcherPanel">
+          <div class="launcher-panel-label">Enter the platform</div>
+          <div class="launcher-grid">
+            <a href="#students" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+              <span class="launcher-name">Students</span>
+            </a>
+            <a href="#institutions" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg></span>
+              <span class="launcher-name">Institutions</span>
+            </a>
+            <a href="#placement" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3 3-1.5-1.5"/></svg></span>
+              <span class="launcher-name">Placement Officers</span>
+            </a>
+            <a href="#panelists" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>
+              <span class="launcher-name">Recruiter Panelists</span>
+            </a>
+            <a href="#recruiters" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+              <span class="launcher-name">Recruiters</span>
+            </a>
+            <a href="#employers" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
+              <span class="launcher-name">Employers</span>
+            </a>
+            <a href="#assessments" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></span>
+              <span class="launcher-name">Assessments</span>
+            </a>
+            <a href="#campus" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>
+              <span class="launcher-name">Campus Drives</span>
+            </a>
+            <a href="#admin" class="launcher-item">
+              <span class="launcher-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.4 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.4 2 1.6a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.5h4l.4-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.4-2-1.6c.1-.3.1-.7.1-1z"/></svg></span>
+              <span class="launcher-name">Console</span>
+            </a>
+          </div>
+          <div class="launcher-footer">
+            <span>One platform. Every role.</span>
+            <a href="#login">All logins →</a>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="platform">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-inner">
+    <div class="hero-tag rise d1">
+      <b>New</b>
+      <span>The decentralized hiring infrastructure</span>
+    </div>
+    <h1 class="hero-title rise d2">
+      Talent discovery.<br>
+      <span class="blue">Simplified.</span> <span class="blue">Decentralized<span class="period">.</span></span>
+    </h1>
+    <p class="hero-sub rise d3">
+      DiscoveHR gives enterprise companies the technological edge to hire at scale — across geographies, institutions, and assessment networks — on a single, unified platform.
+    </p>
+    <div class="hero-cta-row rise d4">
+      <a href="#demo" class="btn-blue-lg">
+        Book a demo
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#platform" class="btn-ghost-lg">
+        <span class="play"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+        See the platform
+      </a>
+    </div>
+
+    <!-- TRUST STRIP -->
+    <div class="trust rise d5">
+      <p class="trust-label">Built for enterprise hiring at scale</p>
+      <div class="trust-row">
+        <span class="trust-logo">Enterprises</span>
+        <span class="trust-logo">GCCs</span>
+        <span class="trust-logo">Institutions</span>
+        <span class="trust-logo">Recruiters</span>
+        <span class="trust-logo">Campuses</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement">
+  <div class="wrap">
+    <p class="statement-text reveal">
+      Hiring at scale is <span class="dim">fragmented across job boards, agencies, assessment tools, and campus relationships.</span> DiscoveHR unifies all of it into <span class="blue">one decentralized network.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">Capabilities</span>
+      <h2 class="sec-title">Everything hiring requires, <em>natively built.</em></h2>
+      <p class="sec-body">A complete infrastructure layer — not a collection of integrations. Every capability is engineered into the platform and works as one.</p>
+    </div>
+
+    <div class="feature-grid reveal">
+      <div class="feature">
+        <span class="feature-num">01</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+        <h3 class="feature-title">Seamless Job Posting</h3>
+        <p class="feature-desc">Publish roles across the entire network in a single action — reaching candidates, institutions, and recruiter panels simultaneously, with structured intake and intelligent distribution.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-num">02</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+        <h3 class="feature-title">Native Assessment Infrastructure</h3>
+        <p class="feature-desc">A fully native assessment engine with an open marketplace of validated tests — technical, psychometric, and role-specific — deployed and scored within the platform, no external tooling required.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-num">03</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 class="feature-title">Distributed Recruiter & Interviewer Network</h3>
+        <p class="feature-desc">Tap a decentralized panel of third-party recruiters and domain interviewers on demand — extending hiring capacity without expanding headcount, with quality governed by the platform.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-num">04</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg></div>
+        <h3 class="feature-title">Native Campus Integration</h3>
+        <p class="feature-desc">Connect directly into institutional placement systems — verified candidate pools, real-time eligibility, and a single channel between employers and campuses across the country.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-num">05</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h3 class="feature-title">Automated Campus Drives</h3>
+        <p class="feature-desc">Orchestrate end-to-end campus hiring — scheduling, eligibility filtering, multi-stage assessment, and interviewer allocation — automated across thousands of candidates at once.</p>
+      </div>
+      <div class="feature">
+        <span class="feature-num">06</span>
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></div>
+        <h3 class="feature-title">Cross-Geography Hiring</h3>
+        <p class="feature-desc">Run unified hiring operations across regions and markets — consistent process, local reach, and a single source of truth for every requisition, wherever the talent is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCALE ============ -->
+<section class="scale" id="scale">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">Built for scale</span>
+      <h2 class="sec-title">Infrastructure that hires by the thousand.</h2>
+      <p class="sec-body">DiscoveHR is engineered for the volume and complexity of enterprise and GCC hiring — where speed, consistency, and reach decide outcomes.</p>
+    </div>
+    <div class="metrics reveal">
+      <div class="metric">
+        <div class="metric-num">One<span class="blue">.</span></div>
+        <div class="metric-label">Unified platform replacing fragmented hiring tools and vendors</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">28<span class="blue">+</span></div>
+        <div class="metric-label">States within national institutional and campus reach</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">100<span class="blue">%</span></div>
+        <div class="metric-label">Native infrastructure — assessments, panels, and drives built in</div>
+      </div>
+      <div class="metric">
+        <div class="metric-num">∞</div>
+        <div class="metric-label">Decentralized recruiter capacity, available on demand</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ECOSYSTEM ============ -->
+<section class="ecosystem" id="ecosystem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-eyebrow">One platform, every role</span>
+      <h2 class="sec-title">A network where <em>everyone</em> connects.</h2>
+      <p class="sec-body">Employers lead the platform — but DiscoveHR is built for the entire hiring ecosystem. Each role has its own dedicated workspace.</p>
+    </div>
+    <div class="eco-grid reveal">
+      <a href="#students" class="eco-card">
+        <span class="eco-card-icon"><svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+        <div>
+          <div class="eco-card-name">Students</div>
+          <div class="eco-card-desc">Discover opportunities, complete assessments, and get placed.</div>
+        </div>
+        <span class="eco-card-link">Enter <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="#institutions" class="eco-card">
+        <span class="eco-card-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg></span>
+        <div>
+          <div class="eco-card-name">Institutions</div>
+          <div class="eco-card-desc">Connect your talent pool directly to enterprise hiring.</div>
+        </div>
+        <span class="eco-card-link">Enter <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="#placement" class="eco-card">
+        <span class="eco-card-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3 3-1.5-1.5"/></svg></span>
+        <div>
+          <div class="eco-card-name">Placement Officers</div>
+          <div class="eco-card-desc">Run drives, track outcomes, and manage employer relationships.</div>
+        </div>
+        <span class="eco-card-link">Enter <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="#panelists" class="eco-card">
+        <span class="eco-card-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>
+        <div>
+          <div class="eco-card-name">Recruiter Panelists</div>
+          <div class="eco-card-desc">Interview and assess candidates across the network on demand.</div>
+        </div>
+        <span class="eco-card-link">Enter <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta" id="demo">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cta-content">
+        <h2 class="cta-title">See how enterprises hire <em>differently.</em></h2>
+        <p class="cta-sub">Book a walkthrough of the DiscoveHR platform and see how decentralized talent discovery works at enterprise scale.</p>
+        <a href="#" class="btn-white">
+          Book a demo
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">
+          <span class="brand-mark" style="width:24px;height:24px;">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="14" stroke="#0047ff" stroke-width="2" fill="none"/>
+              <circle cx="16" cy="16" r="5" fill="#0047ff"/>
+              <circle cx="26" cy="9" r="2.6" fill="#0a0a0b"/>
+            </svg>
+          </span>
+          Discove<b>HR</b>
+        </div>
+        <p class="footer-tagline">Talent discovery, simplified and decentralized — the hiring infrastructure for enterprise scale.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#features">Job Posting</a>
+        <a href="#features">Assessments</a>
+        <a href="#features">Recruiter Network</a>
+        <a href="#features">Campus Drives</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ecosystem</h4>
+        <a href="#students">Students</a>
+        <a href="#institutions">Institutions</a>
+        <a href="#placement">Placement Officers</a>
+        <a href="#panelists">Recruiter Panelists</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#demo">Book a demo</a>
+        <a href="#login">Sign in</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 DiscoveHR. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav border on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  });
+
+  // 9-dot launcher
+  const launcher = document.getElementById('launcher');
+  const panel = document.getElementById('launcherPanel');
+  launcher.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panel.classList.toggle('open');
+  });
+  panel.addEventListener('click', (e) => e.stopPropagation());
+  document.addEventListener('click', () => panel.classList.remove('open'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') panel.classList.remove('open'); });
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

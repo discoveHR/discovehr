@@ -1,0 +1,119 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "PSY-RES-.#####",
+ "creation": "2026-05-16 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "assignment",
+  "student_user",
+  "psychometric_assessment",
+  "overall_score",
+  "scores_json",
+  "traits_json",
+  "recommendations",
+  "raw_payload",
+  "completed_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "assignment",
+   "fieldtype": "Link",
+   "label": "Assignment",
+   "options": "Scout Psychometric Assignment",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "label": "Student User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "psychometric_assessment",
+   "fieldtype": "Link",
+   "label": "Psychometric Assessment",
+   "options": "Scout Psychometric Assessment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "overall_score",
+   "fieldtype": "Percent",
+   "label": "Overall Score"
+  },
+  {
+   "fieldname": "scores_json",
+   "fieldtype": "Long Text",
+   "label": "Scores (JSON)"
+  },
+  {
+   "fieldname": "traits_json",
+   "fieldtype": "Long Text",
+   "label": "Traits (JSON)"
+  },
+  {
+   "fieldname": "recommendations",
+   "fieldtype": "Text Editor",
+   "label": "Recommendations"
+  },
+  {
+   "fieldname": "raw_payload",
+   "fieldtype": "Long Text",
+   "label": "Raw Payload (JSON)"
+  },
+  {
+   "fieldname": "completed_at",
+   "fieldtype": "Datetime",
+   "label": "Completed At",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-16 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Psychometric Result",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Student"
+  },
+  {
+   "read": 1,
+   "role": "Job Seeker"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

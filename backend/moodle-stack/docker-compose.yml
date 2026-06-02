@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-file-per-table=1
+      - --innodb-default-row-format=dynamic
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpass
+      MARIADB_DATABASE: moodle
+      MARIADB_USER: moodle
+      MARIADB_PASSWORD: moodlepass
+    volumes:
+      - moodle_db:/var/lib/mysql
+
+  moodle:
+    image: moodlehq/moodle-php-apache:8.2
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    command: >
+      bash -lc "
+      if [ ! -f /var/www/html/version.php ]; then
+        rm -rf /var/www/html/* &&
+        curl -L https://github.com/moodle/moodle/archive/refs/heads/MOODLE_405_STABLE.tar.gz |
+        tar -xz --strip-components=1 -C /var/www/html;
+      fi &&
+      apache2-foreground
+      "
+    depends_on:
+      - db
+    volumes:
+      - moodle_data:/var/www/html
+      - moodledata_data:/var/www/moodledata
+
+volumes:
+  moodle_db:
+  moodle_data:
+  moodledata_data:

@@ -1,0 +1,49 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "STU-INV-.#####",
+ "creation": "2026-05-05 13:20:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "email",
+  "branch",
+  "batch",
+  "year",
+  "token_hash",
+  "expires_at",
+  "accepted_at",
+  "status",
+  "is_active",
+  "created_by_tpo"
+ ],
+ "fields": [
+  { "fieldname": "email", "fieldtype": "Data", "label": "Email", "reqd": 1, "in_list_view": 1 },
+  { "fieldname": "branch", "fieldtype": "Data", "label": "Branch", "in_list_view": 1 },
+  { "fieldname": "batch", "fieldtype": "Data", "label": "Batch" },
+  { "fieldname": "year", "fieldtype": "Data", "label": "Year" },
+  { "fieldname": "token_hash", "fieldtype": "Data", "label": "Token Hash", "reqd": 1, "read_only": 1 },
+  { "fieldname": "expires_at", "fieldtype": "Datetime", "label": "Expires At", "reqd": 1, "in_list_view": 1 },
+  { "fieldname": "accepted_at", "fieldtype": "Datetime", "label": "Accepted At", "read_only": 1 },
+  { "fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Pending\nAccepted\nExpired\nDeclined", "default": "Pending", "reqd": 1, "in_list_view": 1 },
+  { "fieldname": "is_active", "fieldtype": "Check", "label": "Is Active", "default": "1", "reqd": 1 },
+  { "fieldname": "created_by_tpo", "fieldtype": "Link", "label": "Created By TPO", "options": "User", "reqd": 1, "read_only": 1 }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-05 13:20:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Student Invite",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  { "role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1, "delete": 0, "email": 1, "export": 1, "print": 1, "report": 1, "share": 1 },
+  { "role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "report": 1, "share": 1 }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

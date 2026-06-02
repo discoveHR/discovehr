@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:job",
+ "creation": "2026-05-20 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "job",
+  "company_user",
+  "submitted",
+  "in_review",
+  "shortlisted",
+  "selected",
+  "rejected",
+  "total",
+  "last_refreshed"
+ ],
+ "fields": [
+  {
+   "fieldname": "job",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job",
+   "options": "Scout Job",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "label": "Company User",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "submitted",
+   "fieldtype": "Int",
+   "label": "Submitted"
+  },
+  {
+   "default": "0",
+   "fieldname": "in_review",
+   "fieldtype": "Int",
+   "label": "In Review"
+  },
+  {
+   "default": "0",
+   "fieldname": "shortlisted",
+   "fieldtype": "Int",
+   "label": "Shortlisted"
+  },
+  {
+   "default": "0",
+   "fieldname": "selected",
+   "fieldtype": "Int",
+   "label": "Selected"
+  },
+  {
+   "default": "0",
+   "fieldname": "rejected",
+   "fieldtype": "Int",
+   "label": "Rejected"
+  },
+  {
+   "default": "0",
+   "fieldname": "total",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total"
+  },
+  {
+   "fieldname": "last_refreshed",
+   "fieldtype": "Datetime",
+   "label": "Last Refreshed"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-20 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Job Rollup Stats",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "read": 1,
+   "role": "Company"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

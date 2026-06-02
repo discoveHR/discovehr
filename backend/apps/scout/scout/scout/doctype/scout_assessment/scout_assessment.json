@@ -1,0 +1,209 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "ASM-.#####",
+ "creation": "2026-04-29 14:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "company_user",
+  "description",
+  "schedule_mode",
+  "question_class",
+  "mcq_scoring_mode",
+  "duration_minutes",
+  "total_questions",
+  "passing_score",
+  "window_start",
+  "window_end",
+  "proctoring_level",
+  "integration_mode",
+  "questions_json",
+  "coins_spent",
+  "status",
+  "tao_sync_status",
+  "tao_external_id",
+  "tao_launch_url",
+  "tao_sync_message"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "label": "Company User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "default": "Scheduled",
+   "fieldname": "schedule_mode",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Schedule Mode",
+   "options": "Scheduled\nFloating",
+   "reqd": 1
+  },
+  {
+   "default": "MCQ Single",
+   "fieldname": "question_class",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Question Class",
+   "options": "MCQ Single\nMCQ Multi\nMCQ Weighted\nDescriptive\nCoding",
+   "reqd": 1
+  },
+  {
+   "default": "Single Correct",
+   "fieldname": "mcq_scoring_mode",
+   "fieldtype": "Select",
+   "label": "MCQ Scoring",
+   "options": "Single Correct\nMultiple Correct\nWeighted Options\nIndependent Marks"
+  },
+  {
+   "default": "30",
+   "fieldname": "duration_minutes",
+   "fieldtype": "Int",
+   "label": "Duration (Minutes)",
+   "reqd": 1
+  },
+  {
+   "default": "20",
+   "fieldname": "total_questions",
+   "fieldtype": "Int",
+   "label": "Total Questions",
+   "reqd": 1
+  },
+  {
+   "default": "50",
+   "fieldname": "passing_score",
+   "fieldtype": "Percent",
+   "label": "Passing Score (%)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "window_start",
+   "fieldtype": "Datetime",
+   "label": "Window Start"
+  },
+  {
+   "fieldname": "window_end",
+   "fieldtype": "Datetime",
+   "label": "Window End"
+  },
+  {
+   "default": "None",
+   "fieldname": "proctoring_level",
+   "fieldtype": "Select",
+   "label": "Proctoring",
+   "options": "None\nStandard\nFull"
+  },
+  {
+   "default": "Frappe Native",
+   "fieldname": "integration_mode",
+   "fieldtype": "Select",
+   "label": "Integration",
+   "options": "Frappe Native\nTAO\nFrappe + TAO"
+  },
+  {
+   "fieldname": "questions_json",
+   "fieldtype": "Long Text",
+   "label": "Questions JSON"
+  },
+  {
+   "default": "0",
+   "fieldname": "coins_spent",
+   "fieldtype": "Int",
+   "label": "Coins Spent",
+   "read_only": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nPublished\nClosed",
+   "reqd": 1
+  },
+  {
+   "default": "Pending",
+   "fieldname": "tao_sync_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "TAO Sync Status",
+   "options": "Pending\nSkipped\nSynced\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tao_external_id",
+   "fieldtype": "Data",
+   "label": "TAO External ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tao_launch_url",
+   "fieldtype": "Data",
+   "label": "TAO Launch URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tao_sync_message",
+   "fieldtype": "Small Text",
+   "label": "TAO Sync Message",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-04-29 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Assessment",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Company",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

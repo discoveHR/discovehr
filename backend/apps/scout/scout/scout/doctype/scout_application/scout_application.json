@@ -1,0 +1,107 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "APP-.#####",
+ "creation": "2026-04-29 15:55:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "job_id",
+  "student_user",
+  "application_status",
+  "applied_on",
+  "company_feedback"
+ ],
+ "fields": [
+  {
+   "fieldname": "job_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job ID",
+   "options": "Scout Job",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "default": "Submitted",
+   "fieldname": "application_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Application Status",
+   "options": "Submitted\nIn Review\nShortlisted\nRejected\nSelected",
+   "reqd": 1
+  },
+  {
+   "fieldname": "applied_on",
+   "fieldtype": "Datetime",
+   "label": "Applied On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company_feedback",
+   "fieldtype": "Small Text",
+   "label": "Company Feedback"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-04-29 15:55:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Application",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Company",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

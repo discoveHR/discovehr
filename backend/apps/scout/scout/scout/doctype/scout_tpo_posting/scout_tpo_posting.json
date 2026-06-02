@@ -1,0 +1,169 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "TPO-.#####",
+ "creation": "2026-05-05 12:35:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "description",
+  "posting_type",
+  "audience_description",
+  "is_internal_job",
+  "batch_audience",
+  "target_batches",
+  "branch",
+  "batch",
+  "eligibility_criteria",
+  "poster_file",
+  "application_link",
+  "company_email",
+  "status",
+  "created_by_tpo",
+  "valid_till"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "default": "Summer Internship",
+   "fieldname": "posting_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Posting Type",
+   "options": "Summer Internship\nWinter Internship\nFull-time Placement\nPart-time / Contract\nCampus Drive\nWorkshop / Event\nOther"
+  },
+  {
+   "fieldname": "audience_description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Audience",
+   "description": "e.g. Final year mechanical students"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_internal_job",
+   "fieldtype": "Check",
+   "label": "Internal Job Posting"
+  },
+  {
+   "default": "Specific Batches",
+   "fieldname": "batch_audience",
+   "fieldtype": "Select",
+   "label": "Student audience",
+   "options": "All Students\nSpecific Batches"
+  },
+  {
+   "fieldname": "target_batches",
+   "fieldtype": "Small Text",
+   "label": "Target batches (comma or range, e.g. 2026-2028)"
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Branch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Batch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "eligibility_criteria",
+   "fieldtype": "Small Text",
+   "label": "Eligibility Criteria"
+  },
+  {
+   "fieldname": "poster_file",
+   "fieldtype": "Attach Image",
+   "label": "Poster"
+  },
+  {
+   "fieldname": "application_link",
+   "fieldtype": "Data",
+   "label": "Application Link"
+  },
+  {
+   "fieldname": "company_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Participating Company Email"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nActive\nClosed",
+   "reqd": 1
+  },
+  {
+   "fieldname": "created_by_tpo",
+   "fieldtype": "Link",
+   "label": "Created By TPO",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "valid_till",
+   "fieldtype": "Date",
+   "label": "Valid Till"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-05 12:35:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout TPO Posting",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Training & Placement Officer",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

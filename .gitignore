@@ -1,0 +1,26 @@
+# ── Dev logs ──────────────────────────────────────────────
+dev-server.log
+*.log
+
+# ── Node / Next.js ─────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+
+# ── Python / Frappe ────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+backend/apps/scout/.env
+backend/.env
+
+# ── Environment files (keep examples, ignore actuals) ──────
+.env
+.env.local
+!.env.example
+!.env.local.example
+
+# ── OS / IDE ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.cursor/

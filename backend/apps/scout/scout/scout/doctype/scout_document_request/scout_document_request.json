@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "DOC-REQ-.#####",
+ "creation": "2026-05-29 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "application_id",
+  "job_id",
+  "company_user",
+  "student_user",
+  "required_documents",
+  "uploaded_documents",
+  "status",
+  "sent_at",
+  "note"
+ ],
+ "fields": [
+  {
+   "fieldname": "application_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Application",
+   "options": "Scout Application",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job",
+   "options": "Scout Job",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "required_documents",
+   "fieldtype": "Small Text",
+   "label": "Required Documents (JSON)",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "uploaded_documents",
+   "fieldtype": "Small Text",
+   "label": "Uploaded Documents (JSON)",
+   "default": "{}"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Pending\nPartial\nComplete"
+  },
+  {
+   "fieldname": "sent_at",
+   "fieldtype": "Datetime",
+   "label": "Sent At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Small Text",
+   "label": "Note from Company"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-29 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Document Request",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Company",
+   "share": 0,
+   "write": 0
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 0,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

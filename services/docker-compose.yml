@@ -1,0 +1,36 @@
+services:
+  integration-service:
+    build:
+      context: .
+      dockerfile: integration-service/Dockerfile
+    ports:
+      - "8101:8101"
+    env_file:
+      - .env
+    environment:
+      - SCOUT_SERVICE_INTERNAL_SECRET=${SCOUT_SERVICE_INTERNAL_SECRET:-dev-internal-secret}
+    command: uvicorn main:app --host 0.0.0.0 --port 8101
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    ports:
+      - "8102:8102"
+    env_file:
+      - .env
+    environment:
+      - SCOUT_SERVICE_INTERNAL_SECRET=${SCOUT_SERVICE_INTERNAL_SECRET:-dev-internal-secret}
+    command: uvicorn main:app --host 0.0.0.0 --port 8102
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: payment-service/Dockerfile
+    ports:
+      - "8103:8103"
+    env_file:
+      - .env
+    environment:
+      - SCOUT_SERVICE_INTERNAL_SECRET=${SCOUT_SERVICE_INTERNAL_SECRET:-dev-internal-secret}
+    command: uvicorn main:app --host 0.0.0.0 --port 8103

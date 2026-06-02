@@ -1,0 +1,182 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "JOB-.#####",
+ "creation": "2026-04-29 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "company_user",
+  "opportunity_type",
+  "location_type",
+  "work_type",
+  "openings",
+  "skills",
+  "min_experience",
+  "description",
+  "preferences",
+  "min_salary",
+  "max_salary",
+  "screening_question",
+  "journey_stages",
+  "status",
+  "total_views",
+  "applications"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "label": "Company User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "default": "Job",
+   "fieldname": "opportunity_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Opportunity Type",
+   "options": "Job\nInternship",
+   "reqd": 1
+  },
+  {
+   "default": "In office",
+   "fieldname": "location_type",
+   "fieldtype": "Select",
+   "label": "Location Type",
+   "options": "In office\nHybrid\nRemote",
+   "reqd": 1
+  },
+  {
+   "default": "Full-time",
+   "fieldname": "work_type",
+   "fieldtype": "Select",
+   "label": "Work Type",
+   "options": "Part-time\nFull-time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "openings",
+   "fieldtype": "Int",
+   "label": "Openings",
+   "reqd": 1
+  },
+  {
+   "fieldname": "skills",
+   "fieldtype": "Small Text",
+   "label": "Skills",
+   "reqd": 1
+  },
+  {
+   "default": "0 year",
+   "fieldname": "min_experience",
+   "fieldtype": "Select",
+   "label": "Minimum Experience",
+   "options": "0 year\n1 year\n2 years",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "preferences",
+   "fieldtype": "Text",
+   "label": "Preferences"
+  },
+  {
+   "fieldname": "min_salary",
+   "fieldtype": "Data",
+   "label": "Min Salary"
+  },
+  {
+   "fieldname": "max_salary",
+   "fieldtype": "Data",
+   "label": "Max Salary"
+  },
+  {
+   "fieldname": "screening_question",
+   "fieldtype": "Text",
+   "label": "Screening Question"
+  },
+  {
+   "description": "JSON array or one stage per line. Shown in company and TPO recruitment journey.",
+   "fieldname": "journey_stages",
+   "fieldtype": "Small Text",
+   "label": "Recruitment Journey Stages"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nActive\nClosed",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_views",
+   "fieldtype": "Int",
+   "label": "Total Views"
+  },
+  {
+   "default": "0",
+   "fieldname": "applications",
+   "fieldtype": "Int",
+   "label": "Applications"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-04-29 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Job",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Company",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

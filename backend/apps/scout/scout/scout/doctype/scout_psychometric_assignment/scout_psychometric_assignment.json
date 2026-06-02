@@ -1,0 +1,136 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "PSY-ASN-.#####",
+ "creation": "2026-05-16 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "psychometric_assessment",
+  "student_user",
+  "assigned_by",
+  "status",
+  "scheduled_from",
+  "due_at",
+  "tao_session_id",
+  "launch_url",
+  "started_at",
+  "completed_at"
+ ],
+ "fields": [
+  {
+   "fieldname": "psychometric_assessment",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Psychometric Assessment",
+   "options": "Scout Psychometric Assessment",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assigned_by",
+   "fieldtype": "Link",
+   "label": "Assigned By",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "Assigned",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Assigned\nIn Progress\nCompleted\nExpired\nCancelled",
+   "reqd": 1
+  },
+  {
+   "fieldname": "scheduled_from",
+   "fieldtype": "Datetime",
+   "label": "Scheduled From"
+  },
+  {
+   "fieldname": "due_at",
+   "fieldtype": "Datetime",
+   "label": "Due At"
+  },
+  {
+   "fieldname": "tao_session_id",
+   "fieldtype": "Data",
+   "label": "TAO Session ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "launch_url",
+   "fieldtype": "Data",
+   "label": "Launch URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "started_at",
+   "fieldtype": "Datetime",
+   "label": "Started At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "completed_at",
+   "fieldtype": "Datetime",
+   "label": "Completed At",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-16 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Psychometric Assignment",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Admin",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "write": 1,
+   "role": "Student"
+  },
+  {
+   "read": 1,
+   "write": 1,
+   "role": "Job Seeker"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

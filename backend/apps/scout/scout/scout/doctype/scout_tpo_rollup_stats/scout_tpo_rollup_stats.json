@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:tpo_user",
+ "creation": "2026-05-20 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tpo_user",
+  "scout_college",
+  "student_count",
+  "application_count",
+  "training_all_completed_count",
+  "pending_invite_count",
+  "last_refreshed"
+ ],
+ "fields": [
+  {
+   "fieldname": "tpo_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "TPO User",
+   "options": "User",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "scout_college",
+   "fieldtype": "Link",
+   "label": "Scout College",
+   "options": "Scout College"
+  },
+  {
+   "default": "0",
+   "fieldname": "student_count",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Student Count"
+  },
+  {
+   "default": "0",
+   "fieldname": "application_count",
+   "fieldtype": "Int",
+   "label": "Application Count"
+  },
+  {
+   "default": "0",
+   "fieldname": "training_all_completed_count",
+   "fieldtype": "Int",
+   "label": "Training All Completed"
+  },
+  {
+   "default": "0",
+   "fieldname": "pending_invite_count",
+   "fieldtype": "Int",
+   "label": "Pending Invites"
+  },
+  {
+   "fieldname": "last_refreshed",
+   "fieldtype": "Datetime",
+   "label": "Last Refreshed"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-20 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout TPO Rollup Stats",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "read": 1,
+   "role": "Training & Placement Officer"
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

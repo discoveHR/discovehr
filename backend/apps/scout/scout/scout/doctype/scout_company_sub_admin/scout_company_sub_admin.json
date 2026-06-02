@@ -1,0 +1,100 @@
+{
+ "actions": [],
+ "autoname": "CSADM-.#####",
+ "creation": "2026-05-26 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company_user",
+  "sub_admin_user",
+  "full_name",
+  "email",
+  "state",
+  "district",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company User",
+   "options": "User",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "sub_admin_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Sub Admin User",
+   "options": "User",
+   "reqd": 1,
+   "search_index": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Email",
+   "options": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "District",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 0,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-05-26 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Company Sub Admin",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

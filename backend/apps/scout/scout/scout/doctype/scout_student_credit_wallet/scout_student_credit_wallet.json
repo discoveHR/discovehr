@@ -1,0 +1,20 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:student_user",
+ "creation": "2026-05-19 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["student_user", "balance_credits"],
+ "fields": [
+  {"fieldname": "student_user", "fieldtype": "Link", "label": "Student", "options": "User", "reqd": 1, "unique": 1},
+  {"default": "0", "fieldname": "balance_credits", "fieldtype": "Int", "label": "Credit balance", "reqd": 1}
+ ],
+ "module": "Scout",
+ "name": "Scout Student Credit Wallet",
+ "permissions": [
+  {"role": "Student", "read": 1},
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1}
+ ]
+}

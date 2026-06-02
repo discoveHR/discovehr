@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "PLC-.#####",
+ "creation": "2026-05-18 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tpo_user",
+  "title",
+  "event_type",
+  "start_datetime",
+  "end_datetime",
+  "linked_job_id",
+  "department_filter",
+  "branch_filter",
+  "slots_available",
+  "apply_only_if_suggested",
+  "location",
+  "description",
+  "status"
+ ],
+ "fields": [
+  {"fieldname": "tpo_user", "fieldtype": "Link", "label": "TPO User", "options": "User", "reqd": 1, "read_only": 1},
+  {"fieldname": "title", "fieldtype": "Data", "label": "Title", "reqd": 1, "in_list_view": 1},
+  {"default": "Recruitment Drive", "fieldname": "event_type", "fieldtype": "Select", "label": "Type", "options": "Recruitment Drive\nInterview Slot\nCampus Visit\nOther", "reqd": 1},
+  {"fieldname": "start_datetime", "fieldtype": "Datetime", "label": "Start", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "end_datetime", "fieldtype": "Datetime", "label": "End", "reqd": 1},
+  {"fieldname": "linked_job_id", "fieldtype": "Link", "label": "Linked company job", "options": "Scout Job"},
+  {"fieldname": "department_filter", "fieldtype": "Data", "label": "Department filter"},
+  {"fieldname": "branch_filter", "fieldtype": "Data", "label": "Branch filter"},
+  {"fieldname": "slots_available", "fieldtype": "Int", "label": "Slots", "default": "0"},
+  {"default": "1", "fieldname": "apply_only_if_suggested", "fieldtype": "Check", "label": "Students apply only if suggested for linked job"},
+  {"fieldname": "location", "fieldtype": "Data", "label": "Location / link"},
+  {"fieldname": "description", "fieldtype": "Small Text", "label": "Description"},
+  {"default": "Draft", "fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nPublished\nClosed", "reqd": 1, "in_list_view": 1}
+ ],
+ "module": "Scout",
+ "name": "Scout Placement Calendar Event",
+ "permissions": [
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "Student", "read": 1}
+ ]
+}

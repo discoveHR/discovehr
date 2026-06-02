@@ -1,0 +1,37 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "MOCK-.#####",
+ "creation": "2026-05-18 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tpo_user",
+  "title",
+  "exam_datetime",
+  "duration_minutes",
+  "fee_inr",
+  "pri_points_on_pass",
+  "instructions",
+  "results_published",
+  "status"
+ ],
+ "fields": [
+  {"fieldname": "tpo_user", "fieldtype": "Link", "label": "TPO User", "options": "User", "reqd": 1, "read_only": 1},
+  {"fieldname": "title", "fieldtype": "Data", "label": "Title", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "exam_datetime", "fieldtype": "Datetime", "label": "Exam datetime", "reqd": 1},
+  {"default": "60", "fieldname": "duration_minutes", "fieldtype": "Int", "label": "Duration (min)"},
+  {"default": "50", "fieldname": "fee_inr", "fieldtype": "Currency", "label": "Fee (INR per student)"},
+  {"default": "5", "fieldname": "pri_points_on_pass", "fieldtype": "Float", "label": "PRI points on pass"},
+  {"fieldname": "instructions", "fieldtype": "Small Text", "label": "Instructions"},
+  {"default": "0", "fieldname": "results_published", "fieldtype": "Check", "label": "Results published"},
+  {"default": "Draft", "fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Draft\nPublished\nClosed", "reqd": 1}
+ ],
+ "module": "Scout",
+ "name": "Scout Mock Exam",
+ "permissions": [
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "Student", "read": 1}
+ ]
+}

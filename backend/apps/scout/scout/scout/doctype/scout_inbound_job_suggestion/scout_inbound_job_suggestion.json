@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "INB-SUG-.#####",
+ "creation": "2026-05-17 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "college_invite_id",
+  "job_id",
+  "student_user",
+  "suggested_by_tpo",
+  "bypass_pri"
+ ],
+ "fields": [
+  {
+   "fieldname": "college_invite_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "College Invite",
+   "options": "Scout Company College Invite",
+   "reqd": 1
+  },
+  {
+   "fieldname": "job_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Job",
+   "options": "Scout Job",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "suggested_by_tpo",
+   "fieldtype": "Link",
+   "label": "Suggested By TPO",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "bypass_pri",
+   "fieldtype": "Check",
+   "label": "Bypass PRI requirement"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-17 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Inbound Job Suggestion",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Training & Placement Officer",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

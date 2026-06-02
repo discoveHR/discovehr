@@ -1,0 +1,40 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "PAY-.#####",
+ "creation": "2026-05-19 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "payer_user",
+  "purpose",
+  "amount_inr",
+  "razorpay_order_id",
+  "razorpay_payment_id",
+  "razorpay_signature",
+  "status",
+  "reference_doctype",
+  "reference_name",
+  "metadata_json"
+ ],
+ "fields": [
+  {"fieldname": "payer_user", "fieldtype": "Link", "label": "Payer", "options": "User"},
+  {"fieldname": "purpose", "fieldtype": "Select", "label": "Purpose", "options": "Mock Exam\nTPO Credit Pack\nTPO Aptitude Test\nCompany Coin Purchase\nOther", "reqd": 1},
+  {"fieldname": "amount_inr", "fieldtype": "Currency", "label": "Amount INR", "reqd": 1},
+  {"fieldname": "razorpay_order_id", "fieldtype": "Data", "label": "Razorpay Order ID"},
+  {"fieldname": "razorpay_payment_id", "fieldtype": "Data", "label": "Razorpay Payment ID"},
+  {"fieldname": "razorpay_signature", "fieldtype": "Data", "label": "Signature"},
+  {"default": "Created", "fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Created\nPaid\nFailed\nDev Bypass"},
+  {"fieldname": "reference_doctype", "fieldtype": "Data", "label": "Reference DocType"},
+  {"fieldname": "reference_name", "fieldtype": "Data", "label": "Reference Name"},
+  {"fieldname": "metadata_json", "fieldtype": "Long Text", "label": "Metadata JSON"}
+ ],
+ "module": "Scout",
+ "name": "Scout Payment Order",
+ "permissions": [
+  {"role": "Student", "read": 1, "write": 1, "create": 1},
+  {"role": "Company", "read": 1, "write": 1, "create": 1},
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1}
+ ]
+}

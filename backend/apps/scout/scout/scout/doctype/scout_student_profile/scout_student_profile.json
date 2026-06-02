@@ -1,0 +1,386 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "field:student_user",
+ "creation": "2026-04-30 11:45:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+  "field_order": [
+  "student_user",
+  "candidate_type",
+  "linked_tpo_user",
+  "pending_institutional_invite",
+  "full_name",
+  "email",
+  "phone",
+  "profile_photo",
+  "date_of_birth",
+  "gender",
+  "parent_guardian_name",
+  "parent_contact_number",
+  "address",
+  "city",
+  "district",
+  "state",
+  "country",
+  "pin_code",
+  "college",
+  "scout_college",
+  "university_name",
+  "school",
+  "area_of_study",
+  "course_class_grade",
+  "department_stream",
+  "academic_year",
+  "semester",
+  "roll_number",
+  "admission_year",
+  "expected_graduation_year",
+  "current_cgpa",
+  "skills",
+  "certifications",
+  "areas_of_interest",
+  "internship_experience",
+  "project_title",
+  "preferred_job_role",
+  "resume_file",
+  "student_id_card_number",
+  "aadhaar_number",
+  "aadhaar_verified",
+  "linkedin_profile",
+  "github_profile",
+  "portfolio_website",
+  "profile_consent",
+  "pri_score",
+  "profile_submitted",
+  "profile_edit_requested",
+  "profile_edit_approved"
+ ],
+ "fields": [
+  {
+   "fieldname": "student_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student User",
+   "options": "User",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "default": "Independent",
+   "fieldname": "candidate_type",
+   "fieldtype": "Select",
+   "label": "Candidate type",
+   "options": "Independent\nInstitutional"
+  },
+  {
+   "fieldname": "linked_tpo_user",
+   "fieldtype": "Link",
+   "label": "Linked TPO (college)",
+   "options": "User",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "pending_institutional_invite",
+   "fieldtype": "Link",
+   "label": "Pending institutional invite",
+   "options": "Scout Student Invite"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Email",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "profile_photo",
+   "fieldtype": "Attach Image",
+   "label": "Profile Photo"
+  },
+  {
+   "fieldname": "college",
+   "fieldtype": "Data",
+   "label": "College Name"
+  },
+  {
+   "fieldname": "scout_college",
+   "fieldtype": "Link",
+   "label": "Scout College",
+   "options": "Scout College",
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "university_name",
+   "fieldtype": "Data",
+   "label": "University Name"
+  },
+  {
+   "fieldname": "school",
+   "fieldtype": "Data",
+   "label": "School (10th / 12th)"
+  },
+  {
+   "fieldname": "area_of_study",
+   "fieldtype": "Data",
+   "label": "Area of study"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Data",
+   "label": "Year of Study"
+  },
+  {
+   "fieldname": "semester",
+   "fieldtype": "Data",
+   "label": "Semester"
+  },
+  {
+   "fieldname": "roll_number",
+   "fieldtype": "Data",
+   "label": "Roll Number / Register Number"
+  },
+  {
+   "fieldname": "admission_year",
+   "fieldtype": "Data",
+   "label": "Admission Year"
+  },
+  {
+   "fieldname": "expected_graduation_year",
+   "fieldtype": "Data",
+   "label": "Expected Graduation Year"
+  },
+  {
+   "fieldname": "current_cgpa",
+   "fieldtype": "Data",
+   "label": "Current CGPA / Percentage"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Select",
+   "label": "State",
+   "options": "\nAndhra Pradesh\nArunachal Pradesh\nAssam\nBihar\nChhattisgarh\nGoa\nGujarat\nHaryana\nHimachal Pradesh\nJharkhand\nKarnataka\nKerala\nMadhya Pradesh\nMaharashtra\nManipur\nMeghalaya\nMizoram\nNagaland\nOdisha\nPunjab\nRajasthan\nSikkim\nTamil Nadu\nTelangana\nTripura\nUttar Pradesh\nUttarakhand\nWest Bengal\nDelhi"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Select",
+   "label": "Country",
+   "options": "\nIndia\nUnited States\nUnited Kingdom\nCanada\nAustralia\nSingapore\nUnited Arab Emirates\nGermany\nFrance"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "\nMale\nFemale\nOther\nPrefer not to say"
+  },
+  {
+   "fieldname": "parent_guardian_name",
+   "fieldtype": "Data",
+   "label": "Parent / Guardian Name"
+  },
+  {
+   "fieldname": "parent_contact_number",
+   "fieldtype": "Data",
+   "label": "Parent Contact Number"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "House Name / Address"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City / Town"
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District"
+  },
+  {
+   "fieldname": "pin_code",
+   "fieldtype": "Data",
+   "label": "PIN code"
+  },
+  {
+   "fieldname": "course_class_grade",
+   "fieldtype": "Data",
+   "label": "Course / Program"
+  },
+  {
+   "fieldname": "department_stream",
+   "fieldtype": "Data",
+   "label": "Department / Branch"
+  },
+  {
+   "fieldname": "skills",
+   "fieldtype": "Small Text",
+   "label": "Skills"
+  },
+  {
+   "fieldname": "certifications",
+   "fieldtype": "Small Text",
+   "label": "Certifications"
+  },
+  {
+   "fieldname": "areas_of_interest",
+   "fieldtype": "Small Text",
+   "label": "Areas of Interest"
+  },
+  {
+   "fieldname": "internship_experience",
+   "fieldtype": "Small Text",
+   "label": "Internship Experience"
+  },
+  {
+   "fieldname": "project_title",
+   "fieldtype": "Data",
+   "label": "Project Title"
+  },
+  {
+   "fieldname": "preferred_job_role",
+   "fieldtype": "Data",
+   "label": "Preferred Job Role"
+  },
+  {
+   "fieldname": "resume_file",
+   "fieldtype": "Attach",
+   "label": "Resume"
+  },
+  {
+   "fieldname": "student_id_card_number",
+   "fieldtype": "Data",
+   "label": "Student ID Card Number"
+  },
+  {
+   "fieldname": "aadhaar_number",
+   "fieldtype": "Data",
+   "label": "Aadhaar Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "aadhaar_verified",
+   "fieldtype": "Check",
+   "label": "Aadhaar Verified",
+   "read_only": 1
+  },
+  {
+   "fieldname": "linkedin_profile",
+   "fieldtype": "Data",
+   "label": "LinkedIn Profile"
+  },
+  {
+   "fieldname": "github_profile",
+   "fieldtype": "Data",
+   "label": "GitHub Profile"
+  },
+  {
+   "fieldname": "portfolio_website",
+   "fieldtype": "Data",
+   "label": "Portfolio Website"
+  },
+  {
+   "default": "0",
+   "fieldname": "profile_consent",
+   "fieldtype": "Check",
+   "label": "Profile information consent"
+  },
+  {
+   "default": "0",
+   "fieldname": "pri_score",
+   "fieldtype": "Float",
+   "label": "PRI score (placement readiness index)",
+   "description": "Aggregated readiness score; integrations may set from Moodle, challenges, internships."
+  },
+  {
+   "default": "0",
+   "fieldname": "profile_submitted",
+   "fieldtype": "Check",
+   "label": "Profile submitted (locked for student)"
+  },
+  {
+   "default": "0",
+   "fieldname": "profile_edit_requested",
+   "fieldtype": "Check",
+   "label": "Student requested profile edit"
+  },
+  {
+   "default": "0",
+   "fieldname": "profile_edit_approved",
+   "fieldtype": "Check",
+   "label": "TPO approved profile edit"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-04-30 11:45:00.000000",
+ "modified_by": "Administrator",
+ "module": "Scout",
+ "name": "Scout Student Profile",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 0,
+   "export": 1,
+   "print": 0,
+   "read": 1,
+   "report": 0,
+   "role": "Training & Placement Officer",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

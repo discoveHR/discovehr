@@ -1,0 +1,22 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "CHL-APP-.#####",
+ "creation": "2026-05-18 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["challenge", "student_user", "status", "submitted_at"],
+ "fields": [
+  {"fieldname": "challenge", "fieldtype": "Link", "label": "Challenge", "options": "Scout Challenge", "reqd": 1},
+  {"fieldname": "student_user", "fieldtype": "Link", "label": "Student", "options": "User", "reqd": 1},
+  {"default": "Submitted", "fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "Submitted\nIn Review\nShortlisted\nRejected\nSelected"},
+  {"fieldname": "submitted_at", "fieldtype": "Datetime", "label": "Submitted at", "read_only": 1}
+ ],
+ "module": "Scout",
+ "name": "Scout Challenge Application",
+ "permissions": [
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1},
+  {"role": "Student", "read": 1, "write": 1, "create": 1}
+ ]
+}

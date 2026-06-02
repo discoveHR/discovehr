@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create account — DiscoveHR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Space+Grotesk:wght@400;500;600&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+<style>
+  /* Register-specific: slightly taller form, 3-col role selector on register */
+  .auth-shell { align-items: stretch; }
+  .auth-form-side { justify-content: flex-start; padding-top: 3rem; padding-bottom: 3rem; overflow-y: auto; }
+
+  /* Password strength meter */
+  .strength-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.5rem;
+  }
+  .strength-seg {
+    flex: 1;
+    height: 3px;
+    border-radius: 100px;
+    background: var(--line);
+    transition: background 0.3s;
+  }
+  .strength-label {
+    font-size: 0.72rem;
+    color: var(--grey-light);
+    margin-top: 0.35rem;
+    letter-spacing: -0.01em;
+    min-height: 1em;
+  }
+
+  /* Step indicator */
+  .step-dots {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .step-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--line);
+    transition: background 0.3s, width 0.3s;
+  }
+  .step-dot.active {
+    background: var(--blue);
+    width: 20px;
+    border-radius: 100px;
+  }
+  .step-dot.done { background: var(--blue); opacity: 0.4; }
+
+  /* Step panels */
+  .step-panel { display: none; }
+  .step-panel.visible { display: flex; flex-direction: column; gap: 1rem; }
+
+  /* Back button */
+  .btn-ghost-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--grey);
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+    margin-bottom: 0.5rem;
+  }
+  .btn-ghost-back:hover { color: var(--ink); }
+  .btn-ghost-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+</style>
+</head>
+<body>
+
+<!-- Background grid lines -->
+<div class="auth-bg"></div>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="#0047ff" stroke-width="2" fill="none"/>
+          <circle cx="16" cy="16" r="5" fill="#0047ff"/>
+          <circle cx="26" cy="9" r="2.6" fill="#0a0a0b"/>
+        </svg>
+      </span>
+      <span class="brand-name">Discove<b>HR</b></span>
+    </a>
+    <div class="nav-right">
+      <a href="login.html" class="nav-link">Already have an account?</a>
+      <a href="login.html" class="btn-blue">Sign in</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ AUTH PAGE ============ -->
+<main class="auth-page">
+  <div class="auth-shell rise d1">
+
+    <!-- LEFT: Brand panel -->
+    <div class="auth-panel">
+      <a href="index.html" class="panel-brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" stroke="#6f9bff" stroke-width="2" fill="none"/>
+            <circle cx="16" cy="16" r="5" fill="#6f9bff"/>
+            <circle cx="26" cy="9" r="2.6" fill="#ffffff"/>
+          </svg>
+        </span>
+        <span class="brand-name">Discove<b style="color:#6f9bff">HR</b></span>
+      </a>
+
+      <div class="panel-body">
+        <div class="panel-eyebrow">Join the network</div>
+        <h2 class="panel-headline">
+          Talent discovery,<br>
+          <em>starts here.</em>
+        </h2>
+        <p class="panel-sub">
+          One account. Access to the entire DiscoveHR ecosystem — assessments, campus networks, recruiter panels, and live opportunities.
+        </p>
+      </div>
+
+      <div class="panel-stats">
+        <div class="panel-stat-item">
+          <span class="panel-stat-dot"></span>
+          <span class="panel-stat-text"><strong>Free to join</strong> — for students and institutions</span>
+        </div>
+        <div class="panel-stat-item">
+          <span class="panel-stat-dot"></span>
+          <span class="panel-stat-text"><strong>Verified profiles</strong> — trusted by enterprise employers</span>
+        </div>
+        <div class="panel-stat-item">
+          <span class="panel-stat-dot"></span>
+          <span class="panel-stat-text"><strong>Setup in 2 minutes</strong> — no lengthy onboarding</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Multi-step form -->
+    <div class="auth-form-side">
+      <div class="auth-form-header rise d2">
+        <div class="auth-form-eyebrow">Create account</div>
+        <h1 class="auth-form-title">Join <em>DiscoveHR.</em></h1>
+        <p class="auth-form-sub">
+          Already registered?
+          <a href="login.html">Sign in →</a>
+        </p>
+      </div>
+
+      <!-- Step dots -->
+      <div class="step-dots rise d2" id="stepDots">
+        <div class="step-dot active" id="dot1"></div>
+        <div class="step-dot" id="dot2"></div>
+        <div class="step-dot" id="dot3"></div>
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+
+        <!-- STEP 1: Role + account -->
+        <div class="step-panel visible rise d3" id="step1">
+
+          <div class="field">
+            <label class="field-label">I am joining as</label>
+          </div>
+
+          <!-- Role selector (3-col × 2 rows = 6 options) -->
+          <div class="role-selector" style="grid-template-columns: repeat(3, 1fr);">
+            <input class="role-option" type="radio" name="reg-role" id="reg-student" value="student" checked>
+            <label class="role-label" for="reg-student">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </span>
+              <span class="role-text">Student</span>
+            </label>
+
+            <input class="role-option" type="radio" name="reg-role" id="reg-employer" value="employer">
+            <label class="role-label" for="reg-employer">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              </span>
+              <span class="role-text">Employer</span>
+            </label>
+
+            <input class="role-option" type="radio" name="reg-role" id="reg-institution" value="institution">
+            <label class="role-label" for="reg-institution">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>
+              </span>
+              <span class="role-text">Institution</span>
+            </label>
+
+            <input class="role-option" type="radio" name="reg-role" id="reg-recruiter" value="recruiter">
+            <label class="role-label" for="reg-recruiter">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </span>
+              <span class="role-text">Recruiter</span>
+            </label>
+
+            <input class="role-option" type="radio" name="reg-role" id="reg-panelist" value="panelist">
+            <label class="role-label" for="reg-panelist">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
+              </span>
+              <span class="role-text">Panelist</span>
+            </label>
+
+            <input class="role-option" type="radio" name="reg-role" id="reg-placement" value="placement">
+            <label class="role-label" for="reg-placement">
+              <span class="role-icon">
+                <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3 3-1.5-1.5"/></svg>
+              </span>
+              <span class="role-text">Placement</span>
+            </label>
+          </div>
+
+          <div class="form-divider">Your email address</div>
+
+          <div class="field">
+            <label class="field-label" for="reg-email">Work or institutional email</label>
+            <input class="field-input" type="email" id="reg-email" name="email" placeholder="you@company.com" autocomplete="email" required>
+          </div>
+
+          <button type="button" class="btn-submit" onclick="goStep(2)">
+            Continue
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+        <!-- STEP 2: Personal details -->
+        <div class="step-panel" id="step2">
+          <button type="button" class="btn-ghost-back" onclick="goStep(1)">
+            <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+
+          <div class="form-row">
+            <div class="field">
+              <label class="field-label" for="reg-first">First name</label>
+              <input class="field-input" type="text" id="reg-first" name="first_name" placeholder="Arun" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label class="field-label" for="reg-last">Last name</label>
+              <input class="field-input" type="text" id="reg-last" name="last_name" placeholder="Krishnan" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-phone">Phone number</label>
+            <input class="field-input" type="tel" id="reg-phone" name="phone" placeholder="+91 98765 43210" autocomplete="tel">
+          </div>
+
+          <!-- Dynamic context field (changes by role) -->
+          <div class="field" id="contextField">
+            <label class="field-label" for="reg-context" id="contextLabel">Institution / Organisation</label>
+            <input class="field-input" type="text" id="reg-context" name="context" placeholder="e.g. College of Engineering, Trivandrum">
+          </div>
+
+          <button type="button" class="btn-submit" onclick="goStep(3)">
+            Continue
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+        <!-- STEP 3: Password + consent -->
+        <div class="step-panel" id="step3">
+          <button type="button" class="btn-ghost-back" onclick="goStep(2)">
+            <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back
+          </button>
+
+          <div class="field">
+            <label class="field-label" for="reg-password">Create a password</label>
+            <div class="field-input-wrap">
+              <input class="field-input" type="password" id="reg-password" name="password" placeholder="Min. 8 characters" autocomplete="new-password" required oninput="checkStrength(this.value)">
+              <button type="button" class="field-toggle" onclick="togglePassword('reg-password', this)" aria-label="Show password">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-seg" id="s1"></div>
+              <div class="strength-seg" id="s2"></div>
+              <div class="strength-seg" id="s3"></div>
+              <div class="strength-seg" id="s4"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel"></div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="reg-confirm">Confirm password</label>
+            <div class="field-input-wrap">
+              <input class="field-input" type="password" id="reg-confirm" name="confirm" placeholder="Re-enter your password" autocomplete="new-password" required>
+              <button type="button" class="field-toggle" onclick="togglePassword('reg-confirm', this)" aria-label="Show password">
+                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="check-row">
+            <input class="check-input" type="checkbox" id="terms" name="terms" required>
+            <label class="check-label" for="terms">
+              I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand my data is processed in accordance with the DPDP Act 2023.
+            </label>
+          </div>
+
+          <div class="check-row">
+            <input class="check-input" type="checkbox" id="updates" name="updates">
+            <label class="check-label" for="updates">
+              Send me platform updates, opportunities, and hiring insights.
+            </label>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            Create my account
+            <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="auth-footer">
+    <span class="auth-footer-copy">© 2026 DiscoveHR. All rights reserved.</span>
+    <div class="auth-footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+      <a href="#">Help</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let currentStep = 1;
+
+  function goStep(n) {
+    const panels = document.querySelectorAll('.step-panel');
+    panels.forEach(p => p.classList.remove('visible'));
+    document.getElementById('step' + n).classList.add('visible');
+
+    // Update dots
+    for (let i = 1; i <= 3; i++) {
+      const dot = document.getElementById('dot' + i);
+      dot.classList.remove('active', 'done');
+      if (i === n) dot.classList.add('active');
+      else if (i < n) dot.classList.add('done');
+    }
+    currentStep = n;
+  }
+
+  // Dynamic context label by role
+  const contextLabels = {
+    student:     'College / University',
+    employer:    'Company name',
+    institution: 'Institution name',
+    recruiter:   'Agency or firm name',
+    panelist:    'Current employer',
+    placement:   'Institution name',
+  };
+  const contextPlaceholders = {
+    student:     'e.g. College of Engineering, Trivandrum',
+    employer:    'e.g. Infosys Limited',
+    institution: 'e.g. Mar Athanasius College of Engineering',
+    recruiter:   'e.g. Hire Sphere India',
+    panelist:    'e.g. Volvo Group India',
+    placement:   'e.g. Kerala Technological University',
+  };
+  document.querySelectorAll('input[name="reg-role"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const v = r.value;
+      document.getElementById('contextLabel').textContent = contextLabels[v] || 'Organisation';
+      document.getElementById('reg-context').placeholder = contextPlaceholders[v] || '';
+    });
+  });
+
+  // Password toggle
+  function togglePassword(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.querySelector('svg').innerHTML = isText
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+      : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  }
+
+  // Password strength
+  function checkStrength(val) {
+    const segs = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
+    const label = document.getElementById('strengthLabel');
+    const colors = ['#e24b4a', '#ef9f27', '#1d9e75', '#1d9e75'];
+    const labels = ['Too short', 'Weak', 'Good', 'Strong'];
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    segs.forEach((s, i) => {
+      s.style.background = i < score ? colors[score - 1] : 'var(--line)';
+    });
+    label.textContent = val.length ? labels[score - 1] || 'Too short' : '';
+    label.style.color = val.length ? colors[score - 1] : 'var(--grey-light)';
+  }
+
+  // Submit
+  function handleRegister(e) {
+    e.preventDefault();
+    const p = document.getElementById('reg-password').value;
+    const c = document.getElementById('reg-confirm').value;
+    if (p !== c) {
+      document.getElementById('reg-confirm').style.borderColor = '#e24b4a';
+      document.getElementById('reg-confirm').focus();
+      return;
+    }
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = 'Creating account…';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+    // Simulate — replace with real API call
+    setTimeout(() => {
+      btn.innerHTML = 'Account created! <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2"><polyline points="20 6 9 17 4 12"/></svg>';
+      btn.style.background = '#0a8a4a';
+      btn.style.opacity = '1';
+    }, 1400);
+  }
+</script>
+
+</body>
+</html>

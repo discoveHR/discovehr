@@ -1,0 +1,26 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "HR-TOK-.#####",
+ "creation": "2026-05-19 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["token_hash", "hr_email", "hr_name", "tpo_user", "campus_drive_title", "posting_id", "expires_at", "used_at", "is_active"],
+ "fields": [
+  {"fieldname": "token_hash", "fieldtype": "Data", "label": "Token Hash", "reqd": 1, "read_only": 1},
+  {"fieldname": "hr_email", "fieldtype": "Data", "label": "HR Email", "reqd": 1},
+  {"fieldname": "hr_name", "fieldtype": "Data", "label": "HR Name"},
+  {"fieldname": "tpo_user", "fieldtype": "Link", "label": "TPO User", "options": "User", "reqd": 1, "read_only": 1},
+  {"fieldname": "campus_drive_title", "fieldtype": "Data", "label": "Campus drive"},
+  {"fieldname": "posting_id", "fieldtype": "Link", "label": "TPO Posting", "options": "Scout TPO Posting"},
+  {"fieldname": "expires_at", "fieldtype": "Datetime", "label": "Expires At", "reqd": 1},
+  {"fieldname": "used_at", "fieldtype": "Datetime", "label": "Used At", "read_only": 1},
+  {"default": "1", "fieldname": "is_active", "fieldtype": "Check", "label": "Active"}
+ ],
+ "module": "Scout",
+ "name": "Scout HR Access Token",
+ "permissions": [
+  {"role": "Training & Placement Officer", "read": 1, "write": 1, "create": 1},
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1, "delete": 1}
+ ]
+}
