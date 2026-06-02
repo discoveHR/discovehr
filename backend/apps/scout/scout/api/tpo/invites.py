@@ -66,7 +66,8 @@ def invite_student_minimal():
         frappe.local.response["http_status_code"] = 409
         return {"ok": False, "message": _("Unable to generate unique invite ID. Please try again.")}
 
-    frontend_base_url = (getattr(frappe.conf, "scout_frontend_base_url", "") or "http://localhost:3000").rstrip("/")
+    from scout.utils.env_config import get_frontend_base_url
+    frontend_base_url = get_frontend_base_url()
     invite_link = f"{frontend_base_url}/student/accept-invite/{raw_token}"
     tpo_name = frappe.get_cached_value("User", user_id, "full_name") or "TPO"
     user_exists = frappe.db.exists("User", email)

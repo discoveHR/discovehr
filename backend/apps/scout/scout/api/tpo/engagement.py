@@ -65,7 +65,8 @@ def invite_hr_partner():
     doc.insert(ignore_permissions=True)
     frappe.db.commit()
 
-    frontend_base = (getattr(frappe.conf, "scout_frontend_base_url", None) or "http://localhost:3000").rstrip("/")
+    from scout.utils.env_config import get_frontend_base_url
+    frontend_base = get_frontend_base_url()
     link = f"{frontend_base}/hr/special/{raw_token}"
     tpo_name = frappe.get_cached_value("User", user_id, "full_name") or "Training & Placement Office"
     greeting = hr_name or _("HR partner")

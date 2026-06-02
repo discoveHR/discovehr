@@ -139,7 +139,7 @@ function SignupForm() {
       const phoneTrimmed = phone.trim();
       let payload: RegisterPayload;
       if (backendRole === "Student") {
-        payload = { role: backendRole, email, password, firstName: firstName.trim(), lastName: lastName.trim(), phone: phoneTrimmed };
+        payload = { role: backendRole, email, password, firstName: firstName.trim(), lastName: lastName.trim(), phone: phoneTrimmed, collegeName: context.trim() };
       } else if (backendRole === "Company") {
         payload = { role: backendRole, email, password, fullName: fullNameCombined, companyName: context.trim(), phone: phoneTrimmed };
       } else if (backendRole === "Training & Placement Officer") {

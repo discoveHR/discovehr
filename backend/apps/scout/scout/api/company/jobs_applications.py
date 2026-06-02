@@ -187,7 +187,8 @@ def invite_college_for_job():
         return {"ok": False, "message": _("Job not found or you do not have access to this job.")}
 
     company_name = frappe.get_cached_value("User", user_id, "full_name") or "Company"
-    frontend_base_url = (getattr(frappe.conf, "scout_frontend_base_url", "") or "http://localhost:3000").rstrip("/")
+    from scout.utils.env_config import get_frontend_base_url
+    frontend_base_url = get_frontend_base_url()
     signup_link = f"{frontend_base_url}/signup"
     role_label = "Training & Placement Officer"
 

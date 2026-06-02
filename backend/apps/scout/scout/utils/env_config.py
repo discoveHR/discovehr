@@ -101,3 +101,36 @@ def razorpay_key_secret() -> str:
         "RAZORPAY_KEY_SECRET",
         "SCOUT_RAZORPAY_KEY_SECRET",
     )
+
+
+def get_frontend_base_url() -> str:
+    """
+    Return the configured frontend base URL, stripping any trailing slash.
+
+    In production this MUST be set to the real domain via:
+      - env var:        SCOUT_FRONTEND_BASE_URL=https://yourdomain.com
+      - site_config:    scout_frontend_base_url = "https://yourdomain.com"
+
+    Falls back to http://localhost:3000 for local dev only.
+    Logs a warning once if localhost is returned in a non-dev context.
+    """
+    url = scout_conf(
+        "scout_frontend_base_url",
+        "SCOUT_FRONTEND_BASE_URL",
+        default="http://localhost:3000",
+    ).rstrip("/")
+
+    if "localhost" in url or "127.0.0.1" in url:
+        try:
+            import frappe
+            if not getattr(frappe.local, "_scout_frontend_url_warned", False):
+                frappe.local._scout_frontend_url_warned = True
+                frappe.logger().warning(
+                    "SCOUT_FRONTEND_BASE_URL is set to %s — magic links in emails will point to localhost. "
+                    "Set SCOUT_FRONTEND_BASE_URL to your production domain in backend/.env or site_config.json.",
+                    url,
+                )
+        except Exception:
+            pass
+
+    return url

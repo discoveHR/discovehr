@@ -3,6 +3,10 @@ import { execSync } from "child_process";
 let cached: { urls: string[]; at: number } | null = null;
 const TTL_MS = 15_000;
 
+// Warn once at startup if running in production without an explicit backend URL.
+// In production NEXT_FRAPPE_BACKEND_URL must be set; the WSL auto-detect only works on Windows dev.
+let _warnedProd = false;
+
 function wslIp(): string | null {
   if (process.platform !== "win32") {
     return null;
@@ -16,11 +20,21 @@ function wslIp(): string | null {
   }
 }
 
-/** Ordered backends to try when proxying from Windows → WSL Frappe. */
+/** Ordered backends to try when proxying to Frappe. */
 export function getFrappeBackendUrlCandidates(): string[] {
   const fromEnv = (process.env.NEXT_FRAPPE_BACKEND_URL || process.env.FRAPPE_BACKEND_URL || "").trim();
   if (fromEnv) {
     return [fromEnv.replace(/\/$/, "")];
+  }
+
+  // In production without an explicit env var, fall back to localhost and warn once.
+  if (process.env.NODE_ENV === "production" && !_warnedProd) {
+    _warnedProd = true;
+    console.warn(
+      "[DiscoveHR] NEXT_FRAPPE_BACKEND_URL is not set. " +
+      "Falling back to http://127.0.0.1:8000 — this only works if Frappe runs on the same host. " +
+      "Set NEXT_FRAPPE_BACKEND_URL=https://your-frappe-host in your deployment environment."
+    );
   }
 
   const now = Date.now();

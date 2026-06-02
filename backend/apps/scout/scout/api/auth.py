@@ -317,25 +317,24 @@ def login(email: Optional[str] = None, password: Optional[str] = None):
         }
 
 
-def _create_student_profile_on_register(*, email: str, full_name: str, phone: str) -> None:
+def _create_student_profile_on_register(*, email: str, full_name: str, phone: str, college_name: str = "") -> None:
     if frappe.db.exists("Scout Student Profile", email):
-        frappe.db.set_value(
-            "Scout Student Profile",
-            email,
-            {"full_name": full_name, "email": email, "phone": phone},
-            update_modified=True,
-        )
+        update_vals = {"full_name": full_name, "email": email, "phone": phone}
+        if college_name:
+            update_vals["college_name"] = college_name
+        frappe.db.set_value("Scout Student Profile", email, update_vals, update_modified=True)
         return
-    profile = frappe.get_doc(
-        {
-            "doctype": "Scout Student Profile",
-            "student_user": email,
-            "full_name": full_name,
-            "email": email,
-            "phone": phone,
-            "candidate_type": "Independent",
-        }
-    )
+    profile_data = {
+        "doctype": "Scout Student Profile",
+        "student_user": email,
+        "full_name": full_name,
+        "email": email,
+        "phone": phone,
+        "candidate_type": "Independent",
+    }
+    if college_name:
+        profile_data["college_name"] = college_name
+    profile = frappe.get_doc(profile_data)
     profile.db_insert()
 
 
@@ -415,10 +414,19 @@ def register():
     try:
         user.insert(ignore_permissions=True)
         user.add_roles(canonical_role)
-        user.new_password = password
         user.save(ignore_permissions=True)
+        # Set password directly — avoids the new_password save-hook that fires a
+        # "password changed" email notification. That hook crashes registration when
+        # Frappe's outgoing email is not configured (throws OutgoingEmailError → 500).
+        from frappe.utils.password import update_password as _set_password
+        try:
+            _set_password(email, password, logout_all_sessions=False)
+        except TypeError:
+            _set_password(email, password)
         if canonical_role == "Student":
-            _create_student_profile_on_register(email=email, full_name=full_name, phone=phone)
+            _create_student_profile_on_register(
+                email=email, full_name=full_name, phone=phone, college_name=college_name
+            )
         if canonical_role in ("Freelancer", "Job Seeker"):
             from scout.api.freelancer.profile import create_freelancer_profile_on_register
 

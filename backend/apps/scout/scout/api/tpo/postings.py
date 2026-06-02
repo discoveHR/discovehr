@@ -315,7 +315,8 @@ def send_company_dashboard_link():
     )
     token_doc.insert(ignore_permissions=True)
 
-    frontend_base_url = (getattr(frappe.conf, "scout_frontend_base_url", "") or "http://localhost:3000").rstrip("/")
+    from scout.utils.env_config import get_frontend_base_url
+    frontend_base_url = get_frontend_base_url()
     magic_link = f"{frontend_base_url}/company/special/{raw_token}"
     tpo_name = frappe.get_cached_value("User", user_id, "full_name") or "TPO"
     subject = _("Special Access Dashboard for {0}").format(posting.get("title") or "TPO posting")

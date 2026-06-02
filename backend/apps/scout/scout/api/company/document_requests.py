@@ -105,7 +105,8 @@ def request_documents():
     student_name = frappe.get_cached_value("User", app_doc.student_user, "full_name") or "Candidate"
     company_name = frappe.get_cached_value("User", user_id, "full_name") or "Company"
     job_title = frappe.get_value("Scout Job", app_doc.job_id, "title") or "the position"
-    frontend_base_url = (getattr(frappe.conf, "scout_frontend_base_url", "") or "http://localhost:3000").rstrip("/")
+    from scout.utils.env_config import get_frontend_base_url
+    frontend_base_url = get_frontend_base_url()
     portal_link = f"{frontend_base_url}/student/dashboard"
 
     doc_list_html = "".join(
