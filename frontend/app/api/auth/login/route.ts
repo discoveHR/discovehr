@@ -16,7 +16,7 @@ async function callFrappeTokenLogin(
       try {
         const resp = await fetch(`${base}/api/method/scout.api.auth.token_login`, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          headers: { "Content-Type": "application/json", Accept: "application/json", host: "portal.discovehr.com" },
           body: JSON.stringify({ email, password }),
           signal: AbortSignal.timeout(30_000),
         });

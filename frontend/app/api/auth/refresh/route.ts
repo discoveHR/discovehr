@@ -15,7 +15,7 @@ async function callFrappeRefresh(
       try {
         const resp = await fetch(`${base}/api/method/scout.api.auth.refresh_access_token`, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          headers: { "Content-Type": "application/json", Accept: "application/json", host: "portal.discovehr.com" },
           body: JSON.stringify({ refreshToken }),
           signal: AbortSignal.timeout(30_000),
         });
