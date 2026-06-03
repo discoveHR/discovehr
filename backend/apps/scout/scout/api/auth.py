@@ -449,18 +449,8 @@ def register():
         except TypeError:
             _set_password(email, password)
 
-        # ── Step 4: Create role-specific profile records ──────────────────────────
-        if canonical_role == "Student":
-            _create_student_profile_on_register(
-                email=email, full_name=full_name, phone=phone, college_name=college_name
-            )
-        if canonical_role in ("Freelancer", "Job Seeker"):
-            from scout.api.freelancer.profile import create_freelancer_profile_on_register
-            create_freelancer_profile_on_register(email=email, full_name=full_name, phone=phone)
-        if canonical_role == "Training & Placement Officer":
-            from scout.api.tpo.profile import TPO_ADMIN_APPROVAL_REQUIRED, create_tpo_profile_on_signup
-            create_tpo_profile_on_signup(email, full_name, college_name=college_name)
-
+        # Commit user + role + password now so the account is usable even if
+        # profile creation below fails. Profile is created in a separate transaction.
         frappe.db.commit()
 
     except frappe.ValidationError as exc:
@@ -486,6 +476,25 @@ def register():
         frappe.log_error(frappe.get_traceback(), "Scout API: auth.register")
         frappe.local.response["http_status_code"] = 500
         return {"ok": False, "message": _("Registration failed. Please try again.")}
+
+    # ── Step 4: Create role-specific profile records (separate transaction) ───
+    # Failures here are logged but do NOT roll back the account — the user can
+    # still sign in; the profile will be created on first dashboard load.
+    try:
+        if canonical_role == "Student":
+            _create_student_profile_on_register(
+                email=email, full_name=full_name, phone=phone, college_name=college_name
+            )
+        if canonical_role in ("Freelancer", "Job Seeker"):
+            from scout.api.freelancer.profile import create_freelancer_profile_on_register
+            create_freelancer_profile_on_register(email=email, full_name=full_name, phone=phone)
+        if canonical_role == "Training & Placement Officer":
+            from scout.api.tpo.profile import create_tpo_profile_on_signup
+            create_tpo_profile_on_signup(email, full_name, college_name=college_name)
+        frappe.db.commit()
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Scout API: profile creation on register")
+        frappe.db.rollback()
 
     if canonical_role == "Training & Placement Officer":
         from scout.api.tpo.profile import TPO_ADMIN_APPROVAL_REQUIRED
