@@ -31,6 +31,7 @@ async function proxyToFrappe(req: NextRequest, pathSegments: string[]) {
   for (const h of ["host", "expect", "transfer-encoding", "content-length", "connection", "keep-alive", "te", "trailer", "upgrade"]) {
     headers.delete(h);
   }
+  headers.set("host", "portal.discovehr.com");
 
   // Inject Bearer token from the HttpOnly cookie so Frappe can authenticate the request.
   // The cookie is inaccessible to client-side JS; only this server-side proxy reads it.
