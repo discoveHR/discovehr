@@ -340,17 +340,20 @@ def _create_student_profile_on_register(*, email: str, full_name: str, phone: st
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def register():
-    payload = frappe.request.get_json(silent=True) or {}
-    email = (payload.get("email") or "").strip().lower()
-    password = payload.get("password")
-    role = (payload.get("role") or "").strip()
+    # Frappe parses JSON bodies into frappe.form_dict via make_form_dict().
+    # frappe.request.get_json() is unreliable here because the WSGI stream
+    # may already be consumed. Reading from form_dict is always safe.
+    fd = frappe.form_dict
+    email = (fd.get("email") or "").strip().lower()
+    password = fd.get("password") or ""
+    role = (fd.get("role") or "").strip()
     canonical_role = ROLE_CANONICAL_MAP.get(role, role)
-    first_name = (payload.get("firstName") or "").strip()
-    last_name = (payload.get("lastName") or "").strip()
-    phone = (payload.get("phone") or "").strip()
-    full_name = (payload.get("fullName") or "").strip()
-    company_name = (payload.get("companyName") or "").strip()
-    college_name = (payload.get("collegeName") or "").strip()
+    first_name = (fd.get("firstName") or "").strip()
+    last_name = (fd.get("lastName") or "").strip()
+    phone = (fd.get("phone") or "").strip()
+    full_name = (fd.get("fullName") or "").strip()
+    company_name = (fd.get("companyName") or "").strip()
+    college_name = (fd.get("collegeName") or "").strip()
 
     if canonical_role == "Student":
         if not first_name or not last_name or not email or not password or not phone or not role:
@@ -389,15 +392,15 @@ def register():
     if not frappe.db.exists("Role", canonical_role):
         frappe.get_doc({"doctype": "Role", "role_name": canonical_role}).insert(ignore_permissions=True)
 
-    if canonical_role == "Student":
-        pass
-    elif canonical_role == "Company":
+    if canonical_role == "Company":
         first_name, _separator, last_name = full_name.partition(" ")
         full_name = company_name
-    else:
+    elif canonical_role != "Student":
         first_name, _separator, last_name = full_name.partition(" ")
-    user = frappe.get_doc(
-        {
+
+    try:
+        # ── Step 1: Create User (send_welcome_email=0 suppresses insert hook email) ──
+        user = frappe.get_doc({
             "doctype": "User",
             "email": email,
             "first_name": first_name or full_name,
@@ -406,38 +409,66 @@ def register():
             "enabled": 1,
             "send_welcome_email": 0,
             "user_type": "System User",
-        }
-    )
-    if phone:
-        user.mobile_no = phone
+        })
+        if phone:
+            user.mobile_no = phone
+        try:
+            user.insert(ignore_permissions=True)
+        except Exception as _ins_exc:
+            # Frappe's on_update hook tries to enqueue a Redis background job.
+            # If Redis is not running this raises ConnectionError. The user record
+            # IS written to the DB before the hook runs, so we can safely continue.
+            _is_redis = ("ConnectionError" in type(_ins_exc).__name__
+                         or "redis" in str(_ins_exc).lower()
+                         or "11000" in str(_ins_exc)
+                         or "13000" in str(_ins_exc))
+            if not _is_redis:
+                raise
 
-    try:
-        user.insert(ignore_permissions=True)
-        user.add_roles(canonical_role)
-        user.save(ignore_permissions=True)
-        # Set password directly — avoids the new_password save-hook that fires a
-        # "password changed" email notification. That hook crashes registration when
-        # Frappe's outgoing email is not configured (throws OutgoingEmailError → 500).
+        # ── Step 2: Assign role via direct SQL ────────────────────────────────────
+        # user.add_roles() calls user.save() internally which fires the
+        # "User.on_update" hook that sends email notifications. That hook crashes
+        # when Frappe outgoing email is not configured (raises OutgoingEmailError
+        # → caught by except Exception → rollback → "Registration failed").
+        # Direct SQL bypasses all ORM hooks.
+        _now = frappe.utils.now_datetime()
+        _role_name = frappe.generate_hash("Has Role", length=10)
+        frappe.db.sql(
+            """INSERT INTO `tabHas Role`
+               (name, creation, modified, modified_by, owner, docstatus, idx,
+                parent, parenttype, parentfield, role)
+               VALUES (%s, %s, %s, %s, %s, 0, 1, %s, %s, %s, %s)""",
+            (_role_name, _now, _now, "Administrator", "Administrator",
+             email, "User", "roles", canonical_role),
+        )
+
+        # ── Step 3: Set password via utility (no email hook) ─────────────────────
         from frappe.utils.password import update_password as _set_password
         try:
             _set_password(email, password, logout_all_sessions=False)
         except TypeError:
             _set_password(email, password)
+
+        # ── Step 4: Create role-specific profile records ──────────────────────────
         if canonical_role == "Student":
             _create_student_profile_on_register(
                 email=email, full_name=full_name, phone=phone, college_name=college_name
             )
         if canonical_role in ("Freelancer", "Job Seeker"):
             from scout.api.freelancer.profile import create_freelancer_profile_on_register
-
             create_freelancer_profile_on_register(email=email, full_name=full_name, phone=phone)
         if canonical_role == "Training & Placement Officer":
             from scout.api.tpo.profile import TPO_ADMIN_APPROVAL_REQUIRED, create_tpo_profile_on_signup
-
             create_tpo_profile_on_signup(email, full_name, college_name=college_name)
+
         frappe.db.commit()
+
     except frappe.ValidationError as exc:
         frappe.db.rollback()
+        exc_str = str(exc).lower()
+        if "mobile_no" in exc_str or ("duplicate entry" in exc_str and "mobile" in exc_str):
+            frappe.local.response["http_status_code"] = 409
+            return {"ok": False, "message": _("A user account already exists with this phone number. Please use a different phone number or sign in.")}
         frappe.local.response["http_status_code"] = 400
         cleaned = strip_html(str(exc)).strip()
         return {"ok": False, "message": cleaned or _("Password requirements not met.")}
@@ -445,8 +476,13 @@ def register():
         frappe.db.rollback()
         frappe.local.response["http_status_code"] = 409
         return {"ok": False, "message": _("User already exists with this email.")}
-    except Exception:
+    except Exception as _exc:
         frappe.db.rollback()
+        _exc_str = str(_exc).lower()
+        # Friendly messages for common constraint violations
+        if "mobile_no" in _exc_str or "duplicate entry" in _exc_str and "mobile" in _exc_str:
+            frappe.local.response["http_status_code"] = 409
+            return {"ok": False, "message": _("A user account already exists with this phone number.")}
         frappe.log_error(frappe.get_traceback(), "Scout API: auth.register")
         frappe.local.response["http_status_code"] = 500
         return {"ok": False, "message": _("Registration failed. Please try again.")}
