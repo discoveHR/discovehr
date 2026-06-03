@@ -372,7 +372,11 @@ def update_student_profile():
         doc = frappe.get_doc(insert_data)
         doc.insert(ignore_permissions=True)
 
-    frappe.db.set_value("User", user_id, {"full_name": full_name, "mobile_no": merged.get("phone") or ""}, update_modified=False)
+    user_updates = {"full_name": full_name}
+    phone_val = (merged.get("phone") or "").strip()
+    if phone_val:
+        user_updates["mobile_no"] = phone_val
+    frappe.db.set_value("User", user_id, user_updates, update_modified=False)
     frappe.db.commit()
     msg = _("Profile updated successfully.")
     if finalize_profile:

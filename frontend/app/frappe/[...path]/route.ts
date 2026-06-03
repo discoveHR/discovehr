@@ -20,7 +20,17 @@ async function proxyToFrappe(req: NextRequest, pathSegments: string[]) {
   const search = req.nextUrl.search;
 
   const headers = new Headers(req.headers);
-  headers.delete("host");
+
+  // Strip hop-by-hop and connection-specific headers that must not be forwarded.
+  // transfer-encoding + content-length must be removed for POST bodies because the
+  // Node.js fetch API recalculates them from the ArrayBuffer we pass as body —
+  // forwarding the originals causes conflicts (e.g. chunked + fixed-length mismatch).
+  // Strip hop-by-hop and problematic headers that must not be forwarded.
+  // "expect" (100-continue) causes Node.js fetch to throw "expect header not supported"
+  // when a client like PowerShell/curl sends it on POST requests.
+  for (const h of ["host", "expect", "transfer-encoding", "content-length", "connection", "keep-alive", "te", "trailer", "upgrade"]) {
+    headers.delete(h);
+  }
 
   // Inject Bearer token from the HttpOnly cookie so Frappe can authenticate the request.
   // The cookie is inaccessible to client-side JS; only this server-side proxy reads it.
