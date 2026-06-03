@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AuthLoadingScreen } from "../../components/auth/AuthLoadingScreen";
 import { performPortalLogin } from "../../lib/auth/perform-portal-login";
+import { adminLogin } from "../../lib/api";
 
 const FEATURES = [
   {
@@ -71,7 +72,21 @@ function UnifiedLoginForm() {
       const result = await performPortalLogin(email, password);
       router.replace(result.dashboardPath);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Sign in failed. Please check your credentials.");
+      const msg = err instanceof Error ? err.message : "";
+      // Portal login rejects admin accounts — fall back to admin session auth
+      if (msg.toLowerCase().includes("admin")) {
+        try {
+          const result = await adminLogin({ email, password });
+          localStorage.setItem("scout_session", JSON.stringify({ role: "admin", user: result?.user }));
+          router.replace("/admin/dashboard");
+          return;
+        } catch (adminErr) {
+          setError(adminErr instanceof Error ? adminErr.message : "Sign in failed.");
+          setIsLoading(false);
+          return;
+        }
+      }
+      setError(msg || "Sign in failed. Please check your credentials.");
       setIsLoading(false);
     }
   }
