@@ -37,6 +37,9 @@ async function proxyToFrappe(req: NextRequest, pathSegments: string[]) {
   const accessToken = req.cookies.get("scout_access_token")?.value?.trim();
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
+    // Drop the browser's session cookies so Frappe doesn't try to resume a stale/broken
+    // sid session before seeing the Bearer token — that causes "User None is disabled".
+    headers.delete("cookie");
   }
 
   const init: RequestInit = {
