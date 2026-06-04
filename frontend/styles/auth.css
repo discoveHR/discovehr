@@ -498,8 +498,8 @@ nav.auth-topnav {
   letter-spacing: -0.01em;
   cursor: pointer;
 }
-.check-label a { color: var(--indigo); text-decoration: none; }
-.check-label a:hover { text-decoration: underline; }
+.check-label a { color: var(--indigo); text-decoration: underline; text-underline-offset: 2px; }
+.check-label a:hover { opacity: 0.75; }
 
 /* ===== SUBMIT BUTTON ===== */
 .btn-submit {

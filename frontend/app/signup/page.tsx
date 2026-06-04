@@ -447,9 +447,26 @@ function SignupForm() {
                     onChange={(e) => setTermsAccepted(e.target.checked)}
                     required
                   />
-                  <label className="check-label" htmlFor="terms">
-                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand my data is processed in accordance with the DPDP Act 2023.
-                  </label>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                    <label className="check-label" htmlFor="terms">
+                      I have read and agree to the{" "}
+                      <a href="/legal#sec-tnc" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Terms of Service</a>
+                      {" "}and{" "}
+                      <a href="/legal#sec-privacy" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>Privacy Policy</a>.
+                      I understand my data is processed in accordance with the DPDP Act 2023.
+                    </label>
+                    <a
+                      href="/legal"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: "0.78rem", color: "var(--indigo)", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "3px", width: "fit-content" }}
+                    >
+                      Read full Terms &amp; Conditions
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                      </svg>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="check-row">
@@ -462,7 +479,7 @@ function SignupForm() {
                 {error && <div className="form-error">{error}</div>}
                 {success && <div className="form-success">{success}</div>}
 
-                <button type="submit" className="btn-submit" disabled={isLoading}>
+                <button type="submit" className="btn-submit" disabled={isLoading || !termsAccepted}>
                   {isLoading ? "Creating account…" : "Create my account"}
                   {!isLoading && (
                     <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -480,9 +497,9 @@ function SignupForm() {
         <div className="auth-footer">
           <span className="auth-footer-copy">© 2026 DiscoveHR. All rights reserved.</span>
           <div className="auth-footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Security</a>
+            <a href="/legal#sec-privacy" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="/legal#sec-tnc" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="/legal" target="_blank" rel="noopener noreferrer">Security</a>
             <a href="#">Help</a>
           </div>
         </div>

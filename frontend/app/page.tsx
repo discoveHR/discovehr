@@ -506,9 +506,9 @@ export default function HomePage() {
           <div className="footer-bottom">
             <span className="footer-copy">© 2026 DiscoveHR. All rights reserved.</span>
             <div className="footer-legal">
-              <a href="#">Privacy</a>
-              <a href="#">Terms</a>
-              <a href="#">Security</a>
+              <Link href="/legal#sec-privacy">Privacy</Link>
+              <Link href="/legal#sec-tnc">Terms</Link>
+              <Link href="/legal">Security</Link>
             </div>
           </div>
         </div>

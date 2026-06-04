@@ -308,9 +308,9 @@ function AdminLoginForm() {
         <div className="auth-footer">
           <span className="auth-footer-copy">© 2026 DiscoveHR. All rights reserved.</span>
           <div className="auth-footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Security</a>
+            <a href="/legal#sec-privacy" target="_blank" rel="noopener noreferrer">Privacy</a>
+            <a href="/legal#sec-tnc" target="_blank" rel="noopener noreferrer">Terms</a>
+            <a href="/legal" target="_blank" rel="noopener noreferrer">Security</a>
             <a href="#">Help</a>
           </div>
         </div>

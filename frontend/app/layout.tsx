@@ -1,6 +1,7 @@
 import "./globals.css";
 import "../styles/auth.css";
 import "../styles/discovehr.css";
+import "../styles/legal.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Fraunces, Space_Grotesk, Inter_Tight } from "next/font/google";

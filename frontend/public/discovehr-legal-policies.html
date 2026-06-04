@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiscoveHR — Legal Policies | Ensynapse Technique Pvt. Ltd.</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Inter+Tight:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f7f7;
+    --surface-2: #efefef;
+    --border: rgba(0,0,0,0.1);
+    --border-accent: rgba(0,71,255,0.25);
+    --blue: #0047ff;
+    --blue-light: #0040e0;
+    --blue-glow: rgba(0,71,255,0.06);
+    --gold: #8a6c1e;
+    --gold-light: #6b5218;
+    --text: #111111;
+    --text-dim: #444444;
+    --text-faint: #888888;
+    --white: #111111;
+    --danger: #cc0000;
+    --success: #166534;
+    --warn: #92400e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+
+
+  .page-wrap { position: relative; z-index: 1; }
+
+  /* ─── HEADER ─── */
+  header {
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 24px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: white;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #111111;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .header-badge {
+    font-size: 11px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* ─── POLICY NAV ─── */
+  .policy-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .policy-nav::-webkit-scrollbar { display: none; }
+
+  .policy-nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+  }
+
+  .nav-btn {
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dim);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-family: 'Inter Tight', sans-serif;
+    letter-spacing: 0.2px;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--blue-light); border-bottom-color: var(--blue); }
+
+  /* ─── HERO ─── */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 32px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 300;
+    color: #111111;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .hero p {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 640px;
+    line-height: 1.7;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ─── LAYOUT ─── */
+  .content-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ─── SIDEBAR TOC ─── */
+  .toc {
+    position: sticky;
+    top: 120px;
+    padding-top: 40px;
+  }
+
+  .toc-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+
+  .toc-item {
+    display: block;
+    padding: 7px 12px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    border-radius: 0 4px 4px 0;
+    line-height: 1.4;
+  }
+
+  .toc-item:hover {
+    color: var(--text);
+    border-left-color: var(--border-accent);
+    background: rgba(0,71,255,0.05);
+  }
+
+  .toc-item.active {
+    color: var(--blue-light);
+    border-left-color: var(--blue);
+    background: var(--blue-glow);
+  }
+
+  .toc-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 16px 12px 4px;
+    display: block;
+  }
+
+  /* ─── POLICY CONTENT ─── */
+  .policy-content {
+    padding-top: 40px;
+  }
+
+  .policy-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .policy-section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── POLICY BLOCKS ─── */
+  .policy-header {
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .policy-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .policy-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 300;
+    color: #111111;
+    letter-spacing: -0.8px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .policy-subtitle {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .policy-dates {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+
+  .date-chip {
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 100px;
+  }
+
+  /* Stakeholder pills */
+  .applies-to {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 32px;
+  }
+
+  .pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+
+  .pill-candidate { color: #0a7a4f; border-color: rgba(10,122,79,0.25); background: rgba(10,122,79,0.06); }
+  .pill-tpo { color: #1040cc; border-color: rgba(16,64,204,0.25); background: rgba(16,64,204,0.06); }
+  .pill-recruiter { color: #6b21a8; border-color: rgba(107,33,168,0.25); background: rgba(107,33,168,0.06); }
+  .pill-company { color: #9a3412; border-color: rgba(154,52,18,0.25); background: rgba(154,52,18,0.06); }
+
+  /* Article sections */
+  .article {
+    margin-bottom: 48px;
+    scroll-margin-top: 130px;
+  }
+
+  .article-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .article h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #111111;
+    letter-spacing: -0.3px;
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .article h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 24px 0 10px;
+  }
+
+  .article p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  .article ul, .article ol {
+    padding-left: 20px;
+    margin: 8px 0 16px;
+  }
+
+  .article li {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 6px;
+  }
+
+  .article li strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Stakeholder-specific blocks */
+  .stakeholder-block {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .sb-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .sb-header.candidate { background: rgba(10,122,79,0.06); color: #0a7a4f; }
+  .sb-header.tpo { background: rgba(16,64,204,0.06); color: #1040cc; }
+  .sb-header.recruiter { background: rgba(107,33,168,0.06); color: #6b21a8; }
+  .sb-header.company { background: rgba(154,52,18,0.06); color: #9a3412; }
+
+  .sb-body {
+    padding: 16px 20px;
+    background: var(--surface);
+  }
+
+  .sb-body ul { padding-left: 16px; margin: 0; }
+  .sb-body li {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 6px;
+  }
+
+  /* Callout boxes */
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  .callout-info {
+    background: rgba(0,71,255,0.08);
+    border-left: 3px solid var(--blue);
+    color: var(--text-dim);
+  }
+
+  .callout-warn {
+    background: rgba(245,158,11,0.08);
+    border-left: 3px solid var(--warn);
+    color: var(--text-dim);
+  }
+
+  .callout-danger {
+    background: rgba(255,68,68,0.08);
+    border-left: 3px solid var(--danger);
+    color: var(--text-dim);
+  }
+
+  .callout strong { color: #111111; font-weight: 600; }
+
+  /* Table */
+  .policy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 13px;
+  }
+
+  .policy-table th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .policy-table td {
+    padding: 12px 16px;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .policy-table tr:last-child td { border-bottom: none; }
+  .policy-table tr:hover td { background: rgba(0,0,0,0.02); }
+
+  td strong { color: var(--text); font-weight: 500; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    padding: 40px 32px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: #111111;
+    margin-bottom: 6px;
+  }
+
+  .footer-sub {
+    font-size: 12px;
+    color: var(--text-faint);
+    line-height: 1.6;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    font-size: 12px;
+    color: var(--text-faint);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    transition: all 0.15s;
+    cursor: pointer;
+    background: none;
+    font-family: 'Inter Tight', sans-serif;
+  }
+
+  .footer-link:hover { color: var(--text); border-color: var(--border-accent); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .content-wrap { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .header-inner { padding: 0 20px; }
+    .hero { padding: 40px 20px 32px; }
+    .content-wrap { padding: 0 20px 60px; }
+    .policy-nav-inner { padding: 0 20px; }
+  }
+
+  /* Scroll indicator */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--blue);
+    z-index: 200;
+    transition: width 0.1s;
+    width: 0%;
+  }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progress"></div>
+<div class="page-wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-mark">D</div>
+      <div>
+        <div class="logo-text">DiscoveHR</div>
+        <div class="logo-sub">by Ensynapse Technique</div>
+      </div>
+    </a>
+    <div class="header-badge">Legal Policies · v1.0 · June 2026</div>
+  </div>
+</header>
+
+<!-- POLICY NAV -->
+<div class="policy-nav">
+  <div class="policy-nav-inner">
+    <button class="nav-btn active" onclick="showPolicy('tnc')">Terms &amp; Conditions</button>
+    <button class="nav-btn" onclick="showPolicy('privacy')">Privacy Policy</button>
+    <button class="nav-btn" onclick="showPolicy('cookie')">Cookie Policy</button>
+    <button class="nav-btn" onclick="showPolicy('refund')">Refund Policy</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Legal Documentation</div>
+  <h1>Platform Policies<br>&amp; User Agreements</h1>
+  <p>These documents govern your use of the DiscoveHR platform (discovehr.com), operated by Ensynapse Technique Pvt. Ltd. Please read them carefully before using the platform.</p>
+  <div class="hero-meta">
+    <div class="meta-item"><div class="meta-dot"></div>Ensynapse Technique Pvt. Ltd., Kerala, India</div>
+    <div class="meta-item"><div class="meta-dot"></div>CIN: [●] · GST: [●]</div>
+    <div class="meta-item"><div class="meta-dot"></div>Effective: June 2026</div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc" id="toc">
+    <div class="toc-label">On this page</div>
+    <!-- populated by JS -->
+  </aside>
+
+  <!-- POLICY SECTIONS -->
+  <main class="policy-content">
+
+    <!-- ═══════════════════════════════ TERMS & CONDITIONS ═══════════════════════════════ -->
+    <div class="policy-section active" id="sec-tnc">
+
+      <div class="policy-header">
+        <div class="policy-tag">01 — Terms &amp; Conditions</div>
+        <h1 class="policy-title">Platform Terms of Use</h1>
+        <p class="policy-subtitle">These Terms govern all access to and use of the DiscoveHR platform by every category of user. By registering on or using discovehr.com, you agree to these Terms in full.</p>
+        <div class="policy-dates">
+          <span class="date-chip">Effective: 1 June 2026</span>
+          <span class="date-chip">Last Updated: June 2026</span>
+          <span class="date-chip">Jurisdiction: Kerala High Court, India</span>
+        </div>
+        <div class="applies-to" style="margin-top:16px;">
+          <span class="pill pill-candidate">Candidates</span>
+          <span class="pill pill-tpo">Training &amp; Placement Officers</span>
+          <span class="pill pill-recruiter">Freelance Recruiters / Interviewers</span>
+          <span class="pill pill-company">Companies / Organisations</span>
+        </div>
+      </div>
+
+      <!-- Article 1 -->
+      <div class="article" id="tnc-1">
+        <span class="article-num">Article 1</span>
+        <h2>Definitions and Parties</h2>
+        <p><strong>"Platform"</strong> means the DiscoveHR web application and associated services accessible at discovehr.com, including all subdomains (portal.discovehr.com, learn.discovehr.com, challenges.discovehr.com).</p>
+        <p><strong>"Ensynapse"</strong> or <strong>"Company"</strong> means Ensynapse Technique Pvt. Ltd., a private limited company incorporated under the Companies Act, 2013, with its registered office in Kerala, India.</p>
+        <p><strong>"User"</strong> means any individual or entity accessing the Platform, in one or more of the following roles:</p>
+
+        <div class="stakeholder-block">
+          <div class="sb-header candidate">👨‍🎓 Candidate</div>
+          <div class="sb-body"><ul>
+            <li>A student, fresher, or early-career professional who registers to discover job opportunities, build a Placement Readiness Index (PRI) score, undertake XPrep assessments, and apply for roles posted on the Platform.</li>
+            <li>May be enrolled individually (self-pay) or through an institutional subscription managed by a TPO.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header tpo">🏫 Training &amp; Placement Officer (TPO)</div>
+          <div class="sb-body"><ul>
+            <li>A duly authorised representative of an educational institution (college, university, or polytechnic) who manages the institution's subscription, onboards students, and interfaces with the Platform on behalf of the institution.</li>
+            <li>The TPO accepts these Terms on behalf of both the institution and the students it enrolls, and is responsible for obtaining student consent.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header recruiter">🤝 Freelance Recruiter / Interviewer</div>
+          <div class="sb-body"><ul>
+            <li>An independent contractor registered on the Platform to conduct mock interviews, screening calls, and/or HR rounds for candidates or on behalf of client companies, and to earn commission-based fees.</li>
+            <li>Must hold a valid Genvarsity Certified Recruiter Programme (CRP) credential (or be in active supervised practicum) to access paid assignments.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header company">🏢 Company / Organisation</div>
+          <div class="sb-body"><ul>
+            <li>Any corporate entity, startup, or organisation that registers to post job opportunities, access PRI-ranked candidate shortlists, conduct campus drives, or procure managed recruitment or interview services.</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <!-- Article 2 -->
+      <div class="article" id="tnc-2">
+        <span class="article-num">Article 2</span>
+        <h2>Eligibility and Account Registration</h2>
+
+        <h3>2.1 General Eligibility</h3>
+        <p>The Platform is available to individuals who are at least 18 years of age, or students who are at least 16 years of age with verifiable institutional enrollment. Use of the Platform by persons below these thresholds without institutional mediation (via a TPO) is not permitted.</p>
+
+        <h3>2.2 Account Accuracy</h3>
+        <p>All Users must provide accurate, current, and complete registration information. You are solely responsible for maintaining the confidentiality of your credentials and for all activity conducted under your account. Ensynapse is not liable for any loss or damage arising from unauthorised access to your account resulting from your failure to maintain credential security.</p>
+
+        <h3>2.3 Institutional Accounts (TPO)</h3>
+        <p>Institutions agree to use the Platform solely for legitimate educational and placement facilitation purposes. The TPO designee represents and warrants that they have authority to bind the institution to these Terms. Institutions that breach these Terms may have their access suspended without refund of any platform fees paid.</p>
+
+        <h3>2.4 Company Accounts</h3>
+        <p>Company representatives must be authorised employees or agents of the registered entity. Posting roles on behalf of entities other than your employer, or misrepresenting the nature of employment offered, constitutes a material breach of these Terms.</p>
+
+        <h3>2.5 Recruiter / Interviewer Accounts</h3>
+        <p>Freelance Recruiters and Interviewers are independent contractors, not employees of Ensynapse. Registration, practicum completion, and CRP certification are prerequisites before access to paid assignments is granted. Ensynapse reserves the right to withdraw panel access at any time for quality, conduct, or compliance reasons.</p>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="article" id="tnc-3">
+        <span class="article-num">Article 3</span>
+        <h2>Platform Services and Features</h2>
+
+        <h3>3.1 Core Services</h3>
+        <table class="policy-table">
+          <thead><tr><th>Service</th><th>Available To</th><th>Access Model</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Job Discovery &amp; Application</strong></td><td>Candidates</td><td>Institutional or self-pay subscription</td></tr>
+            <tr><td><strong>PRI Score (Placement Readiness Index)</strong></td><td>Candidates</td><td>Generated via XPrep assessments; gate for job applications</td></tr>
+            <tr><td><strong>XPrep Assessments (Trot / Canter / Gallop)</strong></td><td>Candidates</td><td>Included in subscription; platform-delivered</td></tr>
+            <tr><td><strong>Mock Interviews</strong></td><td>Candidates (paid); Recruiters (earn)</td><td>Marketplace booking on Platform</td></tr>
+            <tr><td><strong>Campus Drive Management</strong></td><td>TPOs, Companies</td><td>Free for Companies; institutional subscription for TPOs</td></tr>
+            <tr><td><strong>Managed Recruitment</strong></td><td>Companies, Recruiters</td><td>Outcome-based commercial agreement</td></tr>
+            <tr><td><strong>Grand AI Challenge (GAIC)</strong></td><td>Candidates</td><td>₹199 certificate; open registration</td></tr>
+            <tr><td><strong>DCAT Psychometric Assessment</strong></td><td>Recruiters (intake)</td><td>Part of CRP process</td></tr>
+          </tbody>
+        </table>
+
+        <h3>3.2 PRI as a Gating Mechanism</h3>
+        <p>Candidates must have a live, valid PRI score to apply for job roles on the Platform. The PRI is generated through XPrep assessments and refreshed on completion of subsequent modules. Candidates on the free tier (not institutionally enrolled) may only apply to roles up to ₹3 LPA and will see only a consolidated PRI score, not domain-specific sub-scores.</p>
+
+        <h3>3.3 Company Access — Free Tier</h3>
+        <p>Companies may register and post jobs, access PRI-ranked shortlists, schedule campus drives, and use the Assessment Studio at no charge. Premium features (bulk outreach, analytics dashboards, priority listing) may be introduced at Ensynapse's discretion with prior notice and will always remain optional.</p>
+
+        <div class="callout callout-info">
+          Certain platform components are powered by third-party open-source software. Ensynapse Technique Pvt. Ltd. operates these as a managed service and remains the sole data fiduciary for all personal data processed through the Platform.
+        </div>
+      </div>
+
+      <!-- Article 4 -->
+      <div class="article" id="tnc-4">
+        <span class="article-num">Article 4</span>
+        <h2>Fees, Payments, and Billing</h2>
+
+        <h3>4.1 Institutional Subscriptions (Colleges)</h3>
+        <p>Platform access for institutions is subject to a one-time setup fee and an annual per-student access fee as agreed in the institution's subscription agreement (typically ₹25,000 setup + ₹999/student/year from Year 2). A success fee (₹3,000–₹5,000 per placement above ₹3 LPA) may apply per the specific agreement.</p>
+
+        <h3>4.2 Candidate Self-Pay</h3>
+        <p>Individual candidates not covered by an institutional subscription may subscribe at ₹1,000 per year for full platform access. Payments are processed via Razorpay and are subject to this policy and Razorpay's terms.</p>
+
+        <h3>4.3 Freelance Recruiter / Interviewer Earnings</h3>
+        <p>Earnings are governed by the Freelance Recruiter Independent Contractor Agreement entered into separately. Indicative fee structures are: ₹200–300 for screening rounds, ₹350–500 for HR rounds, and up to ₹10,000 for specialised domain assessments. Fees for managed recruitment referrals are held in escrow and released on milestone verification.</p>
+
+        <h3>4.4 All Fees are Exclusive of GST</h3>
+        <p>All published prices are exclusive of applicable Goods and Services Tax (GST). GST will be charged at the rate applicable at the time of transaction and will be shown separately on tax invoices.</p>
+      </div>
+
+      <!-- Article 5 -->
+      <div class="article" id="tnc-5">
+        <span class="article-num">Article 5</span>
+        <h2>Conduct and Prohibited Activities</h2>
+
+        <p>Users agree not to:</p>
+        <ul>
+          <li>Submit false, misleading, or fabricated profiles, credentials, or information;</li>
+          <li>Impersonate any person, institution, or company;</li>
+          <li>Harvest, scrape, or systematically extract candidate or company data;</li>
+          <li>Post discriminatory, unlawful, or abusive job descriptions or communications;</li>
+          <li>Circumvent the PRI gate or any access-control mechanism;</li>
+          <li>Use AI-generated content to deceive the Platform's assessment or verification systems;</li>
+          <li>Conduct or solicit off-platform transactions that exploit introductions made through DiscoveHR;</li>
+          <li>Upload malicious code, scripts, or any content that may damage Platform integrity;</li>
+          <li>Share login credentials or allow third parties to use your account.</li>
+        </ul>
+
+        <div class="callout callout-danger">
+          <strong>Recruiter-Specific Prohibition:</strong> Freelance Recruiters and Interviewers must not solicit or accept direct payments from candidates or companies for services rendered through the Platform. All compensation flows through the DiscoveHR platform. Breach of this clause results in immediate account termination and forfeiture of pending earnings.
+        </div>
+
+        <div class="callout callout-warn">
+          <strong>Company-Specific Obligation:</strong> Companies posting roles must only post genuine vacancies. Ghost listings, salary misrepresentation, or roles used for data collection without genuine hiring intent constitute a material breach. Ensynapse reserves the right to remove such listings and suspend accounts without notice.
+        </div>
+      </div>
+
+      <!-- Article 6 -->
+      <div class="article" id="tnc-6">
+        <span class="article-num">Article 6</span>
+        <h2>Intellectual Property</h2>
+        <p>All platform software, the PRI algorithm, XPrep curriculum, DCAT psychometric instrument, assessment item banks, branding, and visual design are the exclusive intellectual property of Ensynapse Technique Pvt. Ltd. or its licensors.</p>
+        <p>Users are granted a limited, non-exclusive, non-transferable, revocable licence to access the Platform solely for their registered purpose. No User acquires any ownership interest in Platform IP by virtue of using the service.</p>
+        <p>Candidates retain ownership of content they submit (CVs, projects, portfolios) but grant Ensynapse a worldwide, royalty-free licence to display and process that content for the purpose of providing Platform services. This licence terminates when you delete your account.</p>
+        <p>Companies retain ownership of their job descriptions but grant Ensynapse the right to display them to eligible Candidates and to use anonymised aggregate data for Platform analytics.</p>
+      </div>
+
+      <!-- Article 7 -->
+      <div class="article" id="tnc-7">
+        <span class="article-num">Article 7</span>
+        <h2>Limitation of Liability and Disclaimers</h2>
+
+        <div class="callout callout-info">
+          <strong>Employment Outcomes:</strong> Ensynapse does not guarantee job placement, interview selection, offer issuance, or employment continuity for any Candidate. The Platform is a discovery and matching tool; outcomes depend on Candidate merit, market conditions, and Company hiring decisions beyond Ensynapse's control.
+        </div>
+
+        <p>To the maximum extent permitted by applicable law, Ensynapse's aggregate liability to any User for any cause of action shall not exceed the fees paid by that User to Ensynapse in the three (3) calendar months preceding the claim.</p>
+        <p>Ensynapse is not liable for: (a) losses arising from a Recruiter's or Interviewer's acts or omissions; (b) losses arising from a Company's hiring or rejection decisions; (c) indirect, consequential, or incidental damages of any kind; (d) service interruptions caused by force majeure, infrastructure providers, or third-party integrations.</p>
+      </div>
+
+      <!-- Article 8 -->
+      <div class="article" id="tnc-8">
+        <span class="article-num">Article 8</span>
+        <h2>Termination and Suspension</h2>
+        <p>Ensynapse may suspend or terminate any account, without notice, for breach of these Terms, fraudulent activity, or where continued access poses a risk to the Platform or other Users. Upon termination:</p>
+        <ul>
+          <li><strong>Candidates:</strong> Access to the Platform, PRI scores, and assessment history will be restricted. Data export requests may be made within 30 days of termination.</li>
+          <li><strong>TPOs:</strong> All linked student accounts will be suspended. Outstanding fees remain due.</li>
+          <li><strong>Recruiters:</strong> Pending escrow amounts for completed, verified milestones will be paid out within 30 days; amounts for incomplete milestones will be released to the client per the escrow terms.</li>
+          <li><strong>Companies:</strong> Active job listings will be removed. Data access to candidate shortlists will cease immediately.</li>
+        </ul>
+        <p>Users may also terminate their accounts voluntarily by submitting a written request to legal@discovehr.com.</p>
+      </div>
+
+      <!-- Article 9 -->
+      <div class="article" id="tnc-9">
+        <span class="article-num">Article 9</span>
+        <h2>Governing Law and Dispute Resolution</h2>
+        <p>These Terms are governed by and construed in accordance with the laws of India, including the Information Technology Act, 2000, the Digital Personal Data Protection Act, 2023 (DPDP Act), and the Consumer Protection Act, 2019.</p>
+        <p>All disputes shall be subject to the exclusive jurisdiction of the courts at Ernakulam, Kerala, India. Ensynapse may, at its sole discretion, propose binding arbitration under the Arbitration and Conciliation Act, 1996, seated at Kochi, Kerala.</p>
+        <p>Before initiating formal proceedings, parties agree to engage in a 30-day good-faith negotiation. Contact: legal@discovehr.com.</p>
+      </div>
+
+      <!-- Article 10 -->
+      <div class="article" id="tnc-10">
+        <span class="article-num">Article 10</span>
+        <h2>Modifications to Terms</h2>
+        <p>Ensynapse reserves the right to amend these Terms at any time. Material changes will be communicated to registered Users via email and a platform notification not less than 15 days prior to the effective date. Continued use of the Platform after the effective date constitutes acceptance of the revised Terms. If you do not accept the revised Terms, you may terminate your account before the effective date.</p>
+      </div>
+
+    </div>
+    <!-- ═══ END TERMS ═══ -->
+
+
+    <!-- ═══════════════════════════════ PRIVACY POLICY ═══════════════════════════════ -->
+    <div class="policy-section" id="sec-privacy">
+
+      <div class="policy-header">
+        <div class="policy-tag">02 — Privacy Policy</div>
+        <h1 class="policy-title">Privacy Policy &amp;<br>Data Processing Notice</h1>
+        <p class="policy-subtitle">Ensynapse Technique Pvt. Ltd. is committed to protecting your personal data in accordance with the Digital Personal Data Protection Act, 2023 (DPDP Act), and applicable Indian laws. This Policy explains what data we collect, how we use it, and your rights.</p>
+        <div class="policy-dates">
+          <span class="date-chip">Effective: 1 June 2026</span>
+          <span class="date-chip">Data Fiduciary: Ensynapse Technique Pvt. Ltd.</span>
+          <span class="date-chip">DPO Contact: privacy@discovehr.com</span>
+        </div>
+      </div>
+
+      <div class="article" id="priv-1">
+        <span class="article-num">Section 1</span>
+        <h2>Data We Collect, By Stakeholder</h2>
+
+        <div class="stakeholder-block">
+          <div class="sb-header candidate">👨‍🎓 Candidates — Data Collected</div>
+          <div class="sb-body"><ul>
+            <li><strong>Identity:</strong> Full name, date of birth, email address, phone number, gender (optional).</li>
+            <li><strong>Academic:</strong> Institution name, course, graduation year, academic scores (CGPA/percentage).</li>
+            <li><strong>Career:</strong> CV/resume, skills, internship history, portfolio links, preferred job domains and locations.</li>
+            <li><strong>Assessment:</strong> XPrep (Trot/Canter/Gallop) scores, DCAT psychometric results (if applicable), Grand AI Challenge submissions, and aggregated PRI score.</li>
+            <li><strong>Behavioural:</strong> Login activity, page views, time spent on modules, application history, mock interview bookings.</li>
+            <li><strong>Device &amp; Technical:</strong> IP address, browser type, device fingerprint, session tokens.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header tpo">🏫 TPOs — Data Collected</div>
+          <div class="sb-body"><ul>
+            <li><strong>Identity:</strong> Name, official email, phone, designation, employee ID.</li>
+            <li><strong>Institutional:</strong> Institution name, address, NAAC grade, NIRF rank (if applicable).</li>
+            <li><strong>Operational:</strong> Subscription agreement details, student enrollment records, campus drive history, placement statistics.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header recruiter">🤝 Freelance Recruiters / Interviewers — Data Collected</div>
+          <div class="sb-body"><ul>
+            <li><strong>Identity:</strong> Name, email, phone, LinkedIn profile URL, PAN (for TDS compliance).</li>
+            <li><strong>Professional:</strong> Work experience, domain expertise, CRP certification status, DCAT psychometric results, supervised practicum records.</li>
+            <li><strong>Financial:</strong> Bank account / UPI details for earnings disbursement, earnings history, TDS records.</li>
+            <li><strong>Performance:</strong> Candidate ratings of interviews conducted, quality flags, dispute history.</li>
+          </ul></div>
+        </div>
+
+        <div class="stakeholder-block">
+          <div class="sb-header company">🏢 Companies — Data Collected</div>
+          <div class="sb-body"><ul>
+            <li><strong>Entity:</strong> Company name, CIN/GSTIN, registered address, website.</li>
+            <li><strong>Contact:</strong> Authorised representative name, email, phone, designation.</li>
+            <li><strong>Operational:</strong> Job postings, shortlist actions, drive schedules, assessment slot usage, managed recruitment contracts.</li>
+          </ul></div>
+        </div>
+      </div>
+
+      <div class="article" id="priv-2">
+        <span class="article-num">Section 2</span>
+        <h2>Lawful Basis and Purpose of Processing</h2>
+        <table class="policy-table">
+          <thead><tr><th>Purpose</th><th>Lawful Basis</th><th>Applies To</th></tr></thead>
+          <tbody>
+            <tr><td>Platform registration and authentication</td><td>Contractual necessity</td><td>All users</td></tr>
+            <tr><td>PRI computation and display to employers</td><td>Consent (at registration)</td><td>Candidates</td></tr>
+            <tr><td>Sharing candidate profiles with companies on application</td><td>Consent (per application)</td><td>Candidates, Companies</td></tr>
+            <tr><td>Processing payments and issuing tax invoices</td><td>Legal obligation / Contract</td><td>All paying users</td></tr>
+            <tr><td>TDS deduction and filing for recruiter earnings</td><td>Legal obligation (Income Tax Act)</td><td>Recruiters</td></tr>
+            <tr><td>NIRF-compatible placement reporting for institutions</td><td>Legitimate interest / Contract</td><td>TPOs, Institutions</td></tr>
+            <tr><td>Product analytics and platform improvement</td><td>Legitimate interest (anonymised)</td><td>All users</td></tr>
+            <tr><td>Marketing communications (optional)</td><td>Consent (opt-in)</td><td>All users</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article" id="priv-3">
+        <span class="article-num">Section 3</span>
+        <h2>Data Sharing and Third Parties</h2>
+        <p>We do not sell personal data. We share data only as follows:</p>
+        <ul>
+          <li><strong>Companies (on application):</strong> When a Candidate applies to a role, their profile (name, PRI score, CV, domain scores) is shared with that Company. Candidates control which companies receive their data through the application action.</li>
+          <li><strong>Assessment and Learning Infrastructure:</strong> Certain platform components are powered by third-party software operated as managed services by Ensynapse Technique Pvt. Ltd. Ensynapse remains the sole data fiduciary for all personal data processed through these components. No third-party software provider receives your data for their own commercial purposes.</li>
+          <li><strong>Razorpay:</strong> Payment processing. Razorpay is a data processor bound by PCI-DSS compliant privacy obligations and processes only the data necessary to complete your transaction.</li>
+          <li><strong>Transactional Email Provider:</strong> Email addresses and names are shared solely for the purpose of delivering platform communications (account notifications, assessment results, receipts).</li>
+          <li><strong>Regulatory Authorities:</strong> TDS data and legally required disclosures are shared with the Income Tax Department and other statutory bodies as required by law.</li>
+        </ul>
+        <p>All third-party service providers act as data processors under Ensynapse's instruction and are not permitted to use your personal data for any purpose beyond the service they provide to us.</p>
+      </div>
+
+      <div class="article" id="priv-4">
+        <span class="article-num">Section 4</span>
+        <h2>Data Retention</h2>
+        <table class="policy-table">
+          <thead><tr><th>Data Category</th><th>Retention Period</th></tr></thead>
+          <tbody>
+            <tr><td>Candidate profile and PRI score</td><td>5 years from last active login, or on deletion request</td></tr>
+            <tr><td>Assessment scores (XPrep, DCAT)</td><td>7 years (for credential verification purposes)</td></tr>
+            <tr><td>Financial records (invoices, payment logs)</td><td>8 years (as required by tax law)</td></tr>
+            <tr><td>Recruiter earnings and TDS records</td><td>8 years</td></tr>
+            <tr><td>Job application records</td><td>3 years from application date</td></tr>
+            <tr><td>Server and access logs</td><td>90 days (rolling)</td></tr>
+            <tr><td>Marketing consent records</td><td>Until consent is withdrawn</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article" id="priv-5">
+        <span class="article-num">Section 5</span>
+        <h2>Your Rights Under the DPDP Act, 2023</h2>
+        <p>As a Data Principal under the DPDP Act, you have the following rights:</p>
+        <ul>
+          <li><strong>Right to Access:</strong> Obtain a summary of your personal data processed by us.</li>
+          <li><strong>Right to Correction and Erasure:</strong> Request correction of inaccurate data or erasure of data we are no longer obligated to retain.</li>
+          <li><strong>Right to Grievance Redressal:</strong> Raise complaints through our in-platform grievance mechanism or by writing to our Data Protection Officer.</li>
+          <li><strong>Right to Nominate:</strong> Nominate an individual to exercise your rights in the event of your death or incapacity.</li>
+          <li><strong>Right to Withdraw Consent:</strong> Withdraw consent for non-essential processing at any time. Withdrawal of consent for essential processing (e.g. PRI display to employers) may render certain Platform features unavailable.</li>
+        </ul>
+        <p>To exercise any of these rights, contact our DPO at <strong>privacy@discovehr.com</strong>. We will respond within 30 days. Where we are unable to fulfill a request (e.g. legal retention obligations), we will explain the reason.</p>
+      </div>
+
+      <div class="article" id="priv-6">
+        <span class="article-num">Section 6</span>
+        <h2>Data Security</h2>
+        <p>We implement industry-standard technical and organisational measures to protect your data, including:</p>
+        <ul>
+          <li>TLS/SSL encryption in transit across all Platform subdomains;</li>
+          <li>At-rest encryption for sensitive fields (PAN, bank details) in the database;</li>
+          <li>HMAC-SHA256 webhook signature verification for third-party integrations;</li>
+          <li>Role-based access controls within the platform backend limiting staff access to personal data;</li>
+          <li>UFW firewall and regular security patching on cloud infrastructure;</li>
+          <li>Session token expiry and anomaly detection for suspicious login patterns.</li>
+        </ul>
+        <p>In the event of a personal data breach affecting your rights, we will notify you within 72 hours of becoming aware, where required by law.</p>
+      </div>
+
+    </div>
+    <!-- ═══ END PRIVACY ═══ -->
+
+
+    <!-- ═══════════════════════════════ COOKIE POLICY ═══════════════════════════════ -->
+    <div class="policy-section" id="sec-cookie">
+
+      <div class="policy-header">
+        <div class="policy-tag">03 — Cookie Policy</div>
+        <h1 class="policy-title">Cookie &amp; Tracking<br>Technologies Policy</h1>
+        <p class="policy-subtitle">This policy explains how DiscoveHR uses cookies, session tokens, and similar technologies across its web properties. It applies to all Users of discovehr.com and its subdomains.</p>
+        <div class="policy-dates">
+          <span class="date-chip">Effective: 1 June 2026</span>
+          <span class="date-chip">Scope: discovehr.com and all subdomains</span>
+        </div>
+      </div>
+
+      <div class="article" id="cookie-1">
+        <span class="article-num">Section 1</span>
+        <h2>What Are Cookies?</h2>
+        <p>Cookies are small text files placed on your device by a web server when you visit a website. They allow the site to remember your preferences, maintain your session, and understand how you use the Platform. We also use similar technologies including local storage, session storage, and server-side session tokens.</p>
+      </div>
+
+      <div class="article" id="cookie-2">
+        <span class="article-num">Section 2</span>
+        <h2>Categories of Cookies We Use</h2>
+
+        <h3>2.1 Strictly Necessary Cookies</h3>
+        <p>These cookies are essential for the Platform to function and cannot be disabled. They include:</p>
+        <table class="policy-table">
+          <thead><tr><th>Cookie / Token</th><th>Purpose</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td><strong>session_id</strong></td><td>Authenticates your logged-in session on portal.discovehr.com</td><td>Session / 24 hours</td></tr>
+            <tr><td><strong>csrftoken</strong></td><td>Protects against cross-site request forgery attacks</td><td>Session</td></tr>
+            <tr><td><strong>razorpay_*</strong></td><td>Required for payment flow continuity during checkout</td><td>Session</td></tr>
+            <tr><td><strong>assessment_session</strong></td><td>Maintains session state during XPrep and psychometric assessments</td><td>Duration of test</td></tr>
+          </tbody>
+        </table>
+
+        <h3>2.2 Functional Cookies</h3>
+        <p>These cookies enable enhanced features and personalisation. They may be set by us or third-party providers we use.</p>
+        <table class="policy-table">
+          <thead><tr><th>Cookie</th><th>Purpose</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ui_theme</strong></td><td>Stores your UI theme preference</td><td>1 year</td></tr>
+            <tr><td><strong>lang_pref</strong></td><td>Remembers your language preference</td><td>1 year</td></tr>
+            <tr><td><strong>lms_session</strong></td><td>Maintains session on learn.discovehr.com for course access</td><td>Session</td></tr>
+          </tbody>
+        </table>
+
+        <h3>2.3 Analytical / Performance Cookies</h3>
+        <p>These help us understand how Users interact with the Platform so we can improve the experience. All analytical data is aggregated and does not identify individual Users.</p>
+        <table class="policy-table">
+          <thead><tr><th>Cookie</th><th>Provider</th><th>Purpose</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td><strong>_ga, _gid</strong></td><td>Google Analytics (if active)</td><td>Page views, user flow, feature usage</td><td>2 years / 24 hours</td></tr>
+            <tr><td><strong>platform_analytics</strong></td><td>DiscoveHR (first-party)</td><td>Module engagement, PRI assessment completion rates</td><td>90 days</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info">
+          <strong>Note on GHL Forms:</strong> GoHighLevel (GHL) embedded forms on certain pages (e.g. freelance recruiter registration) may set their own functional cookies. These are governed by GHL's privacy policy. We do not control GHL's cookie behaviour.
+        </div>
+
+        <h3>2.4 Cookies We Do Not Use</h3>
+        <p>DiscoveHR does not use:</p>
+        <ul>
+          <li>Advertising or retargeting cookies (we are ad-free);</li>
+          <li>Cross-site tracking cookies that follow you beyond the DiscoveHR domain;</li>
+          <li>Third-party social media tracking pixels.</li>
+        </ul>
+      </div>
+
+      <div class="article" id="cookie-3">
+        <span class="article-num">Section 3</span>
+        <h2>Your Cookie Choices</h2>
+        <p>You may control cookies through the following mechanisms:</p>
+        <ul>
+          <li><strong>Browser settings:</strong> Most browsers allow you to block or delete cookies. Note that disabling strictly necessary cookies will prevent you from logging in to the Platform.</li>
+          <li><strong>Cookie preference centre:</strong> On first visit to discovehr.com, a consent banner allows you to accept or reject non-essential cookie categories. You can update your preferences at any time from the footer of any page.</li>
+          <li><strong>Opt-out of analytics:</strong> If Google Analytics is active, you may install the Google Analytics Opt-out Browser Add-on.</li>
+        </ul>
+
+        <div class="callout callout-warn">
+          <strong>Important for Candidates:</strong> Disabling or blocking cookies during an XPrep or DCAT assessment session may cause the session to terminate unexpectedly. Ensynapse is not responsible for assessment data loss caused by cookie restrictions imposed by the User.
+        </div>
+      </div>
+
+      <div class="article" id="cookie-4">
+        <span class="article-num">Section 4</span>
+        <h2>Cookie Consent</h2>
+        <p>Strictly necessary cookies do not require your consent and are deployed on page load. All other cookie categories are deployed only upon your explicit consent via the cookie preference centre. Consent is recorded with a timestamp and can be withdrawn at any time. Where you are an institutionally enrolled Candidate, consent is collected at individual registration on the Platform; the TPO's institutional agreement does not substitute for individual cookie consent.</p>
+      </div>
+
+    </div>
+    <!-- ═══ END COOKIE ═══ -->
+
+
+    <!-- ═══════════════════════════════ REFUND POLICY ═══════════════════════════════ -->
+    <div class="policy-section" id="sec-refund">
+
+      <div class="policy-header">
+        <div class="policy-tag">04 — Refund Policy</div>
+        <h1 class="policy-title">Refund, Cancellation<br>&amp; Dispute Policy</h1>
+        <p class="policy-subtitle">This policy governs refund eligibility, cancellation rights, and dispute resolution for all fee-bearing transactions on the DiscoveHR platform. Please read this before making any payment.</p>
+        <div class="policy-dates">
+          <span class="date-chip">Effective: 1 June 2026</span>
+          <span class="date-chip">Currency: Indian Rupees (₹) inclusive of applicable GST unless stated otherwise</span>
+        </div>
+      </div>
+
+      <div class="article" id="refund-1">
+        <span class="article-num">Section 1</span>
+        <h2>Candidate Payments</h2>
+
+        <h3>1.1 Self-Pay Annual Subscription (₹1,000/year)</h3>
+        <table class="policy-table">
+          <thead><tr><th>Scenario</th><th>Refund Entitlement</th></tr></thead>
+          <tbody>
+            <tr><td>Cancellation within 7 days of payment, <em>with no assessment attempts made</em></td><td>Full refund (less Razorpay gateway charges, typically 2%)</td></tr>
+            <tr><td>Cancellation within 7 days, <em>after at least one assessment attempt</em></td><td>No refund. The assessment service has been rendered.</td></tr>
+            <tr><td>Cancellation after 7 days, any usage level</td><td>No refund. Annual subscriptions are non-refundable after the 7-day window.</td></tr>
+            <tr><td>Technical failure by Ensynapse preventing all access for &gt;72 hours</td><td>Pro-rata refund for days of verified downtime, credited to registered payment method.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>1.2 Mock Interview Booking</h3>
+        <table class="policy-table">
+          <thead><tr><th>Scenario</th><th>Refund Entitlement</th></tr></thead>
+          <tbody>
+            <tr><td>Cancellation by Candidate &gt;24 hours before scheduled interview</td><td>Full refund to original payment method within 5–7 business days</td></tr>
+            <tr><td>Cancellation by Candidate &lt;24 hours before scheduled interview</td><td>50% refund; 50% is remitted to the Interviewer as a cancellation fee</td></tr>
+            <tr><td>Candidate no-show (did not join within 10 minutes of start time)</td><td>No refund. Interviewer is paid their full session fee.</td></tr>
+            <tr><td>Interviewer no-show or cancellation (any time)</td><td>Full refund to Candidate. No fee to Interviewer.</td></tr>
+            <tr><td>Interview conducted but Candidate disputes quality of feedback</td><td>Subject to dispute review (see Section 5). Partial refund of up to 50% may be granted after review.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>1.3 Grand AI Challenge Certificate (₹199)</h3>
+        <p>The GAIC certificate fee is non-refundable once a submission has been evaluated and a result issued. If a certificate is not issued due to a technical error on Ensynapse's part, a full refund will be processed within 7 business days.</p>
+      </div>
+
+      <div class="article" id="refund-2">
+        <span class="article-num">Section 2</span>
+        <h2>Institutional Payments (TPO / Colleges)</h2>
+
+        <h3>2.1 Setup Fee</h3>
+        <p>The one-time platform setup fee (typically ₹25,000) is non-refundable once onboarding has commenced (i.e. once at least one student account has been created under the institution). Prior to any student enrollment, a full refund may be requested within 15 days of payment.</p>
+
+        <h3>2.2 Annual Per-Student Access Fee</h3>
+        <table class="policy-table">
+          <thead><tr><th>Scenario</th><th>Refund Entitlement</th></tr></thead>
+          <tbody>
+            <tr><td>Student withdraws from institution within 30 days of enrollment on Platform</td><td>Full per-student fee refunded for that student, on written request from TPO</td></tr>
+            <tr><td>Student withdraws after 30 days</td><td>No refund. Access may be transferred to a replacement student at no additional charge for the same subscription year.</td></tr>
+            <tr><td>Institution discontinues subscription mid-year</td><td>No pro-rata refund for the current subscription year. Access continues until expiry.</td></tr>
+            <tr><td>Platform discontinuation by Ensynapse</td><td>Pro-rata refund for remaining subscription months, calculated from date of discontinuation notice.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>2.3 Success Fees</h3>
+        <p>Success fees (charged per confirmed placement above ₹3 LPA) are non-refundable once invoiced and verified. If a placed student's offer is revoked by the Company (not due to student action) within 30 days of offer letter issuance, the success fee may be credited toward the next eligible placement.</p>
+      </div>
+
+      <div class="article" id="refund-3">
+        <span class="article-num">Section 3</span>
+        <h2>Freelance Recruiter / Interviewer — Earnings Policy</h2>
+
+        <div class="callout callout-info">
+          <strong>Earnings are not "refunds" in the consumer sense.</strong> This section governs when platform-held earnings are disbursed or withheld, and when escrow amounts are returned to clients.
+        </div>
+
+        <h3>3.1 Mock Interview Earnings</h3>
+        <p>Earnings for completed mock interviews are credited to the Interviewer's platform wallet within 48 hours of session completion, pending absence of a Candidate dispute. If a dispute is filed and upheld (see Section 5), earnings for that session may be withheld or partially reversed.</p>
+
+        <h3>3.2 Managed Recruitment Earnings (Escrow)</h3>
+        <p>Earnings for managed recruitment referrals are held in escrow and disbursed in tranches:</p>
+        <ul>
+          <li><strong>Tranche 1 (50%):</strong> Released within 7 business days of client acceptance of the candidate shortlist.</li>
+          <li><strong>Tranche 2 (50%):</strong> Released on Day 91 of confirmed employment, contingent on no early-exit notification from the client.</li>
+        </ul>
+        <p>If the placed candidate exits before Day 90, the Recruiter has 15 days to submit a replacement. If replacement is not submitted or accepted, Tranche 2 is returned to the client. The client may, at their discretion, waive replacement and release partial Tranche 2 payment.</p>
+
+        <h3>3.3 On-Demand Interview Earnings</h3>
+        <p>Fees for on-demand interviews conducted within a managed job drive are released within 7 business days of the client approving the interview report. Client review SLA is 48 hours. If the client does not respond within 48 hours, the interview is deemed accepted and fees are released automatically.</p>
+
+        <h3>3.4 Withdrawal to Bank Account</h3>
+        <p>Wallet balances of ₹500 or above may be withdrawn to the registered bank account or UPI handle. Withdrawals are processed within 5 business days. TDS at the applicable rate (currently 5% under Section 194M/194C as applicable) will be deducted prior to withdrawal where the annual payout threshold is met. TDS certificates (Form 16A) will be issued quarterly.</p>
+      </div>
+
+      <div class="article" id="refund-4">
+        <span class="article-num">Section 4</span>
+        <h2>Company Payments</h2>
+
+        <p>Company use of the core Platform (job posting, shortlist access, campus drives, Assessment Studio) is currently provided at no charge. This section applies to premium services if and when introduced, and to managed recruitment commercial agreements.</p>
+
+        <h3>4.1 Assessment Slot Pre-Purchase</h3>
+        <p>Assessment slots (e.g. ₹10,000 per 1,000 candidates) are non-refundable once any candidates have been invited to take assessments. Unused slots may be carried forward to the next assessment cycle at the Company's request.</p>
+
+        <h3>4.2 Fully Managed Campus Drive Fee</h3>
+        <p>Campus drive fees are subject to the commercial agreement signed between the Company and Ensynapse. Standard terms: 50% non-refundable upon signing; 50% on completion of the drive. Cancellation by the Company within 14 days of the drive date forfeits 100% of the fee. Cancellation by Ensynapse (other than for force majeure) entitles the Company to a full refund.</p>
+      </div>
+
+      <div class="article" id="refund-5">
+        <span class="article-num">Section 5</span>
+        <h2>Dispute Resolution Process</h2>
+
+        <p>All refund disputes must be raised within <strong>7 calendar days</strong> of the transaction or service date via email to <strong>support@discovehr.com</strong> with the subject line <em>"Refund Dispute — [Transaction ID]"</em>.</p>
+
+        <p>Our process:</p>
+        <ol>
+          <li><strong>Acknowledgment:</strong> Within 24 hours of receipt.</li>
+          <li><strong>Review:</strong> We will review platform logs, session records, and communications within 5 business days.</li>
+          <li><strong>Decision:</strong> Written decision communicated by email. Decisions are final for amounts below ₹5,000. For amounts of ₹5,000 and above, a one-time escalation to the grievance officer is available.</li>
+          <li><strong>Grievance Officer Escalation:</strong> Write to <strong>grievance@discovehr.com</strong> within 7 days of the initial decision. The Grievance Officer's decision will be issued within 15 business days and is final.</li>
+        </ol>
+
+        <h3>5.1 Chargeback Policy</h3>
+        <p>Initiating a chargeback or payment reversal through your bank or card issuer without first raising a dispute through our process constitutes a breach of these Terms. Ensynapse reserves the right to suspend the account of any User who initiates a chargeback, pending resolution. Where a chargeback is found to be unwarranted, we reserve the right to recover associated costs.</p>
+
+        <h3>5.2 Refund Processing Time</h3>
+        <p>Approved refunds are processed within <strong>7–10 business days</strong>. Refunds are returned to the original payment method. Ensynapse is not responsible for delays caused by banking institutions. Gateway charges (typically 2%) are deducted from refunds unless the refund is due to Ensynapse's fault.</p>
+      </div>
+
+      <div class="article" id="refund-6">
+        <span class="article-num">Section 6</span>
+        <h2>Contact and Grievance Officer</h2>
+        <table class="policy-table">
+          <thead><tr><th>Purpose</th><th>Contact</th></tr></thead>
+          <tbody>
+            <tr><td>General support and refund requests</td><td>support@discovehr.com</td></tr>
+            <tr><td>Privacy and data requests</td><td>privacy@discovehr.com</td></tr>
+            <tr><td>Legal and compliance</td><td>legal@discovehr.com</td></tr>
+            <tr><td>Grievance escalation</td><td>grievance@discovehr.com</td></tr>
+            <tr><td>Registered address</td><td>Ensynapse Technique Pvt. Ltd., Kerala, India</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <!-- ═══ END REFUND ═══ -->
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">DiscoveHR · Legal Policies</div>
+      <div class="footer-sub">
+        Owned and operated by Ensynapse Technique Pvt. Ltd., Kerala, India<br>
+        © 2026 Ensynapse Technique Pvt. Ltd. All rights reserved.
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--text-faint);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">Quick Links</div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showPolicy('tnc')">Terms</button>
+        <button class="footer-link" onclick="showPolicy('privacy')">Privacy</button>
+        <button class="footer-link" onclick="showPolicy('cookie')">Cookies</button>
+        <button class="footer-link" onclick="showPolicy('refund')">Refund</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+  // ─── POLICY SWITCHER ───
+  const policies = {
+    tnc: {
+      id: 'sec-tnc',
+      toc: [
+        { href: '#tnc-1', label: 'Definitions & Parties' },
+        { href: '#tnc-2', label: 'Eligibility & Registration' },
+        { href: '#tnc-3', label: 'Services & Features' },
+        { href: '#tnc-4', label: 'Fees & Payments' },
+        { href: '#tnc-5', label: 'Conduct & Prohibitions' },
+        { href: '#tnc-6', label: 'Intellectual Property' },
+        { href: '#tnc-7', label: 'Limitation of Liability' },
+        { href: '#tnc-8', label: 'Termination' },
+        { href: '#tnc-9', label: 'Governing Law' },
+        { href: '#tnc-10', label: 'Modifications' },
+      ]
+    },
+    privacy: {
+      id: 'sec-privacy',
+      toc: [
+        { href: '#priv-1', label: 'Data We Collect' },
+        { href: '#priv-2', label: 'Purpose of Processing' },
+        { href: '#priv-3', label: 'Data Sharing' },
+        { href: '#priv-4', label: 'Retention Periods' },
+        { href: '#priv-5', label: 'Your Rights (DPDP)' },
+        { href: '#priv-6', label: 'Data Security' },
+      ]
+    },
+    cookie: {
+      id: 'sec-cookie',
+      toc: [
+        { href: '#cookie-1', label: 'What Are Cookies?' },
+        { href: '#cookie-2', label: 'Cookie Categories' },
+        { href: '#cookie-3', label: 'Your Cookie Choices' },
+        { href: '#cookie-4', label: 'Cookie Consent' },
+      ]
+    },
+    refund: {
+      id: 'sec-refund',
+      toc: [
+        { href: '#refund-1', label: 'Candidate Payments' },
+        { href: '#refund-2', label: 'Institutional Payments' },
+        { href: '#refund-3', label: 'Recruiter Earnings' },
+        { href: '#refund-4', label: 'Company Payments' },
+        { href: '#refund-5', label: 'Dispute Resolution' },
+        { href: '#refund-6', label: 'Contact & Grievance' },
+      ]
+    }
+  };
+
+  let currentPolicy = 'tnc';
+
+  function showPolicy(key) {
+    // Hide all sections
+    document.querySelectorAll('.policy-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    // Show selected
+    document.getElementById('sec-' + key).classList.add('active');
+    document.querySelectorAll('.nav-btn')[Object.keys(policies).indexOf(key)].classList.add('active');
+
+    currentPolicy = key;
+    buildToc(key);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildToc(key) {
+    const toc = document.getElementById('toc');
+    const items = policies[key].toc;
+    toc.innerHTML = '<div class="toc-label">Contents</div>' +
+      items.map(i => `<a class="toc-item" href="${i.href}">${i.label}</a>`).join('');
+  }
+
+  // Init TOC
+  buildToc('tnc');
+
+  // ─── SCROLL PROGRESS ───
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+
+  // ─── TOC ACTIVE HIGHLIGHT ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.toc-item').forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  function observeArticles() {
+    document.querySelectorAll('.article[id]').forEach(a => observer.observe(a));
+  }
+  observeArticles();
+</script>
+</body>
+</html>
