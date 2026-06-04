@@ -282,6 +282,14 @@ def login(email: Optional[str] = None, password: Optional[str] = None):
 
         user_id = frappe.session.user
         roles = frappe.get_roles(user_id)
+        if not any(role in PORTAL_ALLOWED_ROLES for role in roles) and not any(role in ADMIN_ONLY_ROLES for role in roles):
+            # Clear stale Redis role cache and retry from DB.
+            try:
+                frappe.cache().hdel("roles", user_id)
+            except Exception:
+                pass
+            roles = frappe.get_roles(user_id)
+
         if any(role in ADMIN_ONLY_ROLES for role in roles) and not any(role in PORTAL_ALLOWED_ROLES for role in roles):
             frappe.local.login_manager.logout()
             frappe.local.response["http_status_code"] = 403
@@ -453,6 +461,16 @@ def register():
         # profile creation below fails. Profile is created in a separate transaction.
         frappe.db.commit()
 
+        # Invalidate Frappe's Redis role cache for this user.
+        # user.insert() may trigger hooks that call frappe.get_roles() before the
+        # direct SQL role insert runs, caching an empty list []. The DB now has the
+        # correct role but the cache is stale — login() / token_login() would return
+        # "not allowed" until the cache expires. Clear it explicitly.
+        try:
+            frappe.cache().hdel("roles", email)
+        except Exception:
+            pass
+
     except frappe.ValidationError as exc:
         frappe.db.rollback()
         exc_str = str(exc).lower()
@@ -586,6 +604,15 @@ def token_login(email: Optional[str] = None, password: Optional[str] = None):
         return {"ok": False, "message": _("Invalid email or password.")}
 
     roles = frappe.get_roles(email)
+    if not any(role in PORTAL_ALLOWED_ROLES for role in roles):
+        # Stale Redis role cache may have been populated before the role SQL insert
+        # completed during registration. Clear it and retry once from the DB.
+        try:
+            frappe.cache().hdel("roles", email)
+        except Exception:
+            pass
+        roles = frappe.get_roles(email)
+
     if not any(role in PORTAL_ALLOWED_ROLES for role in roles):
         frappe.local.response["http_status_code"] = 403
         return {
