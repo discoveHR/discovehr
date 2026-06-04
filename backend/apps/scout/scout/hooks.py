@@ -9,6 +9,8 @@ from scout.utils.env_config import load_scout_env_files
 
 load_scout_env_files()
 
+on_startup = ["scout.api.admin.auth.ensure_admin_user"]
+
 auth_hooks = ["scout.api.auth.authenticate_scout_bearer_token"]
 
 before_request = [

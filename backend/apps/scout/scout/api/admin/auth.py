@@ -84,11 +84,34 @@ def logout():
     return {"ok": True, "message": _("Logged out successfully.")}
 
 
+def ensure_admin_user():
+    """Auto-create/update the admin user on bench startup using env credentials."""
+    from scout.utils.env_config import scout_conf
+    email = scout_conf("scout_admin_email", "SCOUT_ADMIN_EMAIL") or "admin@scout.com"
+    password = scout_conf("scout_admin_password", "SCOUT_ADMIN_PASSWORD") or "Admin@123"
+    try:
+        _upsert_admin(email, password)
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Scout: ensure_admin_user on startup")
+
+
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def ensure_demo_admin_user():
-    """Create or reset a demo admin for local development."""
-    email = "admin@scout.com"
-    password = "Admin@123"
+    """Create or reset the admin user (reads credentials from env / site config)."""
+    from scout.utils.env_config import scout_conf
+    email = scout_conf("scout_admin_email", "SCOUT_ADMIN_EMAIL") or "admin@scout.com"
+    password = scout_conf("scout_admin_password", "SCOUT_ADMIN_PASSWORD") or "Admin@123"
+    _upsert_admin(email, password)
+    return {
+        "ok": True,
+        "message": frappe._("Admin ready."),
+        "data": {"email": email, "password": password, "loginUrl": "/admin/login"},
+    }
+
+
+def _upsert_admin(email: str, password: str):
+    """Create or update the admin Frappe user with the given credentials."""
+    email = email.strip().lower()
 
     for role_name in ("Admin", "System Manager"):
         if not frappe.db.exists("Role", role_name):
@@ -118,8 +141,3 @@ def ensure_demo_admin_user():
     user.enabled = 1
     user.save(ignore_permissions=True)
     frappe.db.commit()
-    return {
-        "ok": True,
-        "message": _("Demo admin ready."),
-        "data": {"email": email, "password": password, "loginUrl": "/admin/login"},
-    }
