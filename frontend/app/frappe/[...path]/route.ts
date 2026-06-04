@@ -35,8 +35,21 @@ async function proxyToFrappe(req: NextRequest, pathSegments: string[]) {
 
   // Inject Bearer token from the HttpOnly cookie so Frappe can authenticate the request.
   // The cookie is inaccessible to client-side JS; only this server-side proxy reads it.
+  //
+  // IMPORTANT — do NOT inject for guest-only endpoints (allow_guest=True).
+  // Frappe's validate_auth() computes `authorization_header` as a local variable before
+  // calling auth_hooks. If a stale/expired Scout token is injected and cannot be resolved,
+  // the user stays "Guest" and Frappe raises AuthenticationError at auth.py:629-630 —
+  // even for allow_guest=True endpoints. Skipping injection for these paths prevents that.
+  const GUEST_ONLY_PATHS = [
+    "scout.api.auth.register",
+    "scout.api.admin.auth.ensure_demo_admin_user",
+    "scout.api.admin_api.ensure_demo_admin_user",
+  ];
+  const isGuestOnlyEndpoint = GUEST_ONLY_PATHS.some((ep) => path.includes(ep));
+
   const accessToken = req.cookies.get("scout_access_token")?.value?.trim();
-  if (accessToken) {
+  if (accessToken && !isGuestOnlyEndpoint) {
     headers.set("Authorization", `Bearer ${accessToken}`);
     // Drop the browser's session cookies so Frappe doesn't try to resume a stale/broken
     // sid session before seeing the Bearer token — that causes "User None is disabled".
