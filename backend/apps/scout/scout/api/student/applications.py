@@ -70,7 +70,7 @@ def apply_to_job():
             as_dict=True,
         )
 
-        if not profile or not cint(profile.get("profile_submitted")) or not profile_row_complete(profile):
+        if not profile or not cint(profile.get("profile_submitted")):
             frappe.local.response["http_status_code"] = 400
             return {
                 "ok": False,

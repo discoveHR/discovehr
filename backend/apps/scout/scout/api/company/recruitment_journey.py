@@ -17,13 +17,21 @@ from scout.api.tpo.student_scope import tpo_student_ids
 
 
 @frappe.whitelist(methods=["GET"])
-def get_job_recruitment_journey():
+def get_job_recruitment_journey(jobId=None, inviteId=None):
     user_id, err = get_company_session_user()
     if err:
         return err
 
-    job_id = norm(frappe.form_dict.get("jobId"))
-    invite_id = norm(frappe.form_dict.get("inviteId"))
+    job_id = (
+        norm(jobId)
+        or norm(frappe.form_dict.get("jobId"))
+        or norm(frappe.local.request.args.get("jobId") if frappe.local.request else None)
+    )
+    invite_id = (
+        norm(inviteId)
+        or norm(frappe.form_dict.get("inviteId"))
+        or norm(frappe.local.request.args.get("inviteId") if frappe.local.request else None)
+    )
     if not job_id:
         frappe.local.response["http_status_code"] = 400
         return {"ok": False, "message": _("Job ID is required.")}

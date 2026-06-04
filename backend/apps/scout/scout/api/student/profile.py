@@ -6,7 +6,9 @@ from scout.api.common import get_student_session_user
 
 
 def _norm(value):
-    return (value or "").strip()
+    if value is None:
+        return ""
+    return str(value).strip()
 
 
 # DB field -> API camelCase key (student information form)
