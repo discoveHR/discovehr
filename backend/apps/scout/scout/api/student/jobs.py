@@ -103,20 +103,50 @@ def _fulltext_job_search(q: str, *, limit: int, offset: int) -> tuple[list[str],
         return None
 
 
+_SIMPLE_FILTER_KEYS = frozenset({"status", "location_type", "opportunity_type", "min_experience"})
+
+
+def _filters_are_cacheable(filters: dict | None) -> bool:
+    return not filters or set(filters.keys()) <= _SIMPLE_FILTER_KEYS
+
+
+def _apply_filters_in_python(rows: list[dict], filters: dict | None) -> list[dict]:
+    if not filters:
+        return rows
+    result = rows
+    for key, value in filters.items():
+        if isinstance(value, str):
+            result = [r for r in result if r.get(key) == value]
+    return result
+
+
 def _fetch_active_jobs(*, limit: int, offset: int = 0, filters: dict | None = None) -> list[dict]:
-    rows = frappe.get_all(
-        "Scout Job",
-        filters=filters or {"status": "Active"},
-        fields=JOB_FIELDS,
-        order_by="creation desc",
-        limit_start=offset,
-        limit_page_length=limit,
-    )
-    return [row_to_job(row) for row in rows]
+    if not _filters_are_cacheable(filters):
+        rows = frappe.get_all(
+            "Scout Job",
+            filters=filters or {"status": "Active"},
+            fields=JOB_FIELDS,
+            order_by="creation desc",
+            limit_start=offset,
+            limit_page_length=limit,
+        )
+        return [row_to_job(row) for row in rows]
+
+    from scout.api.cache_utils import get_cached_active_job_rows
+
+    all_rows = get_cached_active_job_rows()
+    filtered = _apply_filters_in_python(all_rows, filters)
+    return [row_to_job(row) for row in filtered[offset : offset + limit]]
 
 
 def _active_jobs_total(filters: dict | None = None) -> int:
-    return int(frappe.db.count("Scout Job", filters=filters or {"status": "Active"}))
+    if not _filters_are_cacheable(filters):
+        return int(frappe.db.count("Scout Job", filters=filters or {"status": "Active"}))
+
+    from scout.api.cache_utils import get_cached_active_job_rows
+
+    all_rows = get_cached_active_job_rows()
+    return len(_apply_filters_in_python(all_rows, filters))
 
 
 def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> list[dict]:

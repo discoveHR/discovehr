@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import json
 import os
+import re
+import secrets
+import string
 from typing import Any, Optional
 from urllib import parse, request
 
@@ -37,25 +40,45 @@ def moodle_api_call(function_name: str, params: Optional[dict] = None) -> Any:
     return parsed
 
 
+def _secure_moodle_password() -> str:
+    alphabet = string.ascii_letters + string.digits + "!@#$%^&*"
+    while True:
+        pwd = "".join(secrets.choice(alphabet) for _ in range(16))
+        if (any(c.isupper() for c in pwd) and any(c.islower() for c in pwd)
+                and any(c.isdigit() for c in pwd) and any(c in "!@#$%^&*" for c in pwd)):
+            return pwd
+
+
 def get_or_create_moodle_user(*, email: str, full_name: str, platform_user_id: str) -> dict:
     found = moodle_api_call("core_user_get_users_by_field", {"field": "email", "values[0]": email})
     if isinstance(found, list) and found:
         return found[0]
 
     first_name, _, last_name = (full_name or "Student User").partition(" ")
-    username_base = (email or platform_user_id).split("@")[0]
-    username = f"scout_{username_base}".replace(" ", "_").lower()
-    created = moodle_api_call(
-        "core_user_create_users",
-        {
-            "users[0][username]": username,
-            "users[0][firstname]": first_name or "Student",
-            "users[0][lastname]": last_name or "User",
-            "users[0][email]": email,
-            "users[0][auth]": "manual",
-            "users[0][password]": "Sc0ut@Temp123!",
-        },
-    )
+    safe_email = re.sub(r"[^a-z0-9]", "_", (email or platform_user_id).lower())
+    username = f"scout_{safe_email}"[:100]
+
+    try:
+        created = moodle_api_call(
+            "core_user_create_users",
+            {
+                "users[0][username]": username,
+                "users[0][firstname]": first_name or "Student",
+                "users[0][lastname]": last_name or "User",
+                "users[0][email]": email,
+                "users[0][auth]": "manual",
+                "users[0][password]": _secure_moodle_password(),
+                "users[0][preferences][0][type]": "auth_forcepasswordchange",
+                "users[0][preferences][0][value]": "1",
+            },
+        )
+    except RuntimeError:
+        # Username collision from a previous partial setup — look up by username.
+        found_by_user = moodle_api_call("core_user_get_users_by_field", {"field": "username", "values[0]": username})
+        if isinstance(found_by_user, list) and found_by_user:
+            return found_by_user[0]
+        raise
+
     if isinstance(created, list) and created:
         return created[0]
     raise RuntimeError("Unable to link student with LMS account")

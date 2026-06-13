@@ -61,20 +61,26 @@ def _psychometric_summary_for_students(student_ids: list[str]) -> dict[str, dict
         )
         result_by_assignment = {r.get("assignment"): r for r in results}
 
+        assessment_ids = list({r.get("psychometric_assessment") for r in results if r.get("psychometric_assessment")})
+        title_map: dict = {}
+        if assessment_ids:
+            assessments = frappe.get_all(
+                "Scout Psychometric Assessment",
+                filters={"name": ["in", assessment_ids]},
+                fields=["name", "title"],
+                limit_page_length=len(assessment_ids),
+            )
+            title_map = {a["name"]: a.get("title") or "" for a in assessments}
+
         for uid, assignment_id in assignment_by_student.items():
             if uid in out:
                 continue
             result = result_by_assignment.get(assignment_id)
             if not result:
                 continue
-            title = ""
-            if result.get("psychometric_assessment"):
-                title = (
-                    frappe.get_value("Scout Psychometric Assessment", result["psychometric_assessment"], "title") or ""
-                )
             out[uid] = {
                 "overallScore": float(result.get("overall_score") or 0),
-                "assessmentTitle": title,
+                "assessmentTitle": title_map.get(result.get("psychometric_assessment") or "", ""),
             }
     return out
 
@@ -282,11 +288,22 @@ def list_college_invites():
         order_by="creation desc",
         limit_page_length=500,
     )
+    job_ids = list({row.get("job_id") for row in rows if row.get("job_id")})
+    invite_job_title_map: dict = {}
+    if job_ids:
+        jobs = frappe.get_all(
+            "Scout Job",
+            filters={"name": ["in", job_ids]},
+            fields=["name", "title"],
+            limit_page_length=len(job_ids),
+        )
+        invite_job_title_map = {j["name"]: j.get("title") or "" for j in jobs}
+
     items = [
         {
             "id": row.get("name"),
             "jobId": row.get("job_id"),
-            "jobTitle": frappe.get_cached_value("Scout Job", row.get("job_id"), "title") or "",
+            "jobTitle": invite_job_title_map.get(row.get("job_id") or "", ""),
             "collegeEmail": row.get("college_email") or "",
             "status": row.get("status") or "",
             "sentAt": row.get("sent_at") or row.get("creation") or "",

@@ -270,7 +270,6 @@ def upsert_tpo_profile():
         return {"ok": False, "message": _("Profile can be updated after admin approval.")}
 
     payload = frappe.request.get_json(silent=True) or {}
-    row = get_tpo_profile_row(user_id)
     fields = resolve_tpo_profile_fields(user_id, payload, row)
 
     doc = _ensure_tpo_profile(user_id)

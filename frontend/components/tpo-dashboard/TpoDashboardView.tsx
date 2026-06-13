@@ -168,9 +168,9 @@ function TpoTopbarRight({ d }: { d: TpoDashboardState }) {
       <input className="tpo-topbar-search" type="search" placeholder="Search students" aria-label="Search students (coming soon)" title="Coming soon" readOnly />
       <div className="tpo-topbar-actions">
         <div className="notification-wrap">
-          <button type="button" className="notification-btn" aria-label="Notifications" title="Notifications" onClick={() => d.setShowNotifications((p) => !p)}>
-            <span aria-hidden>🔔</span>
-            <span className="notification-badge">1</span>
+          <button type="button" className="tpo-topbar-icon-btn" aria-label="Notifications" title="Notifications" onClick={() => d.setShowNotifications((p) => !p)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span className="notification-badge" style={{ background: "var(--dhr-blue)", color: "#fff" }}>1</span>
           </button>
           {d.showNotifications ? (
             <div className="notification-panel">
@@ -179,10 +179,12 @@ function TpoTopbarRight({ d }: { d: TpoDashboardState }) {
             </div>
           ) : null}
         </div>
-        <button type="button" className="theme-toggle" onClick={d.toggleTheme} aria-label={d.theme === "dark" ? "Light mode" : "Dark mode"} title="Theme">
-          <span className="theme-toggle-symbol" aria-hidden>
-            {d.theme === "dark" ? "☀" : "☾"}
-          </span>
+        <button type="button" className="tpo-topbar-icon-btn" onClick={d.toggleTheme} aria-label={d.theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} title="Toggle theme">
+          {d.theme === "dark" ? (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          ) : (
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          )}
         </button>
         <div className="tpo-user-avatar" aria-hidden>
           {initialsFromName(d.displayName)}
@@ -199,5 +201,5 @@ function TpoTopbarRight({ d }: { d: TpoDashboardState }) {
 }
 
 function PanelLoading({ label }: { label: string }) {
-  return <p className="tpo-panel-loading">Loading {label}…</p>;
+  return <div className="tpo-panel-loading">Loading {label}…</div>;
 }

@@ -323,10 +323,11 @@ def list_sub_admin_district_applicants():
     company_jobs = frappe.get_all(
         "Scout Job",
         filters={"company_user": company_user},
-        fields=["name"],
+        fields=["name", "title"],
         limit_page_length=500,
     )
     company_job_ids = [j.name for j in company_jobs]
+    company_job_title_map = {j.name: j.get("title") or "" for j in company_jobs}
     if not company_job_ids:
         return {"ok": True, "data": {
             "applicants": [], "district": district, "state": ctx.state,
@@ -350,7 +351,7 @@ def list_sub_admin_district_applicants():
     result = []
     for app in apps:
         profile = profile_by_user.get(app.student_user) or {}
-        job_title = frappe.get_cached_value("Scout Job", app.job_id, "title") if app.job_id else ""
+        job_title = company_job_title_map.get(app.job_id, "") if app.job_id else ""
         result.append({
             "applicationId": app.name,
             "studentUser": app.student_user,

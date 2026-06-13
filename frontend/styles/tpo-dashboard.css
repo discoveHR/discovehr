@@ -514,9 +514,9 @@
 .tpo-dashboard .table-btn.danger:hover { background: #b91c1c; }
 
 /* Status pills */
-.tpo-dashboard .status-pill.active  { background: #dcfce7; color: #15803d; }
-.tpo-dashboard .status-pill.draft   { background: #fef9c3; color: #a16207; }
-.tpo-dashboard .status-pill.closed  { background: var(--dhr-line-soft); color: var(--dhr-grey); }
+.tpo-dashboard .status-pill.active  { background: #dcfce7; color: #14532d; }
+.tpo-dashboard .status-pill.draft   { background: #fef3c7; color: #92400e; }
+.tpo-dashboard .status-pill.closed  { background: var(--dhr-line-soft); color: #475569; }
 
 /* Empty state */
 .tpo-dashboard .empty-state {
@@ -720,11 +720,10 @@
   gap: 0.4rem;
 }
 .tpo-student-form-row label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--dhr-grey);
 }
 .tpo-student-form-row input,
@@ -829,9 +828,9 @@
   padding: 0.2rem 0.65rem;
   white-space: nowrap;
 }
-.tpo-invite-status--pending   { background: #fffbeb; color: #d97706; }
-.tpo-invite-status--accepted  { background: #f0fdf4; color: #15803d; }
-.tpo-invite-status--expired   { background: #f1f5f9; color: #64748b; }
+.tpo-invite-status--pending   { background: #fef3c7; color: #92400e; }
+.tpo-invite-status--accepted  { background: #dcfce7; color: #14532d; }
+.tpo-invite-status--expired   { background: #f1f5f9; color: #475569; }
 
 /* ===== PROFILE EDITS HINT ===== */
 .tpo-edit-hint {
@@ -949,9 +948,9 @@
 .tpo-post-tag--audience { background: #e0f2fe; color: #0369a1; }
 .tpo-post-tag--branch   { background: #fef3c7; color: #b45309; }
 .tpo-post-status { font-size: 0.68rem; font-weight: 700; border-radius: 999px; padding: 0.18rem 0.6rem; }
-.tpo-post-status--active { background: #dcfce7; color: #15803d; }
-.tpo-post-status--draft  { background: #fef9c3; color: #a16207; }
-.tpo-post-status--closed { background: #f1f5f9; color: #64748b; }
+.tpo-post-status--active { background: #dcfce7; color: #14532d; }
+.tpo-post-status--draft  { background: #fef3c7; color: #92400e; }
+.tpo-post-status--closed { background: #f1f5f9; color: #475569; }
 
 .tpo-int-post-actions { display: flex; flex-direction: column; gap: 0.35rem; flex-shrink: 0; align-items: stretch; min-width: 120px; }
 .tpo-int-post-actions a { text-decoration: none; text-align: center; }
@@ -1046,4 +1045,1771 @@
 @media (max-width: 480px) {
   .tpo-topbar { padding: 0.6rem 0.75rem; }
   .tpo-topbar-right { display: none; }
+}
+
+/* ===== SIDEBAR BACKDROP ===== */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ===== RESPONSIVE TABLE WRAPPER ===== */
+.tpo-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tpo-table-scroll .company-table { min-width: 640px; }
+
+/* ===== TABLE ACTION CELL ===== */
+.tpo-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+/* ===== PANEL LOADING SKELETON ===== */
+.tpo-panel-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2rem 1.6rem;
+  color: var(--dhr-grey-light);
+  font-size: 0.85rem;
+}
+.tpo-panel-loading::before {
+  content: "";
+  width: 16px; height: 16px;
+  border: 2px solid var(--dhr-line);
+  border-top-color: var(--dhr-blue);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== SKELETON ROWS ===== */
+.tpo-skeleton-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+.tpo-skeleton-cell {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--dhr-line-soft) 25%, var(--dhr-line) 50%, var(--dhr-line-soft) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ===== IMPROVED EMPTY STATE ===== */
+.tpo-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  color: var(--dhr-grey-light);
+  text-align: center;
+}
+.tpo-empty-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--dhr-line-soft);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dhr-grey-light);
+}
+.tpo-empty-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.tpo-empty p { font-size: 0.88rem; max-width: 280px; line-height: 1.5; margin: 0; }
+.tpo-empty strong { display: block; font-size: 0.9rem; font-weight: 600; color: var(--dhr-grey); margin-bottom: 0.2rem; }
+
+/* ===== TIP DOT COLOR VARIANTS ===== */
+.tpo-welcome-tip-dot--indigo { background: #818cf8; }
+.tpo-welcome-tip-dot--green  { background: #34d399; }
+.tpo-welcome-tip-dot--amber  { background: #f59e0b; }
+.tpo-welcome-tip-dot--blue   { background: #60a5fa; }
+.tpo-welcome-tip-dot--purple { background: #a78bfa; }
+.tpo-welcome-tip-dot--red    { background: #f87171; }
+
+/* ===== FORM FEEDBACK ===== */
+.tpo-form-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-top: 0.25rem;
+}
+.tpo-form-feedback--error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+.tpo-form-feedback--success { background: #f0fdf4; color: #14532d; border: 1px solid #bbf7d0; }
+.tpo-form-feedback--info    { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+
+.tpo-dashboard--dark .tpo-form-feedback--error   { background: #1f0707; color: #fca5a5; border-color: #450a0a; }
+.tpo-dashboard--dark .tpo-form-feedback--success { background: #052e16; color: #86efac; border-color: #14532d; }
+.tpo-dashboard--dark .tpo-form-feedback--info    { background: #0c1e35; color: #93c5fd; border-color: #1e3a5f; }
+
+/* ===== FORM FIELD VALIDATION ===== */
+.tpo-student-form-row input:invalid:not(:placeholder-shown),
+.tpo-student-form-row select:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+}
+.tpo-field-hint {
+  font-size: 0.74rem;
+  color: var(--dhr-grey-light);
+  margin-top: 0.2rem;
+  line-height: 1.4;
+}
+
+/* ===== STAT CARD GLASSMORPHISM UPGRADE ===== */
+.tpo-stat-card {
+  position: relative;
+  overflow: hidden;
+}
+.tpo-stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,71,255,0.05) 0%, transparent 70%);
+  transform: translate(20px, -20px);
+  pointer-events: none;
+}
+
+/* ===== TOPBAR SVG ICON BUTTONS ===== */
+.tpo-topbar-icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: 1px solid var(--dhr-line);
+  border-radius: 8px;
+  background: var(--dhr-paper);
+  color: var(--dhr-grey);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.tpo-topbar-icon-btn:hover {
+  background: var(--dhr-blue-wash);
+  border-color: var(--dhr-blue);
+  color: var(--dhr-blue);
+}
+.tpo-topbar-icon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+.tpo-dashboard--dark .tpo-topbar-icon-btn { background: #0e1421; border-color: #1e2d45; color: #7a8aab; }
+
+/* ===== TOPBAR ACTIONS LAYOUT ===== */
+.tpo-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tpo-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ===== NOTIFICATION BADGE FIX ===== */
+.notification-wrap { position: relative; display: inline-flex; }
+.notification-badge {
+  position: absolute;
+  top: -3px; right: -3px;
+  width: 16px; height: 16px;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+
+/* ===== FORM LABEL HINT ===== */
+.tpo-label-required { color: #ef4444; margin-left: 2px; }
+
+/* ===== SMOOTH NAV TRANSITIONS ===== */
+.tpo-dashboard-body > * {
+  animation: panelSlideIn 0.18s ease both;
+}
+@keyframes panelSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== DARK MODE STATUS PILL FIXES ===== */
+.tpo-dashboard--dark .tpo-invite-status--pending   { background: #1a0f00; color: #fcd34d; }
+.tpo-dashboard--dark .tpo-invite-status--accepted  { background: #052e16; color: #86efac; }
+.tpo-dashboard--dark .tpo-invite-status--expired   { background: #111827; color: #94a3b8; }
+.tpo-dashboard--dark .tpo-post-status--active { background: #052e16; color: #86efac; }
+.tpo-dashboard--dark .tpo-post-status--draft  { background: #1a1300; color: #fcd34d; }
+.tpo-dashboard--dark .tpo-post-status--closed { background: #111827; color: #94a3b8; }
+
+/* ===== MOBILE TABLE IMPROVEMENTS ===== */
+@media (max-width: 768px) {
+  .company-table-wrap { border-radius: 10px; }
+  .tpo-table-scroll .company-table { min-width: 540px; }
+  .tpo-table-actions { flex-direction: column; align-items: flex-start; }
+  .tpo-student-form-dual { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .tpo-panel { padding: 1rem; }
+  .tpo-form-panel-body { padding: 0.85rem 1rem 1rem; }
+  .tpo-int-post-actions { min-width: 100px; }
+}
+
+/* ===== SEARCH CLEAR BUTTON ===== */
+.tpo-student-search-clear {
+  background: none;
+  border: none;
+  color: var(--dhr-grey-light);
+  cursor: pointer;
+  padding: 2px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  transition: color 0.12s;
+}
+.tpo-student-search-clear:hover { color: var(--dhr-ink); }
+.tpo-student-search-clear svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+/* ================================================================
+   FIX: SIDEBAR NAV — critical display bug
+   gap: on a non-flex container does nothing; icons won't align
+   ================================================================ */
+.tpo-dashboard-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.6rem 0.75rem;
+}
+
+.tpo-nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* ================================================================
+   FIX: JOB-FORM-GRID — not defined anywhere, used in internal jobs
+   ================================================================ */
+.job-form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ================================================================
+   FIX + OVERRIDE: form labels within TPO inherit monospace uppercase
+   from company-dashboard.css — override to body font, readable case
+   ================================================================ */
+.tpo-dashboard .job-form-row label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--dhr-grey);
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.tpo-dashboard .job-form-row input,
+.tpo-dashboard .job-form-row select,
+.tpo-dashboard .job-form-row textarea {
+  background: var(--dhr-paper);
+  border-color: var(--dhr-line);
+}
+
+.tpo-dashboard .job-form-row input:focus,
+.tpo-dashboard .job-form-row select:focus,
+.tpo-dashboard .job-form-row textarea:focus {
+  background: var(--dhr-white);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.09);
+}
+
+.tpo-dashboard--dark .job-form-row input,
+.tpo-dashboard--dark .job-form-row select,
+.tpo-dashboard--dark .job-form-row textarea {
+  background: #0e1421;
+  border-color: #1e2d45;
+  color: #cad5f0;
+}
+
+.tpo-dashboard--dark .job-form-row input:focus,
+.tpo-dashboard--dark .job-form-row select:focus,
+.tpo-dashboard--dark .job-form-row textarea:focus {
+  background: #111c2e;
+  border-color: #2563eb;
+}
+
+/* ================================================================
+   BEAUTIFUL FORMS — panel wrappers, section dividers, grouped rows
+   ================================================================ */
+
+/* Form section divider with label */
+.tpo-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.tpo-form-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dhr-grey-light);
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  margin-bottom: 0.1rem;
+}
+
+.tpo-dashboard--dark .tpo-form-section-title { color: #374457; border-color: #1e2d45; }
+
+/* Panel head with action button */
+.tpo-panel-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ================================================================
+   BEAUTIFUL LISTINGS — table/card improvements
+   ================================================================ */
+
+/* Status-pill base (ensure it exists in TPO scope) */
+.tpo-dashboard .status-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.22rem 0.7rem;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+/* Highlighted row for pending items */
+.tpo-dashboard .company-table tbody tr.row--highlight {
+  background: #fffbeb;
+}
+.tpo-dashboard--dark .company-table tbody tr.row--highlight {
+  background: #1a1300;
+}
+
+/* Better table caption */
+.tpo-dashboard .company-table-head .table-caption {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--dhr-grey-light);
+  margin-top: 0.2rem;
+  line-height: 1.45;
+}
+
+/* Company-table first/last cell padding */
+.tpo-dashboard .company-table td:first-child,
+.tpo-dashboard .company-table th:first-child { padding-left: 1.2rem; }
+.tpo-dashboard .company-table td:last-child,
+.tpo-dashboard .company-table th:last-child  { padding-right: 1.2rem; }
+
+/* Link in table */
+.tpo-dashboard .company-table a {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.84rem;
+}
+.tpo-dashboard .company-table a:hover { text-decoration: underline; }
+
+/* Applicants "no results" improved */
+.tpo-dashboard .company-table td[colspan] {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  color: var(--dhr-grey-light);
+  font-size: 0.85rem;
+}
+
+/* ================================================================
+   PANEL SECTION HEADER — reusable heading for all panels
+   ================================================================ */
+.tpo-panel-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1.1rem 1.4rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+
+.tpo-panel-section-head h2,
+.tpo-panel-section-head h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.tpo-panel-section-head p {
+  font-size: 0.78rem;
+  color: var(--dhr-grey-light);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.tpo-dashboard--dark .tpo-panel-section-head { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-panel-section-head h2,
+.tpo-dashboard--dark .tpo-panel-section-head h3 { color: #dce8ff; }
+.tpo-dashboard--dark .tpo-panel-section-head p  { color: #546078; }
+
+/* ================================================================
+   IMPROVED ADMIN PANEL — file input and form padding
+   ================================================================ */
+.tpo-panel > .company-table-head {
+  border-bottom: 1px solid var(--dhr-line-soft);
+  padding: 1rem 1.4rem;
+}
+
+.tpo-panel > .company-table-head h3 { margin: 0 0 2px; }
+
+.tpo-panel > .job-form-grid {
+  padding: 1rem 1.4rem 1.4rem;
+}
+
+/* File input — better click target */
+.tpo-dashboard input[type="file"] {
+  font-size: 0.84rem;
+  color: var(--dhr-grey);
+  padding: 0.5rem 0.75rem;
+  background: var(--dhr-paper);
+  border: 1.5px dashed var(--dhr-line);
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.tpo-dashboard input[type="file"]:hover { border-color: #2563eb; }
+.tpo-dashboard--dark input[type="file"] { background: #0e1421; border-color: #1e2d45; color: #546078; }
+
+/* ================================================================
+   APPLICANTS PANEL — loading state upgrade
+   ================================================================ */
+.tpo-dashboard .company-table-wrap > .empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--dhr-grey-light);
+  font-size: 0.85rem;
+}
+
+/* ================================================================
+   SIDEBAR FOOTER — user info snippet at bottom
+   ================================================================ */
+.tpo-sidebar-footer {
+  margin-top: auto;
+  padding: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ================================================================
+   SIDEBAR BRAND — subtle bottom glow accent
+   ================================================================ */
+.tpo-dashboard-brand {
+  position: relative;
+}
+.tpo-dashboard-brand::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 1.4rem; right: 1.4rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(111,155,255,0.3), transparent);
+}
+
+/* ================================================================
+   TOPBAR — subtle bottom shadow line
+   ================================================================ */
+.tpo-topbar {
+  box-shadow: 0 1px 0 var(--dhr-line);
+}
+
+/* ================================================================
+   COLLEGE SETUP PANEL — step indicators and form sections
+   ================================================================ */
+.tpo-setup-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 1.4rem 1.1rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  margin-bottom: 0;
+}
+
+.tpo-setup-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dhr-grey-light);
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.15s;
+}
+
+.tpo-setup-step.active { color: #2563eb; font-weight: 600; }
+.tpo-setup-step.done   { color: #16a34a; }
+.tpo-setup-step-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700;
+  background: var(--dhr-line-soft);
+  color: var(--dhr-grey-light);
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.tpo-setup-step-label {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.tpo-setup-step.active .tpo-setup-step-num { background: #eff6ff; color: #2563eb; }
+.tpo-setup-step.done .tpo-setup-step-num   { background: #dcfce7; color: #16a34a; }
+
+.tpo-setup-step-sep { flex: 1; height: 1px; background: var(--dhr-line-soft); margin: 0 0.5rem; max-width: 40px; }
+
+/* ================================================================
+   REPORTS / ENGAGEMENT PANEL — consistent look
+   ================================================================ */
+.tpo-sub-panel {
+  background: var(--dhr-white);
+  border: 1px solid var(--dhr-line);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+}
+.tpo-sub-panel-head {
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.tpo-sub-panel-head h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.tpo-sub-panel-body { padding: 1rem 1.2rem; }
+
+.tpo-dashboard--dark .tpo-sub-panel { background: #0e1421; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-sub-panel-head { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-sub-panel-head h4 { color: #dce8ff; }
+
+/* ================================================================
+   SMALL BUTTON VARIANT — used in internal posting list
+   ================================================================ */
+.tpo-form-btn--sm {
+  font-size: 0.76rem;
+  padding: 0.38rem 0.85rem;
+}
+
+/* External link in posting card */
+.tpo-int-post-ext-link {
+  font-size: 0.72rem;
+  color: var(--dhr-grey-light);
+  text-decoration: none;
+  text-align: center;
+  transition: color 0.12s;
+}
+.tpo-int-post-ext-link:hover { color: var(--dhr-blue); }
+
+/* Batch label in posting card */
+.tpo-int-post-batches {
+  font-size: 0.72rem;
+  color: var(--dhr-grey-light);
+}
+
+/* Muted dash cell */
+.tpo-cell-muted {
+  color: var(--dhr-grey-light);
+  font-size: 0.84rem;
+}
+
+/* ================================================================
+   RESPONSIVE: form dual grid collapses on small screens
+   ================================================================ */
+@media (max-width: 640px) {
+  .job-form-dual { grid-template-columns: 1fr; }
+  .tpo-form-panel-head { flex-direction: column; gap: 0.6rem; }
+  .tpo-int-post-card { flex-direction: column; }
+  .tpo-int-post-actions { flex-direction: row; flex-wrap: wrap; min-width: 0; width: 100%; }
+}
+
+/* ================================================================
+   COLLEGE SETUP PANEL — wizard layout, progress bar, form sections
+   ================================================================ */
+
+/* Outer wizard wrapper */
+.tpo-setup-layout {
+  background: var(--dhr-white);
+  border: 1px solid var(--dhr-line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* When embedded inside a parent panel — strip double borders */
+.tpo-setup-layout--embedded {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Thin progress strip at the very top */
+.tpo-setup-progress {
+  height: 3px;
+  background: var(--dhr-line-soft);
+  width: 100%;
+}
+.tpo-setup-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #6d28d9 100%);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.35s ease;
+}
+
+/* Steps nav — allow wrapping on small screens */
+.tpo-setup-steps {
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+}
+.tpo-setup-step {
+  padding: 0.65rem 1.2rem 0.65rem 0;
+}
+
+/* The form sits directly after the steps nav */
+.tpo-setup-form.tpo-panel {
+  border: none;
+  border-radius: 0;
+  border-top: 1px solid var(--dhr-line-soft);
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hint text at top of form area */
+.tpo-setup-optional-hint {
+  font-size: 0.78rem;
+  color: var(--dhr-grey-light);
+  background: #f8faff;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  padding: 0.6rem 1.4rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Error banner inside form */
+.tpo-setup-error-banner {
+  margin: 0.85rem 1.4rem 0;
+  padding: 0.65rem 0.9rem;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
+/* Action row at bottom of form */
+.tpo-setup-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.4rem;
+  border-top: 1px solid var(--dhr-line-soft);
+  background: var(--dhr-paper);
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+/* Section header inside profile/dept/batch steps */
+.tpo-setup-section-head {
+  padding: 1rem 1.4rem 0.85rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+.tpo-setup-section-head h3 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  margin: 0 0 0.2rem;
+  letter-spacing: -0.01em;
+}
+.tpo-setup-section-head p {
+  font-size: 0.78rem;
+  color: var(--dhr-grey-light);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Saved profile summary (dt/dd pairs) */
+.tpo-setup-profile-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.8rem;
+  padding: 1rem 1.4rem;
+  margin: 0;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  background: #f8faff;
+}
+.tpo-setup-profile-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+}
+.tpo-setup-profile-summary dt {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--dhr-grey-light);
+}
+.tpo-setup-profile-summary dd {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--dhr-ink);
+  margin: 0;
+  word-break: break-word;
+}
+.tpo-setup-profile-summary a {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.84rem;
+}
+
+/* Profile grid — the input fields */
+.tpo-setup-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  padding: 1.1rem 1.4rem 1.4rem;
+}
+
+/* Individual setup field (label element) */
+.tpo-setup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.tpo-setup-field > span:first-child {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dhr-grey);
+  letter-spacing: -0.01em;
+}
+.tpo-setup-field input,
+.tpo-setup-field select,
+.tpo-setup-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  background: var(--dhr-paper);
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 9px;
+  font-family: var(--font-body);
+  font-size: 0.87rem;
+  color: var(--dhr-ink);
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
+.tpo-setup-field input:focus,
+.tpo-setup-field select:focus,
+.tpo-setup-field textarea:focus {
+  border-color: #2563eb;
+  background: var(--dhr-white);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.09);
+}
+.tpo-setup-field input::placeholder,
+.tpo-setup-field textarea::placeholder {
+  color: var(--dhr-grey-light);
+  opacity: 1;
+}
+.tpo-setup-field textarea { resize: vertical; min-height: 72px; }
+
+/* Full-width field spans both columns */
+.tpo-setup-field--full { grid-column: 1 / -1; }
+
+/* Entity cards container (departments/batches list) */
+.tpo-setup-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem 1.4rem;
+}
+
+/* Single entity card */
+.tpo-setup-card {
+  background: var(--dhr-white);
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.tpo-setup-card:focus-within {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.07);
+}
+
+/* Card header bar */
+.tpo-setup-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  background: var(--dhr-paper);
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+
+/* Card title (number + label) */
+.tpo-setup-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--dhr-ink);
+}
+
+/* Number badge */
+.tpo-setup-card-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--dhr-blue);
+  color: #fff;
+  font-size: 0.67rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Card content area */
+.tpo-setup-card-body { padding: 1rem; }
+
+/* Field grid inside card body */
+.tpo-setup-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.tpo-setup-field-grid--wide { grid-template-columns: repeat(3, 1fr); }
+
+/* Add entity button */
+.tpo-setup-add-btn {
+  display: block;
+  margin: 0 1.4rem 1rem;
+  width: calc(100% - 2.8rem);
+  box-sizing: border-box;
+}
+
+/* ---- dark mode ---- */
+.tpo-dashboard--dark .tpo-setup-layout { background: #0e1421; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-progress { background: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-optional-hint { background: #0b1420; border-color: #1e2d45; color: #546078; }
+.tpo-dashboard--dark .tpo-setup-error-banner { background: #1f0707; color: #fca5a5; border-color: #450a0a; }
+.tpo-dashboard--dark .tpo-setup-actions { background: #0b1420; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-section-head { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-section-head h3 { color: #dce8ff; }
+.tpo-dashboard--dark .tpo-setup-section-head p { color: #546078; }
+.tpo-dashboard--dark .tpo-setup-profile-summary { background: #0b1420; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-profile-summary dt { color: #374457; }
+.tpo-dashboard--dark .tpo-setup-profile-summary dd { color: #cad5f0; }
+.tpo-dashboard--dark .tpo-setup-card { background: #0e1421; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-card-header { background: #0b1420; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-setup-card-title { color: #dce8ff; }
+.tpo-dashboard--dark .tpo-setup-field input,
+.tpo-dashboard--dark .tpo-setup-field select,
+.tpo-dashboard--dark .tpo-setup-field textarea { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-setup-field input:focus,
+.tpo-dashboard--dark .tpo-setup-field select:focus,
+.tpo-dashboard--dark .tpo-setup-field textarea:focus { background: #111c2e; border-color: #2563eb; }
+.tpo-dashboard--dark .tpo-setup-profile-grid { background: transparent; }
+.tpo-dashboard--dark .tpo-setup-form.tpo-panel { background: transparent; border-color: transparent; }
+.tpo-dashboard--dark .tpo-setup-step { color: #546078; }
+.tpo-dashboard--dark .tpo-setup-step.active { color: #60a5fa; }
+.tpo-dashboard--dark .tpo-setup-step.active .tpo-setup-step-num { background: #0c1e35; color: #60a5fa; }
+.tpo-dashboard--dark .tpo-setup-step.done { color: #4ade80; }
+.tpo-dashboard--dark .tpo-setup-step.done .tpo-setup-step-num { background: #052e16; color: #4ade80; }
+.tpo-dashboard--dark .tpo-setup-step-num { background: #1e2d45; color: #546078; }
+
+/* ---- responsive ---- */
+@media (max-width: 640px) {
+  .tpo-setup-profile-grid { grid-template-columns: 1fr; }
+  .tpo-setup-field-grid { grid-template-columns: 1fr; }
+  .tpo-setup-field-grid--wide { grid-template-columns: 1fr; }
+  .tpo-setup-steps { padding: 0 0.75rem 0.75rem; gap: 0; }
+  .tpo-setup-step { padding: 0.5rem 0.5rem 0.5rem 0; }
+  .tpo-setup-cards { padding: 0.75rem; }
+  .tpo-setup-add-btn { margin: 0 0.75rem 0.75rem; width: calc(100% - 1.5rem); }
+  .tpo-setup-actions { padding: 0.75rem; }
+  .tpo-setup-profile-grid { padding: 0.85rem; }
+  .tpo-setup-optional-hint { padding: 0.55rem 0.85rem; }
+}
+
+/* ================================================================
+   REPORTS PANEL — two-column layout (sidebar + main)
+   ================================================================ */
+
+.tpo-reports-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.tpo-reports-sidebar {
+  background: var(--dhr-white);
+  border: 1px solid var(--dhr-line);
+  border-radius: 14px;
+  overflow: hidden;
+  position: sticky;
+  top: 80px;
+}
+.tpo-reports-sidebar-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--dhr-grey-light);
+  padding: 0.9rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  margin: 0;
+}
+.tpo-reports-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0.5rem;
+  gap: 2px;
+}
+.tpo-reports-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background 0.12s, border-color 0.12s;
+}
+.tpo-reports-nav-item:hover {
+  background: var(--dhr-paper);
+}
+.tpo-reports-nav-item.active {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.tpo-reports-nav-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--dhr-ink);
+  line-height: 1.2;
+}
+.tpo-reports-nav-item.active .tpo-reports-nav-label { color: #2563eb; }
+.tpo-reports-nav-desc {
+  font-size: 0.72rem;
+  color: var(--dhr-grey-light);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Main area */
+.tpo-reports-main {
+  min-width: 0;
+}
+
+/* Head row inside company-table-head */
+.tpo-reports-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.tpo-reports-summary {
+  font-size: 0.78rem;
+  color: var(--dhr-grey);
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+.tpo-reports-truncated {
+  color: var(--dhr-amber);
+  background: var(--dhr-amber-bg);
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(217,119,6,0.2);
+}
+
+/* Actions row — filters + pagination + buttons */
+.tpo-reports-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Inline filter label with select */
+.tpo-reports-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--dhr-grey);
+  font-family: var(--font-body);
+}
+.tpo-reports-filter select {
+  padding: 0.35rem 0.65rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 7px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--dhr-ink);
+  outline: none;
+  cursor: pointer;
+}
+.tpo-reports-filter select:focus { border-color: #2563eb; }
+
+/* Eligibility filter grid */
+.tpo-reports-filters-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tpo-reports-filters-grid input,
+.tpo-reports-filters-grid select {
+  padding: 0.38rem 0.7rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 7px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--dhr-ink);
+  outline: none;
+  min-width: 110px;
+}
+.tpo-reports-filters-grid input::placeholder { color: var(--dhr-grey-light); }
+.tpo-reports-filters-grid input:focus,
+.tpo-reports-filters-grid select:focus { border-color: #2563eb; background: var(--dhr-white); }
+
+/* Pagination bar */
+.tpo-reports-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.tpo-reports-pager-meta {
+  font-size: 0.78rem;
+  color: var(--dhr-grey-light);
+  white-space: nowrap;
+  min-width: 100px;
+  text-align: center;
+}
+
+/* Dark mode */
+.tpo-dashboard--dark .tpo-reports-sidebar { background: #0e1421; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-reports-sidebar-title { color: #374457; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-reports-nav-item:hover { background: #0f1928; }
+.tpo-dashboard--dark .tpo-reports-nav-item.active { background: #0c1e35; border-color: #1e3a5f; }
+.tpo-dashboard--dark .tpo-reports-nav-label { color: #cad5f0; }
+.tpo-dashboard--dark .tpo-reports-nav-item.active .tpo-reports-nav-label { color: #60a5fa; }
+.tpo-dashboard--dark .tpo-reports-nav-desc { color: #374457; }
+.tpo-dashboard--dark .tpo-reports-filter select,
+.tpo-dashboard--dark .tpo-reports-filters-grid input,
+.tpo-dashboard--dark .tpo-reports-filters-grid select { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-reports-pager-meta { color: #546078; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .tpo-reports-layout { grid-template-columns: 1fr; }
+  .tpo-reports-sidebar { position: static; }
+  .tpo-reports-nav { flex-direction: row; flex-wrap: wrap; padding: 0.4rem; }
+  .tpo-reports-nav-item { flex-direction: row; align-items: center; gap: 0.35rem; }
+  .tpo-reports-nav-desc { display: none; }
+}
+
+/* ================================================================
+   SHARED TAB BAR — used in engagement panel and elsewhere
+   ================================================================ */
+.tpo-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.75rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+.tpo-tab {
+  font-size: 0.78rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--dhr-line);
+  background: var(--dhr-paper);
+  color: var(--dhr-grey);
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.tpo-tab:hover { background: var(--dhr-line-soft); color: var(--dhr-ink); }
+.tpo-tab.active, .tpo-tab--active { background: #eff6ff; color: #2563eb; border-color: #93c5fd; font-weight: 600; }
+.tpo-dashboard--dark .tpo-tab { background: #0e1421; border-color: #1e2d45; color: #546078; }
+.tpo-dashboard--dark .tpo-tab:hover { background: #182236; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-tab.active,
+.tpo-dashboard--dark .tpo-tab--active { background: #0c1e35; color: #60a5fa; border-color: #1e3a5f; }
+
+/* ================================================================
+   INBOUND JOBS PANEL — two-panel layout + detail
+   ================================================================ */
+
+.tpo-inbound-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+
+/* List panel */
+.tpo-inbound-list { min-width: 0; }
+
+/* Detail panel */
+.tpo-inbound-detail {
+  min-width: 0;
+  position: sticky;
+  top: 80px;
+}
+
+/* Highlighted active row */
+.tpo-inbound-row-active {
+  background: #eff6ff !important;
+}
+.tpo-dashboard--dark .tpo-inbound-row-active {
+  background: #0c1e35 !important;
+}
+
+/* Filter pill group at table head */
+.tpo-inbound-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+/* Active filter pill */
+.company-filter-active {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  border-color: #93c5fd !important;
+}
+
+/* Job card description block */
+.tpo-inbound-job-card {
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.tpo-inbound-job-card p {
+  font-size: 0.84rem;
+  color: var(--dhr-ink-soft);
+  margin: 0;
+  line-height: 1.5;
+}
+.tpo-inbound-job-card strong {
+  color: var(--dhr-ink);
+  font-weight: 600;
+}
+
+/* Note / status message */
+.tpo-inbound-note {
+  font-size: 0.82rem;
+  color: var(--dhr-grey);
+  padding: 0.6rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  margin: 0;
+  line-height: 1.45;
+}
+.tpo-inbound-note.accepted {
+  color: #15803d;
+  background: #f0fdf4;
+}
+.tpo-dashboard--dark .tpo-inbound-note.accepted { background: #052e16; color: #86efac; }
+
+/* Stage row (select + update button) */
+.tpo-inbound-stage-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+.tpo-inbound-stage-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dhr-grey);
+  font-family: var(--font-body);
+}
+.tpo-inbound-stage-row select {
+  padding: 0.38rem 0.7rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 7px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--dhr-ink);
+  outline: none;
+}
+.tpo-inbound-stage-row select:focus { border-color: #2563eb; }
+
+/* Accept/decline buttons row */
+.tpo-inbound-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+
+/* Decline input + button pair */
+.tpo-inbound-decline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+.tpo-inbound-decline input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.42rem 0.75rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 7px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--dhr-ink);
+  outline: none;
+}
+.tpo-inbound-decline input:focus { border-color: #ef4444; background: #fff5f5; }
+.tpo-inbound-decline input::placeholder { color: var(--dhr-grey-light); }
+
+/* Students section inside detail */
+.tpo-inbound-students {
+  padding: 0.85rem 1.2rem;
+  border-top: 1px solid var(--dhr-line-soft);
+}
+
+/* Suggest action bar */
+.tpo-inbound-suggest-bar {
+  padding: 0.75rem 1.2rem;
+  border-top: 1px solid var(--dhr-line-soft);
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+
+/* Tag pill */
+.tpo-inbound-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.67rem;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.tpo-dashboard--dark .tpo-inbound-tag { background: #1a0f2e; color: #c4b5fd; }
+
+/* Dark mode */
+.tpo-dashboard--dark .tpo-inbound-job-card { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-inbound-job-card p { color: #cad5f0; }
+.tpo-dashboard--dark .tpo-inbound-job-card strong { color: #dce8ff; }
+.tpo-dashboard--dark .tpo-inbound-note { border-color: #1e2d45; color: #546078; }
+.tpo-dashboard--dark .tpo-inbound-stage-row { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-inbound-stage-row label { color: #546078; }
+.tpo-dashboard--dark .tpo-inbound-stage-row select { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-inbound-actions { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-inbound-decline input { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-inbound-suggest-bar { border-color: #1e2d45; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .tpo-inbound-layout { grid-template-columns: 1fr; }
+  .tpo-inbound-detail { position: static; }
+}
+
+/* ================================================================
+   CANDIDATE PROGRESS — KANBAN BOARD
+   ================================================================ */
+
+/* Toolbar row (job selector) */
+.tpo-journey-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.85rem 1.2rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+}
+.tpo-journey-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--dhr-grey);
+  font-family: var(--font-body);
+}
+.tpo-journey-toolbar select {
+  padding: 0.42rem 0.75rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 8px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: var(--dhr-ink);
+  outline: none;
+  min-width: 280px;
+  max-width: 100%;
+}
+.tpo-journey-toolbar select:focus { border-color: #2563eb; }
+
+/* Kanban board — horizontal scroll */
+.tpo-kanban-board {
+  display: flex;
+  gap: 1rem;
+  padding: 1.1rem 1.2rem 1.4rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  align-items: flex-start;
+  min-height: 200px;
+}
+
+/* Column */
+.tpo-kanban-column {
+  min-width: 200px;
+  max-width: 240px;
+  flex-shrink: 0;
+  background: var(--dhr-paper);
+  border: 1px solid var(--dhr-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tpo-kanban-column h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  margin: 0;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  background: var(--dhr-white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Card */
+.tpo-kanban-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--dhr-line-soft);
+  transition: background 0.12s;
+}
+.tpo-kanban-card:last-child { border-bottom: none; }
+.tpo-kanban-card:hover { background: #f0f5ff; }
+.tpo-kanban-card strong {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dhr-ink);
+  line-height: 1.2;
+}
+
+/* Dark mode */
+.tpo-dashboard--dark .tpo-journey-toolbar { border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-journey-toolbar label { color: #546078; }
+.tpo-dashboard--dark .tpo-journey-toolbar select { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+.tpo-dashboard--dark .tpo-kanban-column { background: #0b1420; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-kanban-column h4 { background: #0e1421; color: #dce8ff; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-kanban-card { border-color: #182236; }
+.tpo-dashboard--dark .tpo-kanban-card:hover { background: #0f1928; }
+.tpo-dashboard--dark .tpo-kanban-card strong { color: #dce8ff; }
+
+/* ================================================================
+   APTITUDE PANEL — student picker
+   ================================================================ */
+
+.admin-student-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.admin-student-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.admin-student-picker-row input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--dhr-line);
+  border-radius: 9px;
+  background: var(--dhr-paper);
+  font-family: var(--font-body);
+  font-size: 0.87rem;
+  color: var(--dhr-ink);
+  outline: none;
+}
+.admin-student-picker-row input:focus { border-color: #2563eb; background: var(--dhr-white); box-shadow: 0 0 0 3px rgba(37,99,235,0.09); }
+.admin-student-picker-row input::placeholder { color: var(--dhr-grey-light); }
+.tpo-dashboard--dark .admin-student-picker-row input { background: #0e1421; border-color: #1e2d45; color: #cad5f0; }
+
+/* Utility: link-style button */
+.btn-link {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.12s;
+}
+.btn-link:hover { text-decoration-color: #2563eb; }
+
+/* ================================================================
+   ACCOUNT STATUS — standalone pending/rejected screen
+   ================================================================ */
+
+.tpo-dashboard--standalone {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  grid-template-columns: unset;
+}
+.tpo-status-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.8rem;
+  background: var(--dhr-white);
+  border-bottom: 1px solid var(--dhr-line);
+}
+.tpo-status-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+}
+.tpo-status-brand span {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--dhr-grey-light);
+  letter-spacing: 0.03em;
+}
+.tpo-status-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+.tpo-status-card {
+  background: var(--dhr-white);
+  border: 1px solid var(--dhr-line);
+  border-radius: 16px;
+  padding: 2rem 2.4rem;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 8px 32px rgba(10,10,30,0.06);
+}
+.tpo-status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  width: fit-content;
+}
+.tpo-status-badge--pending { background: #fef3c7; color: #92400e; }
+.tpo-status-badge--rejected { background: #fef2f2; color: #991b1b; }
+.tpo-status-card p { font-size: 0.88rem; color: var(--dhr-grey); line-height: 1.6; margin: 0; }
+.tpo-dashboard--dark .tpo-status-card { background: #0e1421; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-status-badge--pending { background: #1a1300; color: #fcd34d; }
+.tpo-dashboard--dark .tpo-status-badge--rejected { background: #1f0707; color: #fca5a5; }
+.tpo-dashboard--dark .tpo-status-card p { color: #546078; }
+
+/* ================================================================
+   CALENDARS PANEL — checkbox row + journey exam card
+   ================================================================ */
+
+/* Checkbox row label inside a form */
+.calendar-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: var(--dhr-grey);
+  cursor: pointer;
+}
+.calendar-checkbox-row input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+/* Journey exam card */
+.tpo-journey-setup-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.2rem;
+  border: 1px solid var(--dhr-line);
+  border-radius: 10px;
+  background: var(--dhr-paper);
+  margin: 0.4rem 0;
+  flex-wrap: wrap;
+}
+.tpo-journey-setup-card h4 {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--dhr-ink);
+  margin: 0;
+  flex: 1;
+}
+.tpo-dashboard--dark .tpo-journey-setup-card { background: #0b1420; border-color: #1e2d45; }
+.tpo-dashboard--dark .tpo-journey-setup-card h4 { color: #dce8ff; }
+
+/* ================================================================
+   STUDENT 360 VIEW — detail profile page
+   ================================================================ */
+
+.tpo-student360-wrap {
+  padding: 1.5rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-height: 100vh;
+}
+
+/* Header row */
+.tpo-student360-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.tpo-student360-header h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  letter-spacing: -0.02em;
+  margin: 0.15rem 0 0;
+}
+
+/* Back link */
+.tpo-student360-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dhr-grey-light);
+  text-decoration: none;
+  margin-bottom: 0.35rem;
+  transition: color 0.12s;
+}
+.tpo-student360-back:hover { color: #2563eb; }
+
+.tpo-student360-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+}
+
+/* Sub-text under name */
+.tpo-student360-sub {
+  font-size: 0.82rem;
+  color: var(--dhr-grey-light);
+  margin: 0.25rem 0 0;
+}
+
+/* KPI row uses tpo-home-grid */
+.tpo-student360-kpis { margin: 0; }
+
+/* Tab bar */
+.tpo-student360-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Charts grid */
+.tpo-student360-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.tpo-student360-chart-card h3 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--dhr-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.75rem;
+}
+
+/* Profile summary with dl */
+.tpo-student360-profile h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dhr-ink);
+  margin: 0 0 0.65rem;
+}
+.tpo-student360-dl {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 0.5rem 1rem;
+  margin: 0.65rem 0 0;
+}
+.tpo-student360-dl dt {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dhr-grey-light);
+  align-self: baseline;
+}
+.tpo-student360-dl dd {
+  font-size: 0.84rem;
+  color: var(--dhr-ink-soft);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Two-column split (assessments tab) */
+.tpo-student360-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+/* Dark mode */
+.tpo-dashboard--dark .tpo-student360-header h1 { color: #dce8ff; }
+.tpo-dashboard--dark .tpo-student360-sub { color: #374457; }
+.tpo-dashboard--dark .tpo-student360-dl dt { color: #374457; }
+.tpo-dashboard--dark .tpo-student360-dl dd { color: #cad5f0; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .tpo-student360-charts { grid-template-columns: 1fr; }
+  .tpo-student360-split { grid-template-columns: 1fr; }
+  .tpo-student360-wrap { padding: 1rem; }
+}
+@media (max-width: 640px) {
+  .tpo-student360-dl { grid-template-columns: 1fr; }
+}
+
+/* ================================================================
+   STUDENT VIEW LINK BUTTON — small icon button in student rows
+   ================================================================ */
+
+.tpo-student-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--dhr-line);
+  border-radius: 7px;
+  background: var(--dhr-paper);
+  color: var(--dhr-grey);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.tpo-student-view-btn:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #2563eb;
+}
+.tpo-student-view-icon {
+  width: 14px; height: 14px;
+  stroke: currentColor; fill: none; stroke-width: 1.8;
+  flex-shrink: 0;
+}
+.tpo-dashboard--dark .tpo-student-view-btn { background: #0e1421; border-color: #1e2d45; color: #546078; }
+.tpo-dashboard--dark .tpo-student-view-btn:hover { background: #0c1e35; border-color: #1e3a5f; color: #60a5fa; }
+
+/* ================================================================
+   REPORTS PANEL — sub-table (nested inside a cell or detail row)
+   ================================================================ */
+
+.tpo-reports-subtable {
+  font-size: 0.8rem;
+}
+.tpo-reports-subtable th {
+  font-size: 0.68rem;
+  padding: 0.35rem 0.7rem;
+}
+.tpo-reports-subtable td {
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
 }

@@ -31,12 +31,12 @@ function StatCard({ label, value, note, iconClass, icon }: StatCardProps) {
 }
 
 const TIPS = [
-  { dot: "#818cf8", title: "Placements", desc: "Manage company drives and send magic links to shortlisted students." },
-  { dot: "#34d399", title: "Internal jobs", desc: "Publish college-only listings with batch and branch targeting." },
-  { dot: "#f59e0b", title: "Students", desc: "Invite, search, export, and manage profile edit approvals." },
-  { dot: "#60a5fa", title: "Applicants", desc: "Review stage-wise progress for each posting." },
-  { dot: "#a78bfa", title: "Reports", desc: "Download placement data and filtered student lists." },
-  { dot: "#f87171", title: "Admin", desc: "Bulk-upload students and configure platform settings." },
+  { dotClass: "tpo-welcome-tip-dot--indigo", title: "Placements", desc: "Manage company drives and send magic links to shortlisted students." },
+  { dotClass: "tpo-welcome-tip-dot--green",  title: "Internal jobs", desc: "Publish college-only listings with batch and branch targeting." },
+  { dotClass: "tpo-welcome-tip-dot--amber",  title: "Students", desc: "Invite, search, export, and manage profile edit approvals." },
+  { dotClass: "tpo-welcome-tip-dot--blue",   title: "Applicants", desc: "Review stage-wise progress for each posting." },
+  { dotClass: "tpo-welcome-tip-dot--purple", title: "Reports", desc: "Download placement data and filtered student lists." },
+  { dotClass: "tpo-welcome-tip-dot--red",    title: "Admin", desc: "Bulk-upload students and configure platform settings." },
 ];
 
 export function TpoHomePanel({
@@ -107,7 +107,7 @@ export function TpoHomePanel({
         <div className="tpo-welcome-grid">
           {TIPS.map((t) => (
             <div key={t.title} className="tpo-welcome-tip">
-              <span className="tpo-welcome-tip-dot" style={{ background: t.dot }} />
+              <span className={`tpo-welcome-tip-dot ${t.dotClass}`} />
               <span><strong>{t.title}</strong> — {t.desc}</span>
             </div>
           ))}

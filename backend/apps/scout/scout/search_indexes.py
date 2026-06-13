@@ -50,6 +50,35 @@ SCOUT_DB_INDEXES: dict[str, list[list[str]]] = {
     "Scout TPO Posting": [
         ["created_by_tpo"],
     ],
+    "Scout Inbound Job Suggestion": [
+        ["college_invite_id"],
+        ["student_user"],
+        ["job_id"],
+    ],
+    "Scout Company College Invite": [
+        ["company_user"],
+        ["job_id"],
+        ["tpo_user"],
+        ["company_user", "job_id"],
+    ],
+    "Scout Aptitude Assignment": [
+        ["student_user"],
+        ["student_user", "status"],
+        ["aptitude_assessment"],
+    ],
+    "Scout Aptitude Result": [
+        ["assignment"],
+        ["student_user"],
+    ],
+    "Scout Psychometric Result": [
+        ["assignment"],
+    ],
+    "Scout Company Interview": [
+        ["company_user"],
+        ["job_id"],
+        ["student_user"],
+        ["application_id"],
+    ],
 }
 
 

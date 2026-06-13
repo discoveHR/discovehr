@@ -120,15 +120,20 @@ export function TpoStudentsPanel(props: Props) {
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
             </span>
-            <input className="tpo-student-search-input" type="search" placeholder="Search by name, email, branch, or roll no..." value={studentSearch} onChange={(e) => setStudentSearch(e.target.value)} aria-label="Search students" />
+            <input className="tpo-student-search-input" type="search" placeholder="Search by name, email, branch, or roll no…" value={studentSearch} onChange={(e) => setStudentSearch(e.target.value)} aria-label="Search students" />
+            {studentSearch && (
+              <button type="button" className="tpo-student-search-clear" aria-label="Clear search" onClick={() => setStudentSearch("")}>
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            )}
           </div>
           {isStudentsLoading || isSearching ? (
-            <p className="empty-state">{isSearching ? "Searching…" : "Loading students..."}</p>
+            <div className="tpo-panel-loading">{isSearching ? "Searching…" : "Loading students…"}</div>
           ) : (
             <>
               <StudentsTable rows={displayRows} />
               {searchRows ? (
-                <p className="table-caption">{searchRows.length} match(es) — clear search to return to the paginated list.</p>
+                <p className="table-caption">{searchRows.length} result{searchRows.length !== 1 ? "s" : ""} — clear search to restore paginated list.</p>
               ) : (
                 <StudentPaginationBar
                   pagination={studentPagination}
@@ -197,6 +202,7 @@ export function TpoStudentsPanel(props: Props) {
       ) : null}
 
       {activeStudentTab === "invites" ? (
+        <div className="tpo-table-scroll">
         <table className="company-table">
           <thead>
             <tr>
@@ -212,7 +218,17 @@ export function TpoStudentsPanel(props: Props) {
           <tbody>
             {studentInvites.length === 0 ? (
               <tr>
-                <td colSpan={7}>No invites yet.</td>
+                <td colSpan={7}>
+                  <div className="tpo-empty">
+                    <div className="tpo-empty-icon">
+                      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12"/><path d="M1.6 3.38a2 2 0 0 1 2-2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9"/></svg>
+                    </div>
+                    <div>
+                      <strong>No invites sent yet</strong>
+                      <p>Add a student via the &ldquo;Add Student&rdquo; tab to send an invite.</p>
+                    </div>
+                  </div>
+                </td>
               </tr>
             ) : (
               studentInvites.map((invite) => (
@@ -229,6 +245,7 @@ export function TpoStudentsPanel(props: Props) {
             )}
           </tbody>
         </table>
+        </div>
       ) : null}
 
       {activeStudentTab === "download" ? (
@@ -331,27 +348,36 @@ export function TpoStudentsPanel(props: Props) {
 }
 
 function StudentsTable({ rows, batchMode = false }: { rows: Props["studentRows"]; batchMode?: boolean }) {
+  if (rows.length === 0) {
+    return (
+      <div className="tpo-empty">
+        <div className="tpo-empty-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <strong>No students found</strong>
+          <p>Try a different search term or adjust the batch filter.</p>
+        </div>
+      </div>
+    );
+  }
   return (
-    <table className="company-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          {!batchMode ? <th>Branch</th> : null}
-          <th>Batch</th>
-          {batchMode ? <th>Branch</th> : null}
-          {!batchMode ? <th>College</th> : null}
-          {!batchMode ? <th>Status</th> : null}
-          <th aria-label="Actions">View</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.length === 0 ? (
+    <div className="tpo-table-scroll">
+      <table className="company-table">
+        <thead>
           <tr>
-            <td colSpan={batchMode ? 5 : 7}>No students found.</td>
+            <th>Name</th>
+            <th>Email</th>
+            {!batchMode ? <th>Branch</th> : null}
+            <th>Batch</th>
+            {batchMode ? <th>Branch</th> : null}
+            {!batchMode ? <th>College</th> : null}
+            {!batchMode ? <th>Status</th> : null}
+            <th aria-label="View profile">View</th>
           </tr>
-        ) : (
-          rows.map((row) => (
+        </thead>
+        <tbody>
+          {rows.map((row) => (
             <tr key={row.studentId || row.email}>
               <td>{row.fullName || "—"}</td>
               <td>{row.email || "—"}</td>
@@ -364,18 +390,18 @@ function StudentsTable({ rows, batchMode = false }: { rows: Props["studentRows"]
                   {row.isPendingInvite ? (
                     <span className="tpo-invite-status tpo-invite-status--pending">{row.inviteStatus || "Invited"}</span>
                   ) : (
-                    "Registered"
+                    <span className="tpo-invite-status tpo-invite-status--accepted">Registered</span>
                   )}
                 </td>
               ) : null}
               <td>
-                {row.isPendingInvite ? "—" : <StudentViewLink studentId={row.studentId || row.email} />}
+                {row.isPendingInvite ? <span className="tpo-cell-muted">—</span> : <StudentViewLink studentId={row.studentId || row.email} />}
               </td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

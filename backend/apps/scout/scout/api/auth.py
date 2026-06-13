@@ -215,7 +215,9 @@ def authenticate_scout_bearer_token():
         return
     user_id = _resolve_user_from_access_token(token)
     if user_id:
+        form_dict = frappe.local.form_dict
         frappe.set_user(user_id)
+        frappe.local.form_dict = form_dict
 
 
 def apply_bearer_auth():

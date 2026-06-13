@@ -20,11 +20,11 @@ export function TpoAdminPanel({
 }: Props) {
   return (
     <div className="tpo-panel">
-      <div className="company-table-head">
-        <h3>Bulk student profile update (CSV/XLSX)</h3>
-        <span className="table-caption">Upload student sheet. Supports existing profile updates and optional invite creation for missing users.</span>
+      <div className="tpo-panel-section-head">
+        <h3>Bulk student upload</h3>
+        <p>Upload a CSV or XLSX file. Supports profile updates and optional invite creation for students not yet in Scout.</p>
       </div>
-      <form className="job-form-grid" onSubmit={handleBulkStudentUpload}>
+      <form className="job-form-grid" style={{ padding: "1rem 1.4rem 1.4rem" }} onSubmit={handleBulkStudentUpload}>
         <div className="job-form-row">
           <label>Student file</label>
           <input type="file" accept=".csv,.xlsx" onChange={(e) => setBulkUploadFile(e.target.files?.[0] || null)} required />

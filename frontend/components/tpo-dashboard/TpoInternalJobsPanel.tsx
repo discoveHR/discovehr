@@ -311,21 +311,21 @@ function MotionlessList({ internalPostings, handleLoadApplicants }: Pick<Props, 
                     <span className={postStatusClass(posting.status)}>{posting.status}</span>
                   </div>
                   {posting.targetBatches || posting.batch ? (
-                    <span style={{ fontSize: "0.72rem", color: "var(--dhr-grey-light)" }}>
+                    <span className="tpo-int-post-batches">
                       Batches: {posting.targetBatches || posting.batch}
                     </span>
                   ) : null}
                 </div>
 
                 <div className="tpo-int-post-actions">
-                  <button type="button" className="tpo-form-btn" style={{ fontSize: "0.76rem", padding: "0.38rem 0.85rem" }} onClick={() => void handleLoadApplicants(posting.id)}>
+                  <button type="button" className="tpo-form-btn tpo-form-btn--sm" onClick={() => void handleLoadApplicants(posting.id)}>
                     View applicants
                   </button>
-                  <a className="tpo-form-btn tpo-form-btn--secondary" style={{ fontSize: "0.76rem", padding: "0.38rem 0.85rem", textDecoration: "none" }} href={downloadTpoApplicantsUrl(posting.id)}>
+                  <a className="tpo-form-btn tpo-form-btn--secondary tpo-form-btn--sm" href={downloadTpoApplicantsUrl(posting.id)}>
                     Download CSV
                   </a>
                   {posting.applicationLink ? (
-                    <a style={{ fontSize: "0.72rem", color: "var(--dhr-grey-light)", textDecoration: "none", textAlign: "center" }} href={posting.applicationLink} target="_blank" rel="noopener noreferrer">
+                    <a className="tpo-int-post-ext-link" href={posting.applicationLink} target="_blank" rel="noopener noreferrer">
                       Open link ↗
                     </a>
                   ) : null}

@@ -94,22 +94,43 @@ def _suggested_students_for_invite(invite_id: str) -> list[dict]:
         order_by="creation desc",
         limit_page_length=500,
     )
+    if not rows:
+        return []
+
+    uids = [r.get("student_user") for r in rows if r.get("student_user")]
+    profile_map: dict = {}
+    if uids:
+        profiles = frappe.get_all(
+            "Scout Student Profile",
+            filters={"student_user": ["in", uids]},
+            fields=["student_user", "full_name", "email", "department_stream", "academic_year"],
+            limit_page_length=len(uids),
+        )
+        profile_map = {p["student_user"]: p for p in profiles}
+
+    missing_uids = [uid for uid in uids if uid not in profile_map]
+    user_map: dict = {}
+    if missing_uids:
+        users = frappe.get_all(
+            "User",
+            filters={"name": ["in", missing_uids]},
+            fields=["name", "full_name", "email"],
+            limit_page_length=len(missing_uids),
+        )
+        user_map = {u["name"]: u for u in users}
+
     out = []
     for row in rows:
         uid = row.get("student_user")
-        prof = frappe.db.get_value(
-            "Scout Student Profile",
-            {"student_user": uid},
-            ["full_name", "email", "department_stream", "academic_year"],
-            as_dict=True,
-        )
+        prof = profile_map.get(uid) or {}
+        fallback = user_map.get(uid) or {}
         out.append(
             {
                 "studentId": uid,
-                "fullName": (prof or {}).get("full_name") or frappe.get_cached_value("User", uid, "full_name") or "",
-                "email": (prof or {}).get("email") or frappe.get_cached_value("User", uid, "email") or "",
-                "branch": (prof or {}).get("department_stream") or "",
-                "batch": (prof or {}).get("academic_year") or "",
+                "fullName": prof.get("full_name") or fallback.get("full_name") or "",
+                "email": prof.get("email") or fallback.get("email") or "",
+                "branch": prof.get("department_stream") or "",
+                "batch": prof.get("academic_year") or "",
                 "bypassPri": bool(row.get("bypass_pri")),
             }
         )

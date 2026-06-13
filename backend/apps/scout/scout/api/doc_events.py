@@ -54,8 +54,10 @@ def on_application_save(doc, method=None):
 
 
 def on_scout_job_save(doc, method=None):
+    from scout.api.cache_utils import invalidate_active_jobs_cache
     from scout.services.search_client import index_scout_job
 
+    invalidate_active_jobs_cache()
     frappe.enqueue(
         index_scout_job,
         queue="short",

@@ -10,8 +10,9 @@ export function TpoApplicantsPanel({ selectedPostingId, isApplicantsLoading, app
         <span className="table-caption">Filtered by posting branch/batch. Choose a posting from Placements or Internal job posting if this list is empty.</span>
       </div>
       {isApplicantsLoading ? (
-        <p className="empty-state">Loading applicants...</p>
+        <div className="tpo-panel-loading">Loading applicants…</div>
       ) : (
+        <div className="tpo-table-scroll">
         <table className="company-table">
           <thead>
             <tr>
@@ -25,7 +26,17 @@ export function TpoApplicantsPanel({ selectedPostingId, isApplicantsLoading, app
           <tbody>
             {applicants.length === 0 ? (
               <tr>
-                <td colSpan={5}>No applicants matched yet.</td>
+                <td colSpan={5}>
+                  <div className="tpo-empty">
+                    <div className="tpo-empty-icon">
+                      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                    </div>
+                    <div>
+                      <strong>No applicants yet</strong>
+                      <p>Select a posting from Placements or Internal Jobs to view its applicants.</p>
+                    </div>
+                  </div>
+                </td>
               </tr>
             ) : (
               applicants.map((item) => (
@@ -40,6 +51,7 @@ export function TpoApplicantsPanel({ selectedPostingId, isApplicantsLoading, app
             )}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

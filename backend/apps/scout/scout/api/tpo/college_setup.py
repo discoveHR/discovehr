@@ -160,15 +160,25 @@ def get_college_setup():
 
     profile_resp = serialize_tpo_profile_api(row, user_id)
 
+    from scout.api.cache_utils import COLLEGE_SETUP_TTL, college_setup_cache_key
+
+    cache_key = college_setup_cache_key(user_id)
+    structure = frappe.cache().get_value(cache_key)
+    if structure is None:
+        structure = {
+            "departments": _serialize_departments(user_id),
+            "branches": _serialize_branches(user_id),
+            "passoutYears": _serialize_passout_years(user_id),
+            "batches": _serialize_batches(user_id),
+        }
+        frappe.cache().set_value(cache_key, structure, expires_in_sec=COLLEGE_SETUP_TTL)
+
     return {
         "ok": True,
         "data": {
             "status": status,
             "profile": profile_resp,
-            "departments": _serialize_departments(user_id),
-            "branches": _serialize_branches(user_id),
-            "passoutYears": _serialize_passout_years(user_id),
-            "batches": _serialize_batches(user_id),
+            **structure,
         },
     }
 
@@ -249,6 +259,8 @@ def save_college_setup():
         )
 
         frappe.db.commit()
+        from scout.api.cache_utils import invalidate_college_setup_cache
+        invalidate_college_setup_cache(user_id)
     except frappe.ValidationError as exc:
         frappe.db.rollback()
         frappe.local.response["http_status_code"] = 400

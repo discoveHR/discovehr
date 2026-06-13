@@ -152,14 +152,23 @@ def _report_applications(student_ids: set[str], profiles: dict[str, dict]):
         for row in frappe.get_all("Scout Job", filters={"name": ["in", list(job_ids)]}, fields=["name", "title", "company_user"], limit_page_length=500):
             job_titles[row["name"]] = row
 
+    company_user_ids = list({row.get("company_user") for row in job_titles.values() if row.get("company_user")})
+    company_name_map: dict = {}
+    if company_user_ids:
+        cu_rows = frappe.get_all(
+            "User",
+            filters={"name": ["in", company_user_ids]},
+            fields=["name", "full_name"],
+            limit_page_length=len(company_user_ids),
+        )
+        company_name_map = {u["name"]: u.get("full_name") or u["name"] for u in cu_rows}
+
     rows = []
     for app in apps:
         uid = app.get("student_user")
         prof = profiles.get(uid) or {}
         job = job_titles.get(app.get("job_id")) or {}
-        company_name = ""
-        if job.get("company_user"):
-            company_name = frappe.get_cached_value("User", job["company_user"], "full_name") or job["company_user"]
+        company_name = company_name_map.get(job.get("company_user") or "", "") or job.get("company_user") or ""
         rows.append(
             {
                 **_serialize_student(uid, prof),

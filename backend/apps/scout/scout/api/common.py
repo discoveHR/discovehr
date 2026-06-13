@@ -24,7 +24,9 @@ def _portal_session_user():
     if bearer:
         user_id = _resolve_user_from_access_token(bearer)
         if user_id:
+            form_dict = frappe.local.form_dict
             frappe.set_user(user_id)
+            frappe.local.form_dict = form_dict
             return user_id
 
     user_id = frappe.session.user
