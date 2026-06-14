@@ -72,29 +72,43 @@ def _job_list_filters() -> dict:
     return filters
 
 
-def _fulltext_job_search(q: str, *, limit: int, offset: int) -> tuple[list[str], int] | None:
+def _fulltext_job_search(q: str, *, limit: int, offset: int, base_filters: dict | None = None) -> tuple[list[str], int] | None:
     try:
+        extra_clauses = []
+        extra_params: list = []
+        if base_filters:
+            for field, value in base_filters.items():
+                if field == "status":
+                    continue  # already hardcoded as 'Active'
+                if isinstance(value, str):
+                    extra_clauses.append(f"`{field}` = %s")
+                    extra_params.append(value)
+
+        extra_sql = (" AND " + " AND ".join(extra_clauses)) if extra_clauses else ""
+
         rows = frappe.db.sql(
-            """
+            f"""
             SELECT name,
                    MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE) AS relevance
             FROM `tabScout Job`
             WHERE status = 'Active'
               AND MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE)
+              {extra_sql}
             ORDER BY relevance DESC, creation DESC
             LIMIT %s OFFSET %s
             """,
-            (q, q, limit, offset),
+            (q, q, *extra_params, limit, offset),
             as_dict=True,
         )
         count_row = frappe.db.sql(
-            """
+            f"""
             SELECT COUNT(*) AS total
             FROM `tabScout Job`
             WHERE status = 'Active'
               AND MATCH(title, skills) AGAINST (%s IN BOOLEAN MODE)
+              {extra_sql}
             """,
-            (q,),
+            (q, *extra_params),
             as_dict=True,
         )
         total = int((count_row[0] or {}).get("total") or 0) if count_row else 0
@@ -162,13 +176,18 @@ def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> l
         jobs = _enrich_jobs([row_to_job(r) for r in rows], application_by_job, inbound_ids)
         return jobs[:SUGGESTED_JOBS_LIMIT]
 
-    rows = frappe.get_all(
-        "Scout Job",
-        filters={"status": "Active", "skills": ["like", "%python%"]},
-        fields=JOB_FIELDS,
-        order_by="creation desc",
-        limit_page_length=SUGGESTED_JOBS_LIMIT,
-    )
+    student_skills = frappe.db.get_value("Scout Student Profile", user_id, "skills") or ""
+    first_skill = (student_skills.split(",")[0].strip() if student_skills else "").lower()
+    skill_rows: list = []
+    if first_skill:
+        skill_rows = frappe.get_all(
+            "Scout Job",
+            filters={"status": "Active", "skills": ["like", f"%{first_skill}%"]},
+            fields=JOB_FIELDS,
+            order_by="creation desc",
+            limit_page_length=SUGGESTED_JOBS_LIMIT,
+        )
+    rows = skill_rows
     if not rows:
         rows = frappe.get_all(
             "Scout Job",
@@ -255,7 +274,7 @@ def list_student_jobs():
                 inbound_ids,
             )
         else:
-            ft = _fulltext_job_search(q, limit=page_size, offset=offset)
+            ft = _fulltext_job_search(q, limit=page_size, offset=offset, base_filters=base_filters)
             if ft:
                 job_ids, total = ft
                 if job_ids:

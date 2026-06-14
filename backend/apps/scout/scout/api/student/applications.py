@@ -91,16 +91,21 @@ def apply_to_job():
         frappe.local.response["http_status_code"] = 409
         return {"ok": False, "message": _("You have already applied to this job.")}
 
-    doc = frappe.get_doc(
-        {
-            "doctype": "Scout Application",
-            "job_id": job_id,
-            "student_user": user_id,
-            "application_status": "Submitted",
-            "applied_on": frappe.utils.now_datetime(),
-        }
-    )
-    doc.insert(ignore_permissions=True)
+    try:
+        doc = frappe.get_doc(
+            {
+                "doctype": "Scout Application",
+                "job_id": job_id,
+                "student_user": user_id,
+                "application_status": "Submitted",
+                "applied_on": frappe.utils.now_datetime(),
+            }
+        )
+        doc.insert(ignore_permissions=True)
+    except frappe.DuplicateEntryError:
+        frappe.db.rollback()
+        frappe.local.response["http_status_code"] = 409
+        return {"ok": False, "message": _("You have already applied to this job.")}
 
     current_applications = int(frappe.db.get_value("Scout Job", job_id, "applications") or 0)
     frappe.db.set_value("Scout Job", job_id, "applications", current_applications + 1, update_modified=False)

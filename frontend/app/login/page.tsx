@@ -217,7 +217,7 @@ function UnifiedLoginForm() {
                     </span>
                     Password
                   </label>
-                  <a href="#" className="forgot-link">Forgot password?</a>
+                  <span className="forgot-link" style={{ visibility: "hidden" }}>Forgot password?</span>
                 </div>
                 <div className="field-input-wrap">
                   <input

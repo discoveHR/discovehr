@@ -2,6 +2,7 @@ import type { StudentApplicationStatus } from "../../lib/api";
 
 type StudentApplicationsPanelProps = {
   applicationStatus: StudentApplicationStatus[];
+  applicationsTruncated?: boolean;
 };
 
 function statusClass(status: string): string {
@@ -18,14 +19,14 @@ function jobInitial(title: string): string {
   return (title || "J").trim().charAt(0).toUpperCase();
 }
 
-export function StudentApplicationsPanel({ applicationStatus }: StudentApplicationsPanelProps) {
+export function StudentApplicationsPanel({ applicationStatus, applicationsTruncated }: StudentApplicationsPanelProps) {
   return (
     <section className="company-table-wrap">
       <div className="company-table-head">
         <h3>My Applications</h3>
         <span className="table-caption">
           {applicationStatus.length > 0
-            ? `${applicationStatus.length} application${applicationStatus.length === 1 ? "" : "s"} tracked`
+            ? `${applicationStatus.length} application${applicationStatus.length === 1 ? "" : "s"} tracked${applicationsTruncated ? " (showing most recent 200)" : ""}`
             : "Track applications you have submitted to open roles."}
         </span>
       </div>

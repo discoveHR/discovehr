@@ -141,7 +141,7 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
             </>
           ) : null}
 
-          {d.activeMenu === "applications" ? <StudentApplicationsPanel applicationStatus={d.applicationStatus} /> : null}
+          {d.activeMenu === "applications" ? <StudentApplicationsPanel applicationStatus={d.applicationStatus} applicationsTruncated={d.applicationsTruncated} /> : null}
 
           {d.activeMenu === "mock-interviews" ? (
             <StudentPlaceholderPanel

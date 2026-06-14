@@ -75,8 +75,8 @@ function AdminLoginForm() {
     setError("");
     setSuccessHint("");
     try {
-      const result = await adminLogin({ email, password });
-      localStorage.setItem("scout_session", JSON.stringify({ role: "admin", user: result?.user }));
+      await adminLogin({ email, password });
+      localStorage.setItem("scout_session", JSON.stringify({ role: "admin" }));
       router.push("/admin/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Check your credentials.");

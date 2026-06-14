@@ -274,7 +274,12 @@ def upsert_tpo_profile():
 
     doc = _ensure_tpo_profile(user_id)
     _apply_profile_fields_to_doc(doc, fields)
-    doc.save(ignore_permissions=True)
+    try:
+        doc.save(ignore_permissions=True)
+    except frappe.exceptions.MandatoryError as exc:
+        frappe.local.response["http_status_code"] = 400
+        from frappe.utils import strip_html
+        return {"ok": False, "message": strip_html(str(exc)).strip() or _("Please fill in all required profile fields.")}
 
     from scout.api.college_registry import ensure_scout_college_for_tpo
 

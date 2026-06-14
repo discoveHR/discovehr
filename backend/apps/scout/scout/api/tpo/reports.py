@@ -81,7 +81,7 @@ def get_tpo_report():
     if err:
         return err
 
-    report_key = norm(frappe.form_dict.get("reportKey")).lower()
+    report_key = norm(frappe.form_dict.get("reportKey") or frappe.form_dict.get("reportType")).lower()
     page, page_size = report_pagination_from_request()
     if page is None:
         page, page_size = 1, DEFAULT_REPORT_PAGE_SIZE
@@ -527,7 +527,7 @@ def download_tpo_report():
 
     from scout.api.tpo.report_export import enqueue_tpo_report_export, should_async_export
 
-    report_key = norm(frappe.form_dict.get("reportKey")).lower()
+    report_key = norm(frappe.form_dict.get("reportKey") or frappe.form_dict.get("reportType")).lower()
     if should_async_export(user_id) and not cint(frappe.form_dict.get("sync")):
         frappe.form_dict["page"] = 1
         frappe.form_dict["pageSize"] = 5000

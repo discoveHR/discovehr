@@ -17,7 +17,6 @@ REGISTER_SELECTABLE_ROLES = frozenset(
         "Student",
         "Job Seeker",
         "Training & Placement Officer",
-        "Internal Team",
         "Freelancer",
     }
 )
@@ -70,7 +69,7 @@ def _portal_user_payload(user_id: str) -> dict:
 
 ACCESS_TOKEN_ENV_KEY = "SCOUT_ACCESS_TOKEN_TTL_SECONDS"
 REFRESH_TOKEN_ENV_KEY = "SCOUT_REFRESH_TOKEN_TTL_SECONDS"
-DEFAULT_ACCESS_TOKEN_TTL_SECONDS = 3 * 24 * 60 * 60  # 3 days
+DEFAULT_ACCESS_TOKEN_TTL_SECONDS = 24 * 60 * 60  # 1 day
 DEFAULT_REFRESH_TOKEN_TTL_SECONDS = 7 * 24 * 60 * 60
 
 
@@ -91,6 +90,38 @@ def _access_ttl_seconds() -> int:
 
 def _refresh_ttl_seconds() -> int:
     return _int_env(REFRESH_TOKEN_ENV_KEY, DEFAULT_REFRESH_TOKEN_TTL_SECONDS)
+
+
+_BRUTE_FORCE_MAX_ATTEMPTS = 10
+_BRUTE_FORCE_WINDOW_SECONDS = 900  # 15 minutes
+
+
+def _login_fail_key(email: str) -> str:
+    return f"scout_login_fail:{email}"
+
+
+def _is_login_rate_limited(email: str) -> bool:
+    try:
+        count = int(frappe.cache().get_value(_login_fail_key(email)) or 0)
+        return count >= _BRUTE_FORCE_MAX_ATTEMPTS
+    except Exception:
+        return False
+
+
+def _record_login_failure(email: str) -> None:
+    try:
+        key = _login_fail_key(email)
+        count = int(frappe.cache().get_value(key) or 0)
+        frappe.cache().set_value(key, count + 1, expires_in_sec=_BRUTE_FORCE_WINDOW_SECONDS)
+    except Exception:
+        pass
+
+
+def _clear_login_failures(email: str) -> None:
+    try:
+        frappe.cache().delete_value(_login_fail_key(email))
+    except Exception:
+        pass
 
 
 def _hash_token(token: str) -> str:
@@ -585,9 +616,9 @@ def token_login(email: Optional[str] = None, password: Optional[str] = None):
         frappe.local.response["http_status_code"] = 400
         return {"ok": False, "message": _("Email and password are required.")}
 
-    if not frappe.db.exists("User", email):
-        frappe.local.response["http_status_code"] = 401
-        return {"ok": False, "message": _("Invalid email or password.")}
+    if _is_login_rate_limited(email):
+        frappe.local.response["http_status_code"] = 429
+        return {"ok": False, "message": _("Too many failed login attempts. Please try again later.")}
 
     # Drop stale Frappe cookie session so later API calls use Bearer tokens for this user.
     if frappe.session.user and frappe.session.user != "Guest":
@@ -599,11 +630,15 @@ def token_login(email: Optional[str] = None, password: Optional[str] = None):
     try:
         check_password(email, password)
     except frappe.AuthenticationError:
+        _record_login_failure(email)
         frappe.local.response["http_status_code"] = 401
         return {"ok": False, "message": _("Invalid email or password.")}
     except Exception:
+        _record_login_failure(email)
         frappe.local.response["http_status_code"] = 401
         return {"ok": False, "message": _("Invalid email or password.")}
+
+    _clear_login_failures(email)
 
     roles = frappe.get_roles(email)
     if not any(role in PORTAL_ALLOWED_ROLES for role in roles):
@@ -693,6 +728,10 @@ def accept_student_invite():
     if not token or not full_name or not password:
         frappe.local.response["http_status_code"] = 400
         return {"ok": False, "message": _("Token, full name, and password are required.")}
+
+    if len(str(password)) < 8:
+        frappe.local.response["http_status_code"] = 400
+        return {"ok": False, "message": _("Password must be at least 8 characters.")}
 
     token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
     invite = frappe.get_value(

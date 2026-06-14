@@ -145,7 +145,7 @@ def _log_college_invite(company_user, job_id, college_email, note, status, error
         "sent_at": frappe.utils.now_datetime(),
         "note": note or "",
         "error_message": error_message or "",
-        "tpo_response": "Pending" if status == "Sent" else "Pending",
+        "tpo_response": "Pending" if status == "Sent" else "N/A",
         "recruitment_stage": "Request Received",
     }
     if status == "Sent":
@@ -675,6 +675,7 @@ def create_job():
             "applications",
             "description",
             "creation",
+            "journey_stages",
         ],
         order_by="creation desc",
     )

@@ -50,6 +50,7 @@ export function useStudentDashboard() {
   const [jobsPage, setJobsPage] = useState(1);
   const [internalPostings, setInternalPostings] = useState<TpoPosting[]>([]);
   const [applicationStatus, setApplicationStatus] = useState<StudentApplicationStatus[]>([]);
+  const [applicationsTruncated, setApplicationsTruncated] = useState(false);
   const [lmsContext, setLmsContext] = useState<StudentLmsContext | null>(null);
   const [isLmsLoading, setIsLmsLoading] = useState(false);
   const [profileForm, setProfileForm] = useState<StudentProfileData>({ ...EMPTY_STUDENT_PROFILE });
@@ -172,6 +173,10 @@ export function useStudentDashboard() {
     setSuggestedJobs(data?.suggestedJobs || []);
     setInternalPostings(data?.internalPostings || []);
     setApplicationStatus(data?.applicationStatus || []);
+    setApplicationsTruncated(Boolean(data?.applicationsTruncated));
+    if (data?.listJobs?.length) {
+      setJobBoardJobs(data.listJobs);
+    }
 
     const flags = data.profileFlags;
     const pubApply = data.publicJobApply;
@@ -721,6 +726,7 @@ export function useStudentDashboard() {
     goToJobsPage,
     internalPostings,
     applicationStatus,
+    applicationsTruncated,
     lmsContext,
     isLmsLoading,
     profileForm,

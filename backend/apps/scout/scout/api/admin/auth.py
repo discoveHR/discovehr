@@ -97,7 +97,10 @@ def ensure_admin_user():
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
 def ensure_demo_admin_user():
-    """Create or reset the admin user (reads credentials from env / site config)."""
+    """Create or reset the admin user. Only available in developer mode."""
+    if not frappe.conf.get("developer_mode"):
+        frappe.local.response["http_status_code"] = 403
+        return {"ok": False, "message": frappe._("This endpoint is only available in developer mode.")}
     from scout.utils.env_config import scout_conf
     email = scout_conf("scout_admin_email", "SCOUT_ADMIN_EMAIL") or "admin@scout.com"
     password = scout_conf("scout_admin_password", "SCOUT_ADMIN_PASSWORD") or "Admin@123"
@@ -105,7 +108,7 @@ def ensure_demo_admin_user():
     return {
         "ok": True,
         "message": frappe._("Admin ready."),
-        "data": {"email": email, "password": password, "loginUrl": "/admin/login"},
+        "data": {"email": email, "loginUrl": "/admin/login"},
     }
 
 

@@ -323,7 +323,15 @@ def update_student_profile():
 
     merged = {**parsed, "full_name": full_name, "email": email}
 
-    if finalize_profile and not profile_row_complete(merged):
+    if finalize_profile:
+        # Load DB state so profile_row_complete sees already-saved fields too
+        db_fields = _student_profile_select_fields([f for f, _ in PROFILE_API_FIELD_MAP])
+        db_row = frappe.db.get_value("Scout Student Profile", user_id, db_fields, as_dict=True) or {}
+        merged_for_complete = {**db_row, **merged}
+    else:
+        merged_for_complete = merged
+
+    if finalize_profile and not profile_row_complete(merged_for_complete):
         frappe.local.response["http_status_code"] = 400
         return {
             "ok": False,

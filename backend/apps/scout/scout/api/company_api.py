@@ -343,8 +343,8 @@ def list_sub_admin_district_applicants():
     apps = frappe.get_all(
         "Scout Application",
         filters=app_filters,
-        fields=["name", "student_user", "job_id", "application_status", "applied_on"],
-        order_by="applied_on desc",
+        fields=["name", "student_user", "job_id", "application_status", "creation"],
+        order_by="creation desc",
         limit_start=offset,
         limit_page_length=page_size,
     )
@@ -366,7 +366,7 @@ def list_sub_admin_district_applicants():
             "jobId": app.job_id or "",
             "jobTitle": job_title or "",
             "status": app.application_status or "",
-            "appliedOn": str(app.applied_on or ""),
+            "appliedOn": str(app.creation or ""),
         })
     return {"ok": True, "data": {
         "district": district, "state": ctx.state, "applicants": result,

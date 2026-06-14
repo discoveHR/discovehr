@@ -19,6 +19,7 @@ from scout.api.company.jobs_applications import (
     list_college_invites,
     list_applicants,
     list_jobs,
+    send_offer_letter,
     update_application_status,
     update_job_status,
 )
@@ -46,6 +47,7 @@ __all__ = [
     "list_assessments",
     "list_college_invites",
     "list_jobs",
+    "send_offer_letter",
     "login",
     "logout",
     "me",
