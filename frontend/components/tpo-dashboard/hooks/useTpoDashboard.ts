@@ -336,7 +336,7 @@ export function useTpoDashboard() {
       try {
         const listed = await listTpoStudentsByParameters({ page: 1 });
         setStudentDirectoryCount(listed.pagination.total);
-        setStudentCountCapped(listed.pagination.total >= 2000);
+        setStudentCountCapped(Boolean(listed.pagination.truncated));
         setStudentRows(listed.students);
         setStudentPagination(listed.pagination);
         setStudentPage(1);
@@ -540,7 +540,7 @@ export function useTpoDashboard() {
       setStudentPagination(listed.pagination);
       setStudentPage(1);
       setStudentDirectoryCount(listed.pagination.total);
-      setStudentCountCapped(listed.pagination.total >= 2000);
+      setStudentCountCapped(Boolean(listed.pagination.truncated));
       setActiveMenu("students");
       setActiveStudentTab("all");
     } catch (err) {

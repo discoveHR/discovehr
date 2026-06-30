@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
@@ -37,44 +37,129 @@ const TpoReportsPanel = dynamic(() => import("./TpoReportsPanel").then((m) => m.
   loading: () => <PanelLoading label="Reports" />,
 });
 
-type Props = {
-  dashboard: TpoDashboardState;
-};
+type Props = { dashboard: TpoDashboardState };
 
 export function TpoDashboardView({ dashboard }: Props) {
   const d = dashboard;
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  if (d.isLoading) {
-    return <PortalDashboardLoader portal="tpo" />;
-  }
+  if (d.isLoading) return <PortalDashboardLoader portal="tpo" />;
 
   return (
-    <main className={`tpo-dashboard ${d.theme === "dark" ? "tpo-dashboard--dark" : ""}`}>
-      {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
-      <TpoSidebar activeMenu={d.activeMenu} setActiveMenu={d.setActiveMenu} handleLogout={d.handleLogout} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <main className={`tpo-dashboard${d.theme === "dark" ? " tpo-dashboard--dark" : ""}`}>
+      <TpoSidebar
+        activeMenu={d.activeMenu}
+        setActiveMenu={d.setActiveMenu}
+        handleLogout={d.handleLogout}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        displayName={d.displayName}
+        userEmail={d.userEmail}
+      />
+
       <div className="tpo-dashboard-main">
+        {/* Top bar */}
         <header className="tpo-topbar">
           <div className="tpo-topbar-left">
-            <button type="button" className="sidebar-hamburger" onClick={() => setSidebarOpen(true)} aria-label="Open navigation menu">
+            <button
+              type="button"
+              className="tpo-hamburger"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
               <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" strokeWidth="2" strokeLinecap="round">
-                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
               </svg>
             </button>
-            <h1>{d.institutionTitle}</h1>
-            <p>
-              {d.tpoProfile.collegeLocation ? `${d.tpoProfile.collegeLocation} · ` : null}
-              {d.tpoProfile.state ? `${d.tpoProfile.state}, ` : null}
-              {d.tpoProfile.country || "India"} · Training & Placement Unit
-            </p>
+            <div>
+              <h1 className="tpo-topbar-title">{d.institutionTitle}</h1>
+              <p className="tpo-topbar-sub">
+                {d.tpoProfile.collegeLocation ? `${d.tpoProfile.collegeLocation} · ` : ""}
+                {d.tpoProfile.state ? `${d.tpoProfile.state}, ` : ""}
+                {d.tpoProfile.country || "India"} · Training &amp; Placement
+              </p>
+            </div>
           </div>
-          <TpoTopbarRight d={d} />
+
+          <div className="tpo-topbar-right">
+            <div className="tpo-topbar-search-wrap">
+              <svg className="tpo-topbar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input
+                className="tpo-topbar-search"
+                type="search"
+                placeholder="Search students…"
+                aria-label="Search students (coming soon)"
+                title="Coming soon"
+                readOnly
+              />
+            </div>
+
+            <div className="tpo-topbar-actions">
+              {/* Notifications */}
+              <div className="tpo-notif-wrap">
+                <button
+                  type="button"
+                  className="tpo-topbar-icon-btn"
+                  aria-label="Notifications"
+                  onClick={() => d.setShowNotifications((p) => !p)}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="16" height="16">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                  <span className="tpo-notif-dot" aria-hidden />
+                </button>
+                {d.showNotifications && (
+                  <div className="tpo-notif-panel">
+                    <p className="tpo-notif-title">Notifications</p>
+                    <p className="tpo-notif-empty">Placement updates will appear here.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Theme toggle */}
+              <button
+                type="button"
+                className="tpo-topbar-icon-btn"
+                onClick={d.toggleTheme}
+                aria-label={d.theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                title="Toggle theme"
+              >
+                {d.theme === "dark" ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="16" height="16">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" width="16" height="16">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                )}
+              </button>
+
+              {/* User */}
+              <div className="tpo-topbar-user">
+                <div className="tpo-user-avatar">{initialsFromName(d.displayName)}</div>
+                <div className="tpo-user-meta">
+                  <strong>{d.displayName}</strong>
+                  <span>TPO{d.userEmail ? ` · ${d.userEmail}` : ""}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </header>
 
+        {/* Body */}
         <div className="tpo-dashboard-body">
-          {d.activeMenu === "college-profile" && (
-            <TpoCollegeSetupPanel displayName={d.displayName} onProfileSaved={() => void d.reloadAfterCollegeSetup()} />
-          )}
           {d.activeMenu === "home" && (
             <TpoHomePanel
               studentDirectoryCount={d.studentDirectoryCount}
@@ -84,7 +169,11 @@ export function TpoDashboardView({ dashboard }: Props) {
               tpoProfile={d.tpoProfile}
               activePostingsCount={d.activePostingsCount}
               pendingInvitesCount={d.pendingInvitesCount}
+              setActiveMenu={d.setActiveMenu}
             />
+          )}
+          {d.activeMenu === "college-profile" && (
+            <TpoCollegeSetupPanel displayName={d.displayName} onProfileSaved={() => void d.reloadAfterCollegeSetup()} />
           )}
           {d.activeMenu === "placements" && (
             <TpoPlacementsPanel postings={d.postings} handleLoadApplicants={d.handleLoadApplicants} handleSendMagicLink={d.handleSendMagicLink} sendingPostingId={d.sendingPostingId} />
@@ -99,7 +188,9 @@ export function TpoDashboardView({ dashboard }: Props) {
               handleLoadApplicants={d.handleLoadApplicants}
             />
           )}
-          {d.activeMenu === "applicants" && <TpoApplicantsPanel selectedPostingId={d.selectedPostingId} isApplicantsLoading={d.isApplicantsLoading} applicants={d.applicants} />}
+          {d.activeMenu === "applicants" && (
+            <TpoApplicantsPanel selectedPostingId={d.selectedPostingId} isApplicantsLoading={d.isApplicantsLoading} applicants={d.applicants} />
+          )}
           {d.activeMenu === "students" && (
             <TpoStudentsPanel
               activeStudentTab={d.activeStudentTab}
@@ -123,14 +214,17 @@ export function TpoDashboardView({ dashboard }: Props) {
               loadProfileEditRequests={d.loadProfileEditRequests}
               handleApproveProfileEdit={d.handleApproveProfileEdit}
               approvingStudentId={d.approvingStudentId}
+              bulkUploadForm={d.bulkUploadForm}
+              setBulkUploadForm={d.setBulkUploadForm}
+              bulkUploadFile={d.bulkUploadFile}
+              setBulkUploadFile={d.setBulkUploadFile}
+              isBulkUploading={d.isBulkUploading}
+              handleBulkStudentUpload={d.handleBulkStudentUpload}
             />
           )}
           {d.activeMenu === "reports" && <TpoReportsPanel onError={(msg) => d.showToast(msg, "error")} />}
           {d.activeMenu === "inbound-jobs" && (
-            <TpoInboundJobsPanel
-              onError={(msg) => d.showToast(msg, "error")}
-              onSuccess={(msg) => d.showToast(msg, "success")}
-            />
+            <TpoInboundJobsPanel onError={(msg) => d.showToast(msg, "error")} onSuccess={(msg) => d.showToast(msg, "success")} />
           )}
           {d.activeMenu === "calendars" && (
             <TpoCalendarsPanel onError={(msg) => d.showToast(msg, "error")} onSuccess={(msg) => d.showToast(msg, "success")} />
@@ -156,50 +250,17 @@ export function TpoDashboardView({ dashboard }: Props) {
         </div>
       </div>
 
-      {d.toast ? <Toast message={d.toast.message} type={d.toast.type} onClose={d.dismissToast} /> : null}
-      {d.bulkUploadAlert ? <BulkUploadAlertModal message={d.bulkUploadAlert} onClose={() => d.setBulkUploadAlert(null)} /> : null}
+      {d.toast && <Toast message={d.toast.message} type={d.toast.type} onClose={d.dismissToast} />}
+      {d.bulkUploadAlert && <BulkUploadAlertModal message={d.bulkUploadAlert} onClose={() => d.setBulkUploadAlert(null)} />}
     </main>
   );
 }
 
-function TpoTopbarRight({ d }: { d: TpoDashboardState }) {
+function PanelLoading({ label }: { label: string }) {
   return (
-    <div className="tpo-topbar-right">
-      <input className="tpo-topbar-search" type="search" placeholder="Search students" aria-label="Search students (coming soon)" title="Coming soon" readOnly />
-      <div className="tpo-topbar-actions">
-        <div className="notification-wrap">
-          <button type="button" className="tpo-topbar-icon-btn" aria-label="Notifications" title="Notifications" onClick={() => d.setShowNotifications((p) => !p)}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span className="notification-badge" style={{ background: "var(--dhr-blue)", color: "#fff" }}>1</span>
-          </button>
-          {d.showNotifications ? (
-            <div className="notification-panel">
-              <p className="notification-title">Notifications</p>
-              <p className="notification-item">Placement updates will appear here.</p>
-            </div>
-          ) : null}
-        </div>
-        <button type="button" className="tpo-topbar-icon-btn" onClick={d.toggleTheme} aria-label={d.theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} title="Toggle theme">
-          {d.theme === "dark" ? (
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          ) : (
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          )}
-        </button>
-        <div className="tpo-user-avatar" aria-hidden>
-          {initialsFromName(d.displayName)}
-        </div>
-        <div className="tpo-user-meta">
-          <strong>{d.displayName}</strong>
-          <span>
-            TPO{d.userEmail ? ` · ${d.userEmail}` : ""}
-          </span>
-        </div>
-      </div>
+    <div className="tpo-panel-loading">
+      <span className="tpo-loading-spinner" />
+      Loading {label}…
     </div>
   );
-}
-
-function PanelLoading({ label }: { label: string }) {
-  return <div className="tpo-panel-loading">Loading {label}…</div>;
 }

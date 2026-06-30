@@ -18,9 +18,12 @@ export function TpoCandidateProgressPanel({ onError }: Props) {
       setJobs(data.items);
       if (data.items[0] && !selected) {
         setSelected(data.items[0]);
+      } else if (!data.items[0]) {
+        setLoading(false);
       }
     } catch (err) {
       onError(err instanceof Error ? err.message : "Unable to load jobs.");
+      setLoading(false);
     }
   }, [onError, selected]);
 
@@ -76,6 +79,8 @@ export function TpoCandidateProgressPanel({ onError }: Props) {
       {stages.length ? <p className="tpo-inbound-note">Recruiter journey: {stages.join(" → ")}</p> : null}
       {loading ? (
         <p className="empty-state">Loading kanban…</p>
+      ) : jobs.length === 0 ? (
+        <p className="empty-state">No accepted inbound jobs yet. When a company invites your college to a job and you accept, candidate progress will appear here.</p>
       ) : (
         <div className="tpo-kanban-board">
           {columns.map((col) => (

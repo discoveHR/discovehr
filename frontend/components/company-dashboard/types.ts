@@ -10,7 +10,8 @@ export type MenuKey =
   | "freelancer-interviewers"
   | "credit-purchase"
   | "assessments"
-  | "sub-admins";
+  | "sub-admins"
+  | "hrms";
 
 export const menuItems: { key: MenuKey; label: string }[] = [
   { key: "dashboard", label: "Dashboard" },
@@ -23,6 +24,7 @@ export const menuItems: { key: MenuKey; label: string }[] = [
   { key: "credit-purchase", label: "Credit Purchase" },
   { key: "assessments", label: "Assessments" },
   { key: "sub-admins", label: "Sub Admins" },
+  { key: "hrms", label: "HRMS" },
 ];
 
 export const initialJobForm: JobFormPayload = {
@@ -39,6 +41,7 @@ export const initialJobForm: JobFormPayload = {
   maxSalary: "",
   screeningQuestion: "Please confirm your availability for this job.",
   journeyStages: [{ id: "app-received", type: "application_received", label: "Application received" }],
+  targetStates: "",
 };
 
 export const initialAssessmentForm: AssessmentFormPayload = {

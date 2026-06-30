@@ -120,6 +120,13 @@ export function useStudentDashboard() {
   );
 
   useEffect(() => {
+    const sessionRaw = localStorage.getItem("scout_session");
+    const session = sessionRaw ? (JSON.parse(sessionRaw) as { role?: string }) : null;
+    if (session?.role !== "student") {
+      router.replace("/login");
+      return;
+    }
+
     let cancelled = false;
 
     async function bootstrap() {

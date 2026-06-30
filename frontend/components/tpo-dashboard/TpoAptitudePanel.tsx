@@ -98,7 +98,7 @@ export function TpoAptitudePanel() {
         amountPaise: order.amountPaise,
         currency: order.currency,
         orderId: order.razorpayOrderId,
-        name: "Scout Express",
+        name: "DiscoveHR",
         description: `Aptitude test — ₹${feeInr}`,
         onSuccess: async (rzp) => {
           try {

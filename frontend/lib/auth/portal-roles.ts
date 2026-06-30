@@ -82,7 +82,7 @@ export const PORTAL_ROLES: PortalRoleConfig[] = [
     shortLabel: "Job Seeker",
     badge: "Job seekers",
     title: "Open opportunities beyond campus",
-    subtitle: "Browse and apply to roles posted for job seekers on Scout Express.",
+    subtitle: "Browse and apply to roles posted for job seekers on DiscoveHR.",
     points: [
       "Discover jobs and freelance projects",
       "Apply with your Scout profile",
@@ -174,9 +174,10 @@ export function hasAdminOnlyRole(roles: string[]): boolean {
 
 export function dashboardPathForRole(
   role: PortalRoleId,
-): "/company/dashboard" | "/student/dashboard" | "/freelancer/dashboard" | "/tpo/dashboard" {
+): "/company/dashboard" | "/student/dashboard" | "/freelancer/dashboard" | "/jobseeker/dashboard" | "/tpo/dashboard" {
   if (role === "student") return "/student/dashboard";
-  if (role === "freelancer" || role === "jobseeker") return "/freelancer/dashboard";
+  if (role === "jobseeker") return "/jobseeker/dashboard";
+  if (role === "freelancer") return "/freelancer/dashboard";
   if (role === "tpo") return "/tpo/dashboard";
   return "/company/dashboard";
 }
@@ -189,8 +190,8 @@ export type PortalUserLike = {
 export function resolveDashboardPath(
   role: PortalRoleId,
   user?: PortalUserLike | null,
-): "/sub-admin/dashboard" | "/company/dashboard" | "/student/dashboard" | "/freelancer/dashboard" | "/tpo/dashboard" {
-  if (user?.isSubAdmin && (role === "company" || role === "jobseeker")) {
+): "/sub-admin/dashboard" | "/company/dashboard" | "/student/dashboard" | "/freelancer/dashboard" | "/jobseeker/dashboard" | "/tpo/dashboard" {
+  if (user?.isSubAdmin && role === "company") {
     return "/sub-admin/dashboard";
   }
   return dashboardPathForRole(role);
@@ -205,7 +206,7 @@ export const UNIFIED_AUTH_SHELL: PortalRoleConfig = {
   id: "company",
   label: "Portal",
   shortLabel: "Portal",
-  badge: "Scout Express",
+  badge: "DiscoveHR",
   title: "One portal for everyone",
   subtitle:
     "Sign in with your account. Scout routes you to the right dashboard based on your role—Employer, Candidate, Job Seeker, Freelancer Interviewer, or TPO.",

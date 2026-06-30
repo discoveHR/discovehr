@@ -3,7 +3,7 @@
 import frappe
 from frappe import _
 
-from scout.api.common import get_student_session_user, row_to_job
+from scout.api.common import company_info_map, get_student_session_user, row_to_job
 from scout.api.pagination_utils import pagination_from_request, pagination_meta
 from scout.api.student.inbound_suggestions import inbound_suggested_job_ids_for_student
 
@@ -21,6 +21,7 @@ JOB_FIELDS = [
     "applications",
     "description",
     "creation",
+    "target_states",
 ]
 
 DEFAULT_STUDENT_JOBS_PAGE_SIZE = 30
@@ -120,6 +121,16 @@ def _fulltext_job_search(q: str, *, limit: int, offset: int, base_filters: dict 
 _SIMPLE_FILTER_KEYS = frozenset({"status", "location_type", "opportunity_type", "min_experience"})
 
 
+def _job_state_matches(row: dict, student_state: str) -> bool:
+    """Return True if this job is visible to a student in the given state."""
+    if not student_state:
+        return True
+    ts = (row.get("target_states") or "").strip()
+    if not ts:
+        return True  # no restriction — visible to everyone
+    return student_state in {s.strip() for s in ts.split(",")}
+
+
 def _filters_are_cacheable(filters: dict | None) -> bool:
     return not filters or set(filters.keys()) <= _SIMPLE_FILTER_KEYS
 
@@ -134,36 +145,55 @@ def _apply_filters_in_python(rows: list[dict], filters: dict | None) -> list[dic
     return result
 
 
-def _fetch_active_jobs(*, limit: int, offset: int = 0, filters: dict | None = None) -> list[dict]:
+def _fetch_active_jobs(*, limit: int, offset: int = 0, filters: dict | None = None, student_state: str = "") -> list[dict]:
     if not _filters_are_cacheable(filters):
         rows = frappe.get_all(
             "Scout Job",
             filters=filters or {"status": "Active"},
             fields=JOB_FIELDS,
             order_by="creation desc",
-            limit_start=offset,
-            limit_page_length=limit,
+            limit_page_length=5000 if student_state else limit,
+            limit_start=0 if student_state else offset,
         )
-        return [row_to_job(row) for row in rows]
+        if student_state:
+            rows = [r for r in rows if _job_state_matches(r, student_state)]
+            rows = rows[offset : offset + limit]
+        cinfo = company_info_map(list(rows))
+        return [row_to_job(row, cinfo) for row in rows]
 
     from scout.api.cache_utils import get_cached_active_job_rows
 
     all_rows = get_cached_active_job_rows()
     filtered = _apply_filters_in_python(all_rows, filters)
-    return [row_to_job(row) for row in filtered[offset : offset + limit]]
+    if student_state:
+        filtered = [r for r in filtered if _job_state_matches(r, student_state)]
+    page_rows = filtered[offset : offset + limit]
+    cinfo = company_info_map(page_rows)
+    return [row_to_job(row, cinfo) for row in page_rows]
 
 
-def _active_jobs_total(filters: dict | None = None) -> int:
+def _active_jobs_total(filters: dict | None = None, student_state: str = "") -> int:
     if not _filters_are_cacheable(filters):
+        if student_state:
+            rows = frappe.get_all(
+                "Scout Job",
+                filters=filters or {"status": "Active"},
+                fields=["name", "target_states"],
+                limit_page_length=5000,
+            )
+            return sum(1 for r in rows if _job_state_matches(r, student_state))
         return int(frappe.db.count("Scout Job", filters=filters or {"status": "Active"}))
 
     from scout.api.cache_utils import get_cached_active_job_rows
 
     all_rows = get_cached_active_job_rows()
-    return len(_apply_filters_in_python(all_rows, filters))
+    filtered = _apply_filters_in_python(all_rows, filters)
+    if student_state:
+        filtered = [r for r in filtered if _job_state_matches(r, student_state)]
+    return len(filtered)
 
 
-def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> list[dict]:
+def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict], student_state: str = "") -> list[dict]:
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
     if inbound_ids:
         rows = frappe.get_all(
@@ -173,21 +203,22 @@ def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> l
             order_by="creation desc",
             limit_page_length=SUGGESTED_JOBS_LIMIT,
         )
-        jobs = _enrich_jobs([row_to_job(r) for r in rows], application_by_job, inbound_ids)
-        return jobs[:SUGGESTED_JOBS_LIMIT]
+        if student_state:
+            rows = [r for r in rows if _job_state_matches(r, student_state)]
+        cinfo = company_info_map(list(rows))
+        return _enrich_jobs([row_to_job(r, cinfo) for r in rows], application_by_job, inbound_ids)[:SUGGESTED_JOBS_LIMIT]
 
     student_skills = frappe.db.get_value("Scout Student Profile", user_id, "skills") or ""
     first_skill = (student_skills.split(",")[0].strip() if student_skills else "").lower()
-    skill_rows: list = []
+    rows: list = []
     if first_skill:
-        skill_rows = frappe.get_all(
+        rows = frappe.get_all(
             "Scout Job",
             filters={"status": "Active", "skills": ["like", f"%{first_skill}%"]},
             fields=JOB_FIELDS,
             order_by="creation desc",
             limit_page_length=SUGGESTED_JOBS_LIMIT,
         )
-    rows = skill_rows
     if not rows:
         rows = frappe.get_all(
             "Scout Job",
@@ -196,7 +227,10 @@ def build_suggested_jobs(user_id: str, application_by_job: dict[str, dict]) -> l
             order_by="creation desc",
             limit_page_length=SUGGESTED_JOBS_LIMIT,
         )
-    return _enrich_jobs([row_to_job(r) for r in rows], application_by_job, inbound_ids)
+    if student_state:
+        rows = [r for r in rows if _job_state_matches(r, student_state)]
+    cinfo = company_info_map(list(rows))
+    return _enrich_jobs([row_to_job(r, cinfo) for r in rows], application_by_job, inbound_ids)
 
 
 def application_status_for_student(user_id: str) -> tuple[list[dict], bool]:
@@ -249,6 +283,7 @@ def list_student_jobs():
     base_filters = _base_job_filters()
     application_by_job = _student_application_map(user_id)
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
+    student_state = frappe.get_cached_value("Scout Student Profile", user_id, "state") or ""
 
     jobs: list[dict] = []
     total = 0
@@ -267,9 +302,13 @@ def list_student_jobs():
                 order_by="creation desc",
                 limit_page_length=page_size,
             )
+            if student_state:
+                rows = [r for r in rows if _job_state_matches(r, student_state)]
             by_id = {row["name"]: row for row in rows}
+            ordered = [by_id[jid] for jid in job_ids if jid in by_id]
+            cinfo = company_info_map(ordered)
             jobs = _enrich_jobs(
-                [row_to_job(by_id[jid]) for jid in job_ids if jid in by_id],
+                [row_to_job(r, cinfo) for r in ordered],
                 application_by_job,
                 inbound_ids,
             )
@@ -284,9 +323,13 @@ def list_student_jobs():
                         fields=JOB_FIELDS,
                         limit_page_length=len(job_ids),
                     )
+                    if student_state:
+                        rows = [r for r in rows if _job_state_matches(r, student_state)]
                     by_id = {row["name"]: row for row in rows}
+                    ordered = [by_id[jid] for jid in job_ids if jid in by_id]
+                    cinfo = company_info_map(ordered)
                     jobs = _enrich_jobs(
-                        [row_to_job(by_id[jid]) for jid in job_ids if jid in by_id],
+                        [row_to_job(r, cinfo) for r in ordered],
                         application_by_job,
                         inbound_ids,
                     )
@@ -294,17 +337,17 @@ def list_student_jobs():
                     jobs = []
             else:
                 filters = _job_list_filters()
-                total = _active_jobs_total(filters)
+                total = _active_jobs_total(filters, student_state)
                 jobs = _enrich_jobs(
-                    _fetch_active_jobs(limit=page_size, offset=offset, filters=filters),
+                    _fetch_active_jobs(limit=page_size, offset=offset, filters=filters, student_state=student_state),
                     application_by_job,
                     inbound_ids,
                 )
     else:
         filters = base_filters
-        total = _active_jobs_total(filters)
+        total = _active_jobs_total(filters, student_state)
         jobs = _enrich_jobs(
-            _fetch_active_jobs(limit=page_size, offset=offset, filters=filters),
+            _fetch_active_jobs(limit=page_size, offset=offset, filters=filters, student_state=student_state),
             application_by_job,
             inbound_ids,
         )

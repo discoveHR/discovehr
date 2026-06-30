@@ -28,10 +28,16 @@ export function CompanyHeaderWallet({
   const [buyingPackId, setBuyingPackId] = useState<string | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
+  const packsLoadedRef = useRef(false);
+  const onRefreshRef = useRef(onRefresh);
+  useEffect(() => { onRefreshRef.current = onRefresh; });
+
   const loadPacks = useCallback(async () => {
+    if (packsLoadedRef.current) return;
     try {
       const data = await listCompanyCoinPacks();
       setPacks(data.packs);
+      packsLoadedRef.current = true;
     } catch {
       /* packs optional */
     }
@@ -39,9 +45,9 @@ export function CompanyHeaderWallet({
 
   useEffect(() => {
     if (!open) return;
-    void onRefresh();
+    void onRefreshRef.current();
     void loadPacks();
-  }, [open, onRefresh, loadPacks]);
+  }, [open, loadPacks]);
 
   useEffect(() => {
     if (!open) return;

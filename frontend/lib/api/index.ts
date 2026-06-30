@@ -34,3 +34,6 @@ export * from "./freelancer-referrals";
 export * from "./company-documents";
 export * from "./student-documents";
 export * from "./kyc";
+export * from "./company-hrms";
+export * from "./company-job-payments";
+export * from "./institution";

@@ -34,7 +34,7 @@ export type DownloadFilterForm = {
   areaOfStudy: string;
 };
 
-export type StudentTabKey = "all" | "batch" | "add" | "invites" | "download" | "profile-edits";
+export type StudentTabKey = "all" | "batch" | "add" | "invites" | "download" | "profile-edits" | "bulk-upload";
 
 export type BulkStudentUploadForm = {
   defaultBatch: string;

@@ -75,20 +75,20 @@ def invite_student_minimal():
     if user_exists:
         message = (
             f"Hello,<br><br>"
-            f"{tpo_name} linked your account to their college roster on Scout Express.<br><br>"
+            f"{tpo_name} linked your account to their college roster on DiscoveHR.<br><br>"
             f"Log in to the student dashboard, open <strong>Profile</strong>, and confirm your department, branch, and batch under "
             f"<strong>College placement</strong>.<br><br>"
             f"If you prefer not to join under this college, choose <strong>Independent candidate</strong> in the same section.<br><br>"
-            "Regards,<br>Scout Express"
+            "Regards,<br>DiscoveHR"
         )
     else:
         message = (
             f"Hello,<br><br>"
-            f"{tpo_name} invited you to join Scout Express as a student.<br><br>"
+            f"{tpo_name} invited you to join DiscoveHR as a student.<br><br>"
             f"Click to create your account and set a password: <a href='{invite_link}'>{invite_link}</a><br>"
             f"After signing in, finish college placement (department, branch, batch) under <strong>Profile</strong>.<br>"
             f"This link expires in 48 hours.<br><br>"
-            "Regards,<br>Scout Express"
+            "Regards,<br>DiscoveHR"
         )
     frappe.db.commit()
     from scout.api.tpo.student_scope import invalidate_tpo_student_ids_cache

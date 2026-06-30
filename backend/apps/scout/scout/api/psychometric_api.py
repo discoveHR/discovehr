@@ -31,9 +31,9 @@ def _webhook_secret() -> str:
     return (os.getenv("SCOUT_TAO_WEBHOOK_SECRET") or getattr(frappe.conf, "scout_tao_webhook_secret", "") or "").strip()
 
 
-@frappe.whitelist(allow_guest=True, methods=["GET"])
+@frappe.whitelist(methods=["GET"])
 def get_psychometric_config():
-    """Public module flags for admin/student UIs."""
+    """Module flags for admin/student UIs (requires auth)."""
     settings = get_tao_settings()
     return {
         "ok": True,
@@ -78,12 +78,15 @@ def tao_results_webhook():
     payload = frappe.request.get_json(silent=True) or {}
     secret = _webhook_secret()
 
-    if secret:
-        signature = frappe.get_request_header("X-Tao-Signature") or frappe.get_request_header("X-Scout-Signature") or ""
-        expected = hmac.new(secret.encode("utf-8"), raw_body, hashlib.sha256).hexdigest()
-        if not signature or not hmac.compare_digest(signature.strip(), expected):
-            frappe.local.response["http_status_code"] = 401
-            return {"ok": False, "message": _("Invalid webhook signature.")}
+    if not secret:
+        frappe.local.response["http_status_code"] = 503
+        return {"ok": False, "message": _("Webhook signature not configured. Set SCOUT_TAO_WEBHOOK_SECRET.")}
+
+    signature = frappe.get_request_header("X-Tao-Signature") or frappe.get_request_header("X-Scout-Signature") or ""
+    expected = hmac.new(secret.encode("utf-8"), raw_body, hashlib.sha256).hexdigest()
+    if not signature or not hmac.compare_digest(signature.strip(), expected):
+        frappe.local.response["http_status_code"] = 401
+        return {"ok": False, "message": _("Invalid webhook signature.")}
 
     assignment_id = (payload.get("externalAssignmentId") or payload.get("assignmentId") or "").strip()
     if not assignment_id:

@@ -114,7 +114,7 @@ def _build_ics(row: dict) -> str:
         [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
-            "PRODID:-//Scout Express//Interview Scheduler//EN",
+            "PRODID:-//DiscoveHR//Interview Scheduler//EN",
             "CALSCALE:GREGORIAN",
             "METHOD:REQUEST",
             "BEGIN:VEVENT",

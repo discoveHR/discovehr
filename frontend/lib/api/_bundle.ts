@@ -319,6 +319,7 @@ export type JobFormPayload = {
   minSalary: string;
   maxSalary: string;
   screeningQuestion: string;
+  targetStates?: string;
 };
 
 export type CompanyLoginResponse = {

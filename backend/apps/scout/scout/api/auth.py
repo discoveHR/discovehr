@@ -380,6 +380,22 @@ def _create_student_profile_on_register(*, email: str, full_name: str, phone: st
 
 
 @frappe.whitelist(allow_guest=True, methods=["POST"])
+def check_email_available():
+    """Return whether an email address is free to register.
+
+    Called from the signup form Step 1 Continue button so the user finds out
+    immediately — before filling out 2 more screens of personal details.
+    """
+    fd = frappe.form_dict
+    email = (fd.get("email") or "").strip().lower()
+    if not email:
+        frappe.local.response["http_status_code"] = 400
+        return {"ok": False, "message": _("Email is required.")}
+    available = not frappe.db.exists("User", email)
+    return {"ok": True, "available": available}
+
+
+@frappe.whitelist(allow_guest=True, methods=["POST"])
 def register():
     # Frappe parses JSON bodies into frappe.form_dict via make_form_dict().
     # frappe.request.get_json() is unreliable here because the WSGI stream

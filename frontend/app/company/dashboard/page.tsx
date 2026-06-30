@@ -25,6 +25,7 @@ const FreelancerInterviewersPanel = dynamic(() => import("../../../components/co
 const InterviewSchedulerPanel = dynamic(() => import("../../../components/company-dashboard/panels/InterviewSchedulerPanel").then(m => m.InterviewSchedulerPanel), { loading: PanelLoading });
 const CompanyCreditsPanel = dynamic(() => import("../../../components/company-dashboard/panels/CompanyCreditsPanel").then(m => m.CompanyCreditsPanel), { loading: PanelLoading });
 const SubAdminsPanel = dynamic(() => import("../../../components/company-dashboard/panels/SubAdminsPanel").then(m => m.SubAdminsPanel), { loading: PanelLoading });
+const CompanyHrmsPanel = dynamic(() => import("../../../components/company-dashboard/panels/CompanyHrmsPanel").then(m => m.CompanyHrmsPanel), { loading: PanelLoading });
 
 export default function CompanyDashboardPage() {
   const d = useCompanyDashboard();
@@ -121,8 +122,10 @@ export default function CompanyDashboardPage() {
               onRequestClose={d.setCloseTarget}
               onInviteCollege={d.handleInviteCollege}
               onResendInvite={d.handleResendCollegeInvite}
+              onJobUpdated={d.handleJobUpdated}
               inviteHistory={d.collegeInviteHistory}
               statusUpdatingJobId={d.statusUpdatingJobId}
+              userEmail={d.user?.email}
             />
           )}
 
@@ -192,6 +195,13 @@ export default function CompanyDashboardPage() {
 
           {d.activeMenu === "sub-admins" && (
             <SubAdminsPanel
+              onError={(msg) => d.setToast({ message: msg, type: "error" })}
+              onSuccess={(msg) => d.setToast({ message: msg, type: "success" })}
+            />
+          )}
+
+          {d.activeMenu === "hrms" && (
+            <CompanyHrmsPanel
               onError={(msg) => d.setToast({ message: msg, type: "error" })}
               onSuccess={(msg) => d.setToast({ message: msg, type: "success" })}
             />

@@ -1,6 +1,7 @@
-﻿import { useState } from "react";
-import type { CompanyCollegeInviteItem, JobItem } from "../../../lib/api";
+import { useState } from "react";
+import type { CompanyCollegeInviteItem, JobDisplayStatus, JobItem } from "../../../lib/api";
 import { ModalCloseButton } from "../../common/ModalCloseButton";
+import { boostJob, extendJob } from "../../../lib/company-job-payments";
 
 type JobListingsProps = {
   jobs: JobItem[];
@@ -9,8 +10,10 @@ type JobListingsProps = {
   onRequestClose: (job: JobItem) => void;
   onInviteCollege: (job: JobItem, collegeEmails: string[], note?: string) => Promise<void>;
   onResendInvite: (invite: CompanyCollegeInviteItem) => Promise<void>;
+  onJobUpdated?: (job: JobItem) => void;
   inviteHistory: CompanyCollegeInviteItem[];
   statusUpdatingJobId?: string | null;
+  userEmail?: string;
 };
 
 function formatDate(value?: string) {
@@ -36,6 +39,56 @@ const EMAIL_META: Record<string, { color: string; bg: string }> = {
   "Failed": { color: "#dc2626", bg: "#fef2f2" },
 };
 
+const DISPLAY_STATUS_META: Record<JobDisplayStatus, { label: string; color: string; bg: string }> = {
+  "Draft":         { label: "Draft",         color: "#6c6c78", bg: "#f1f5f9" },
+  "Active":        { label: "Active",        color: "#16a34a", bg: "#f0fdf4" },
+  "Expiring Soon": { label: "Expiring Soon", color: "#d97706", bg: "#fffbeb" },
+  "Expired":       { label: "Expired",       color: "#dc2626", bg: "#fef2f2" },
+  "Boosted":       { label: "Boosted ✦",     color: "#7c3aed", bg: "#f5f3ff" },
+  "Closed":        { label: "Closed",        color: "#6c6c78", bg: "#f1f5f9" },
+};
+
+function ExpiryInfo({ job }: { job: JobItem }) {
+  if (!job.expiresAt) return null;
+  const days = job.remainingDays;
+  const ds = job.displayStatus;
+
+  if (ds === "Expired") {
+    return (
+      <span className="jl-expiry jl-expiry--expired">
+        Expired {formatDate(job.expiresAt)}
+      </span>
+    );
+  }
+  if (ds === "Expiring Soon") {
+    return (
+      <span className="jl-expiry jl-expiry--soon">
+        Expires {formatDate(job.expiresAt)} ({days === 0 ? "today" : `${days}d left`})
+      </span>
+    );
+  }
+  if (ds === "Boosted") {
+    return (
+      <span className="jl-expiry jl-expiry--boosted">
+        Boosted · expires {formatDate(job.boostExpiresAt || job.expiresAt)}
+      </span>
+    );
+  }
+  if (days !== null && days !== undefined) {
+    return (
+      <span className="jl-expiry jl-expiry--active">
+        {days}d remaining · expires {formatDate(job.expiresAt)}
+      </span>
+    );
+  }
+  return null;
+}
+
+type PaymentModal =
+  | { type: "extend"; job: JobItem }
+  | { type: "boost"; job: JobItem }
+  | null;
+
 export function JobListings({
   jobs,
   onViewApplicants,
@@ -43,8 +96,10 @@ export function JobListings({
   onRequestClose,
   onInviteCollege,
   onResendInvite,
+  onJobUpdated,
   inviteHistory,
   statusUpdatingJobId,
+  userEmail,
 }: JobListingsProps) {
   const [inviteModalJob, setInviteModalJob] = useState<JobItem | null>(null);
   const [inviteCollegeName, setInviteCollegeName] = useState("");
@@ -53,6 +108,9 @@ export function JobListings({
   const [resendingInviteId, setResendingInviteId] = useState<string | null>(null);
   const [inviteFilter, setInviteFilter] = useState<"all" | "sent" | "failed">("all");
   const [tpoFilter, setTpoFilter] = useState<"all" | "pending" | "accepted" | "declined">("all");
+  const [paymentModal, setPaymentModal] = useState<PaymentModal>(null);
+  const [paymentBusy, setPaymentBusy] = useState(false);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   function openInviteModal(job: JobItem) {
     setInviteModalJob(job);
@@ -88,6 +146,36 @@ export function JobListings({
     }
   }
 
+  function openPaymentModal(type: "extend" | "boost", job: JobItem) {
+    setPaymentModal({ type, job });
+    setPaymentError(null);
+  }
+
+  function closePaymentModal() {
+    if (paymentBusy) return;
+    setPaymentModal(null);
+    setPaymentError(null);
+  }
+
+  async function handlePaymentConfirm() {
+    if (!paymentModal || paymentBusy) return;
+    setPaymentBusy(true);
+    setPaymentError(null);
+    try {
+      const { job } = paymentModal;
+      const result =
+        paymentModal.type === "extend"
+          ? await extendJob(job.id, userEmail)
+          : await boostJob(job.id, userEmail);
+      onJobUpdated?.(result.job);
+      setPaymentModal(null);
+    } catch (err) {
+      setPaymentError(err instanceof Error ? err.message : "Payment failed.");
+    } finally {
+      setPaymentBusy(false);
+    }
+  }
+
   const filteredInviteHistory = inviteHistory.filter((item) => {
     if (inviteFilter === "sent" && item.status !== "Sent") return false;
     if (inviteFilter === "failed" && item.status !== "Failed") return false;
@@ -98,8 +186,35 @@ export function JobListings({
     return true;
   });
 
+  const expiringJobs = jobs.filter(
+    (j) =>
+      j.displayStatus === "Expiring Soon" ||
+      (j.remainingDays !== null &&
+        j.remainingDays !== undefined &&
+        j.remainingDays >= 0 &&
+        j.remainingDays <= 3 &&
+        j.displayStatus === "Active"),
+  );
+
   return (
     <>
+      {/* ── Expiry Reminder Banner ── */}
+      {expiringJobs.length > 0 && (
+        <div className="jl-expiry-banner" role="alert">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <span>
+            {expiringJobs.length === 1
+              ? `"${expiringJobs[0].title}" is expiring soon.`
+              : `${expiringJobs.length} jobs are expiring soon.`}
+            {" "}Extend them to keep receiving applications.
+          </span>
+        </div>
+      )}
+
       {/* ── Job Listings ── */}
       <section className="company-table-wrap">
         <div className="company-table-head jl-head-row">
@@ -123,13 +238,38 @@ export function JobListings({
           <div className="jl-cards">
             {jobs.map((job) => {
               const isUpdating = statusUpdatingJobId === job.id;
+              const ds: JobDisplayStatus = job.displayStatus ?? (job.status as JobDisplayStatus);
+              const dsMeta = DISPLAY_STATUS_META[ds] ?? DISPLAY_STATUS_META["Active"];
+              const isExpired = ds === "Expired";
+              const canExtend =
+                ["Expired", "Expiring Soon", "Active"].includes(ds) &&
+                job.status !== "Draft" &&
+                job.status !== "Closed";
+              const canBoost = job.status === "Active" && !isExpired;
+
               return (
-                <div key={job.id} className={`jl-card${isUpdating ? " jl-card--updating" : ""}`}>
+                <div
+                  key={job.id}
+                  className={[
+                    "jl-card",
+                    isUpdating ? "jl-card--updating" : "",
+                    isExpired ? "jl-card--expired" : "",
+                    ds === "Boosted" ? "jl-card--boosted" : "",
+                  ].filter(Boolean).join(" ")}
+                >
                   {/* Left: info */}
                   <div className="jl-card-info">
                     <div className="jl-card-title-row">
                       <span className="jl-card-title">{job.title}</span>
-                      <span className={`jl-status-pill jl-status-pill--${job.status.toLowerCase()}`}>{job.status}</span>
+                      <span
+                        className="jl-status-pill"
+                        style={{ color: dsMeta.color, background: dsMeta.bg }}
+                      >
+                        {dsMeta.label}
+                      </span>
+                      {job.isFirstPost && (
+                        <span className="jl-free-badge">Free post</span>
+                      )}
                     </div>
                     <div className="jl-card-meta">
                       <span className="jl-tag jl-tag--type">
@@ -145,6 +285,7 @@ export function JobListings({
                       )}
                       <span className="jl-date">Posted {formatDate(job.createdAt)}</span>
                     </div>
+                    <ExpiryInfo job={job} />
                   </div>
 
                   {/* Center: stats */}
@@ -167,24 +308,48 @@ export function JobListings({
                       className="jl-btn jl-btn--primary"
                       onClick={() => onViewApplicants(job)}
                     >
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                        <circle cx="9" cy="7" r="4" />
-                        <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                      </svg>
-                      Applications ({job.applications})
+                      {isExpired ? "View Applications" : (
+                        <>
+                          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                          </svg>
+                          Applications ({job.applications})
+                        </>
+                      )}
                     </button>
-                    <button
-                      type="button"
-                      className="jl-btn jl-btn--invite"
-                      onClick={() => openInviteModal(job)}
-                    >
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                        <polyline points="22,6 12,13 2,6" />
-                      </svg>
-                      Invite College
-                    </button>
+                    {!isExpired && (
+                      <button
+                        type="button"
+                        className="jl-btn jl-btn--invite"
+                        onClick={() => openInviteModal(job)}
+                      >
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                          <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        Invite College
+                      </button>
+                    )}
+                    {canExtend && (
+                      <button
+                        type="button"
+                        className={`jl-btn jl-btn--extend${isExpired ? " jl-btn--extend-urgent" : ""}`}
+                        onClick={() => openPaymentModal("extend", job)}
+                      >
+                        {isExpired ? "Renew Job (₹500)" : "Extend (₹500)"}
+                      </button>
+                    )}
+                    {canBoost && (
+                      <button
+                        type="button"
+                        className="jl-btn jl-btn--boost"
+                        onClick={() => openPaymentModal("boost", job)}
+                      >
+                        ✦ Boost (₹1,000)
+                      </button>
+                    )}
                     {job.status === "Draft" && (
                       <button
                         type="button"
@@ -195,7 +360,7 @@ export function JobListings({
                         {isUpdating ? "Publishing…" : "Publish"}
                       </button>
                     )}
-                    {job.status === "Active" && (
+                    {job.status === "Active" && !isExpired && (
                       <button
                         type="button"
                         className="jl-btn jl-btn--close"
@@ -382,7 +547,81 @@ export function JobListings({
           </div>
         </div>
       ) : null}
+
+      {/* ── Payment Confirmation Modal ── */}
+      {paymentModal ? (
+        <div className="company-modal-backdrop" role="presentation" onClick={closePaymentModal}>
+          <div className="jl-payment-modal" role="dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="jl-payment-modal-head">
+              <h3 className="jl-payment-modal-title">
+                {paymentModal.type === "extend" ? "Extend Job Posting" : "Boost Job Posting"}
+              </h3>
+              <ModalCloseButton onClick={closePaymentModal} disabled={paymentBusy} />
+            </div>
+            <div className="jl-payment-modal-body">
+              <p className="jl-payment-job-name">{paymentModal.job.title}</p>
+              {paymentModal.type === "extend" ? (
+                <div className="jl-payment-detail">
+                  <div className="jl-payment-row">
+                    <span>Extension duration</span>
+                    <strong>90 days</strong>
+                  </div>
+                  <div className="jl-payment-row">
+                    <span>Amount</span>
+                    <strong className="jl-payment-amount">₹500</strong>
+                  </div>
+                  <p className="jl-payment-note">
+                    Your job will be reactivated and listed for 90 more days after payment.
+                  </p>
+                </div>
+              ) : (
+                <div className="jl-payment-detail">
+                  <div className="jl-payment-row">
+                    <span className="jl-boost-badge-preview">✦ Boosted badge</span>
+                    <span>on all listings</span>
+                  </div>
+                  <div className="jl-payment-row">
+                    <span>Boost duration</span>
+                    <strong>30 days</strong>
+                  </div>
+                  <div className="jl-payment-row">
+                    <span>Amount</span>
+                    <strong className="jl-payment-amount">₹1,000</strong>
+                  </div>
+                  <p className="jl-payment-note">
+                    Boosted jobs appear at the top of all listings with a "Boosted" badge for 30 days.
+                  </p>
+                </div>
+              )}
+              {paymentError && (
+                <p className="jl-payment-error" role="alert">{paymentError}</p>
+              )}
+            </div>
+            <div className="jl-payment-modal-footer">
+              <button
+                type="button"
+                className="jl-btn jl-btn--cancel"
+                onClick={closePaymentModal}
+                disabled={paymentBusy}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={`jl-btn ${paymentModal.type === "boost" ? "jl-btn--boost-confirm" : "jl-btn--extend-confirm"}`}
+                onClick={() => void handlePaymentConfirm()}
+                disabled={paymentBusy}
+              >
+                {paymentBusy
+                  ? "Processing…"
+                  : paymentModal.type === "extend"
+                  ? "Pay ₹500 & Extend"
+                  : "Pay ₹1,000 & Boost"}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }
-

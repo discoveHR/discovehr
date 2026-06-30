@@ -69,9 +69,9 @@ def send_test_email():
             or _("Email is not configured. Set SCOUT_POSTMARK_SERVER_TOKEN and SCOUT_MAIL_FROM in backend/.env, or configure a Frappe outgoing Email Account."),
         }
 
-    subject = _("Scout Express test email")
+    subject = _("DiscoveHR test email")
     message = _(
-        "<p>This is a test message from Scout Express.</p>"
+        "<p>This is a test message from DiscoveHR.</p>"
         "<p>If you received this, outbound mail is working.</p>"
         "<p><small>Sent to {0} by {1}</small></p>"
     ).format(to_email, frappe.utils.escape_html(user_id))

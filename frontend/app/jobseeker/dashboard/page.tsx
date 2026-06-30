@@ -1,16 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { PortalDashboardLoader } from "../../../components/auth/PortalDashboardLoader";
+import { JobSeekerDashboardView } from "../../../components/jobseeker-dashboard/JobSeekerDashboardView";
+import { useJobSeekerDashboard } from "../../../components/jobseeker-dashboard/hooks/useJobSeekerDashboard";
 
-/** Job seekers use the freelancer interviewer profile & approval flow. */
-export default function JobSeekerDashboardRedirect() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/freelancer/dashboard");
-  }, [router]);
-
-  return <PortalDashboardLoader portal="jobseeker" />;
+export default function JobSeekerDashboardPage() {
+  const dashboard = useJobSeekerDashboard();
+  return <JobSeekerDashboardView dashboard={dashboard} />;
 }

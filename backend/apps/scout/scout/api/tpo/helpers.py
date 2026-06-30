@@ -72,12 +72,25 @@ def profile_matches_internal_audience(profile, posting):
     return any(t in haystack for t in tokens)
 
 
-def _serialize_applicant_row(row: dict) -> dict:
+def _bulk_fetch_users(uids: list) -> dict:
+    """Return {uid: {"full_name": ..., "email": ...}} for any uids not already cached."""
+    if not uids:
+        return {}
+    rows = frappe.get_all(
+        "User",
+        filters=[["name", "in", list(set(uids))]],
+        fields=["name", "full_name", "email"],
+    )
+    return {r["name"]: r for r in rows}
+
+
+def _serialize_applicant_row(row: dict, user_cache: dict | None = None) -> dict:
     uid = row.get("student_user")
+    user = (user_cache or {}).get(uid) or {}
     return {
         "studentId": uid,
-        "studentName": row.get("full_name") or frappe.get_cached_value("User", uid, "full_name"),
-        "studentEmail": row.get("email") or frappe.get_cached_value("User", uid, "email"),
+        "studentName": row.get("full_name") or user.get("full_name") or "",
+        "studentEmail": row.get("email") or user.get("email") or "",
         "branch": row.get("department_stream") or "",
         "batch": row.get("academic_year") or "",
         "courseClassGrade": row.get("course_class_grade") or "",
@@ -129,11 +142,18 @@ def collect_posting_applicants(posting, *, max_rows: int = 2000):
         limit_page_length=max_rows,
     )
 
+    uids_missing_data = [
+        r["student_user"]
+        for r in profile_rows
+        if not r.get("full_name") or not r.get("email")
+    ]
+    user_cache = _bulk_fetch_users(uids_missing_data)
+
     applicants = []
     for row in profile_rows:
         if needs_python and not profile_matches_internal_audience(row, posting):
             continue
-        applicants.append(_serialize_applicant_row(row))
+        applicants.append(_serialize_applicant_row(row, user_cache))
     return applicants
 
 

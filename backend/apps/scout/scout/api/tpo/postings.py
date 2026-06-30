@@ -40,7 +40,7 @@ def _notify_students_internal_posting(posting_row, tpo_user_id):
             f"<b>{title}</b><br><br>"
             f"{norm(posting_row.get('description')) or ''}<br><br>"
             f"<a href='{link}'>View details and apply</a><br><br>"
-            "Regards,<br>Scout Express"
+            "Regards,<br>DiscoveHR"
         )
         try:
             scout_send_email([email], subject, message)
@@ -326,7 +326,7 @@ def send_company_dashboard_link():
         f"<b>{posting.get('title') or 'TPO Posting'}</b>.<br><br>"
         f"Open dashboard (no login required): <a href='{magic_link}'>{magic_link}</a><br>"
         f"This link expires in 24 hours.<br><br>"
-        "Regards,<br>Scout Express"
+        "Regards,<br>DiscoveHR"
     )
 
     try:

@@ -19,7 +19,7 @@
  ],
  "fields": [
   {"fieldname": "payer_user", "fieldtype": "Link", "label": "Payer", "options": "User"},
-  {"fieldname": "purpose", "fieldtype": "Select", "label": "Purpose", "options": "Mock Exam\nTPO Credit Pack\nTPO Aptitude Test\nCompany Coin Purchase\nOther", "reqd": 1},
+  {"fieldname": "purpose", "fieldtype": "Select", "label": "Purpose", "options": "Mock Exam\nTPO Credit Pack\nTPO Aptitude Test\nCompany Coin Purchase\nJob Extension\nJob Boost\nOther", "reqd": 1},
   {"fieldname": "amount_inr", "fieldtype": "Currency", "label": "Amount INR", "reqd": 1},
   {"fieldname": "razorpay_order_id", "fieldtype": "Data", "label": "Razorpay Order ID"},
   {"fieldname": "razorpay_payment_id", "fieldtype": "Data", "label": "Razorpay Payment ID"},

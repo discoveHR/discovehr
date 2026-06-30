@@ -11,7 +11,11 @@ export type TpoStudentSearchHit = {
   rollNumber: string;
 };
 
-export async function searchTpoStudents(query: string, limit = 25): Promise<TpoStudentSearchHit[]> {
+export async function searchTpoStudents(
+  query: string,
+  limit = 25,
+  signal?: AbortSignal,
+): Promise<TpoStudentSearchHit[]> {
   if (query.trim().length < 2) return [];
 
   const qs = new URLSearchParams({ q: query.trim(), limit: String(limit) });
@@ -21,6 +25,7 @@ export async function searchTpoStudents(query: string, limit = 25): Promise<TpoS
       method: "GET",
       headers: scoutJsonHeaders(),
       credentials: "include",
+      signal,
     });
     const { body } = await readScoutApiJson<{ results?: TpoStudentSearchHit[] }>(response);
     if ((response.status === 401 || response.status === 403) && !triedRefresh) {

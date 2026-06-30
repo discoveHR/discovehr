@@ -19,6 +19,14 @@ type JobFormProps = {
   focusTrigger?: number;
 };
 
+const INDIA_STATES = [
+  "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana",
+  "Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur",
+  "Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana",
+  "Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands","Chandigarh",
+  "Dadra and Nagar Haveli","Delhi","Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry",
+];
+
 type DraftState = {
   activeStep: number;
   department: string;
@@ -30,6 +38,7 @@ type DraftState = {
   questionDraft: string;
   questions: string[];
   skillChips: string[];
+  stateChips: string[];
 };
 
 const DRAFT_KEY = "scout_company_post_job_draft_v1";
@@ -233,6 +242,9 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
       .map((s) => s.trim())
       .filter(Boolean),
   );
+  const [stateChips, setStateChips] = useState<string[]>(
+    (value.targetStates || "").split(",").map((s) => s.trim()).filter(Boolean),
+  );
   const [questionDraft, setQuestionDraft] = useState("");
   const [questions, setQuestions] = useState<string[]>(value.screeningQuestion ? [value.screeningQuestion] : []);
   const [stepError, setStepError] = useState("");
@@ -316,6 +328,7 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
       setQuestionDraft(draft.questionDraft || "");
       setQuestions(draft.questions || []);
       setSkillChips(draft.skillChips || []);
+      setStateChips(draft.stateChips || []);
     } catch {
       // ignore corrupt drafts
     }
@@ -333,14 +346,19 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
       questionDraft,
       questions,
       skillChips,
+      stateChips,
     };
     window.localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
     setLastSavedAt(new Date().toLocaleTimeString());
-  }, [activeStep, department, jobLocations, qualification, genderPreference, candidateIndustries, languagesKnown, questionDraft, questions, skillChips]);
+  }, [activeStep, department, jobLocations, qualification, genderPreference, candidateIndustries, languagesKnown, questionDraft, questions, skillChips, stateChips]);
 
   useEffect(() => {
     onChange("skills", skillChips.join(", "));
   }, [skillChips, onChange]);
+
+  useEffect(() => {
+    onChange("targetStates", stateChips.join(","));
+  }, [stateChips, onChange]);
 
   useEffect(() => {
     formRootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -436,7 +454,7 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
       <div className="company-table-head">
         <div className="job-wizard-company-row">
           <span>Company you&apos;re hiring for</span>
-          <strong>Scout Express</strong>
+          <strong>DiscoveHR</strong>
           <button type="button">Change</button>
         </div>
       </div>
@@ -446,7 +464,14 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
           {steps.map((step, index) => {
             const state = index === activeStep ? "active" : index < activeStep ? "complete" : "pending";
             return (
-              <button key={step.id} type="button" className={`wizard-step ${state}`} onClick={() => setActiveStep(index)}>
+              <button
+                key={step.id}
+                type="button"
+                className={`wizard-step ${state}`}
+                onClick={() => { if (index < activeStep) { setStepError(""); setActiveStep(index); } }}
+                disabled={index > activeStep}
+                aria-current={index === activeStep ? "step" : undefined}
+              >
                 <span className="wizard-step-track">
                   <span className="wizard-step-dot">{index < activeStep ? "✓" : index + 1}</span>
                   {index < steps.length - 1 ? <span className="wizard-step-line" /> : null}
@@ -463,7 +488,7 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
             <>
               <div className="job-form-row">
                 <label>Company you are hiring for</label>
-                <input value="Scout Express" readOnly />
+                <input value="DiscoveHR" readOnly />
               </div>
 
               <div className="job-form-row">
@@ -518,6 +543,39 @@ export function JobForm({ value, error, onChange, onSubmit, onReset, focusTrigge
                   onChange={(e) => onChange("preferences", e.target.value)}
                   placeholder="e.g. Health insurance, Annual bonus"
                 />
+              </div>
+
+              <div className="job-form-row">
+                <label>
+                  Target states{" "}
+                  <span className="table-caption">— leave blank to show to all states across India</span>
+                </label>
+                <select
+                  value=""
+                  onChange={(e) => {
+                    const s = e.target.value;
+                    if (s && !stateChips.includes(s)) setStateChips([...stateChips, s]);
+                  }}
+                >
+                  <option value="">Select a state to add…</option>
+                  {INDIA_STATES.filter((s) => !stateChips.includes(s)).map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+                {stateChips.length > 0 && (
+                  <div className="chip-list">
+                    {stateChips.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        className="chip-item"
+                        onClick={() => setStateChips(stateChips.filter((x) => x !== s))}
+                      >
+                        {s} <span>&times;</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </>
           )}

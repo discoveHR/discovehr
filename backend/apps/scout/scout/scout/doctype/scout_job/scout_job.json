@@ -22,7 +22,13 @@
   "journey_stages",
   "status",
   "total_views",
-  "applications"
+  "applications",
+  "posted_at",
+  "expires_at",
+  "is_first_post",
+  "is_boosted",
+  "boost_expires_at",
+  "target_states"
  ],
  "fields": [
   {
@@ -138,13 +144,51 @@
    "fieldname": "applications",
    "fieldtype": "Int",
    "label": "Applications"
+  },
+  {
+   "fieldname": "posted_at",
+   "fieldtype": "Datetime",
+   "label": "Posted At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "expires_at",
+   "fieldtype": "Datetime",
+   "label": "Expires At",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_first_post",
+   "fieldtype": "Check",
+   "label": "Is First Post",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_boosted",
+   "fieldtype": "Check",
+   "label": "Is Boosted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "boost_expires_at",
+   "fieldtype": "Datetime",
+   "label": "Boost Expires At",
+   "read_only": 1
+  },
+  {
+   "description": "Comma-separated list of Indian states. Leave blank to show to all states.",
+   "fieldname": "target_states",
+   "fieldtype": "Small Text",
+   "label": "Target States"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 0,
  "links": [],
- "modified": "2026-04-29 10:00:00.000000",
+ "modified": "2026-06-24 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Scout",
  "name": "Scout Job",

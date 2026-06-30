@@ -42,7 +42,11 @@ export default function FreelancerDashboardPage() {
         const sessionRaw = localStorage.getItem("scout_session");
         const session = sessionRaw ? (JSON.parse(sessionRaw) as { role?: string }) : null;
         const role = session?.role;
-        if (role !== "freelancer" && role !== "jobseeker") {
+        if (role === "jobseeker") {
+          router.replace("/jobseeker/dashboard");
+          return;
+        }
+        if (role !== "freelancer") {
           router.replace("/login");
           return;
         }
@@ -103,9 +107,9 @@ export default function FreelancerDashboardPage() {
             </span>
             <span className="tpo-brand-name">Discove<b>HR</b></span>
           </div>
-          <span className="tpo-brand-suite">Freelancer Interviewer</span>
+          <span className="tpo-brand-suite">Freelance Recruiter</span>
         </div>
-        <nav className="tpo-dashboard-nav" aria-label="Freelancer interviewer sections">
+        <nav className="tpo-dashboard-nav" aria-label="Freelance recruiter sections">
           <button
             type="button"
             className={`tpo-nav-item ${activeMenu === "profile" ? "active" : ""}`}
@@ -171,10 +175,10 @@ export default function FreelancerDashboardPage() {
                     ? "Refer candidates"
                     : "Profile & documents"}
             </h1>
-            <p>{user?.email || "Freelancer interviewer dashboard"}</p>
+            <p>{user?.email || "Freelance recruiter dashboard"}</p>
           </div>
           <div className="tpo-topbar-right">
-            <strong>{user?.full_name || "Freelancer Interviewer"}</strong>
+            <strong>{user?.full_name || "Freelance Recruiter"}</strong>
           </div>
         </header>
         <div className="tpo-dashboard-body">

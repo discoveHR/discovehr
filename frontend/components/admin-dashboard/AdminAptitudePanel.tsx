@@ -67,6 +67,15 @@ export function AdminAptitudePanel() {
     void refresh(selectedAssessmentId || undefined);
   }, [selectedAssessmentId]);
 
+  useEffect(() => {
+    void (async () => {
+      try {
+        const dir = await getAdminCollegesDirectory();
+        setColleges(dir.colleges);
+      } catch { /* non-critical */ }
+    })();
+  }, []);
+
   async function handleCreate(event: FormEvent) {
     event.preventDefault();
     setIsSaving(true);

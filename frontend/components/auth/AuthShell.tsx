@@ -14,7 +14,7 @@ export function AuthShell({ role, children, footer }: AuthShellProps) {
     <main className="page">
       <section className="panel">
         <div className="left">
-          <span className="badge">Scout Express · {role.badge}</span>
+          <span className="badge">DiscoveHR · {role.badge}</span>
           <h1 className="title">{role.title}</h1>
           <p className="subtitle">{role.subtitle}</p>
           <ul className="points">

@@ -58,7 +58,7 @@ export function AdminDashboardView() {
               </svg>
             </button>
             <h1>{topbarTitle}</h1>
-            <p>Scout Express · Platform administration</p>
+            <p>DiscoveHR · Platform administration</p>
           </div>
           <div className="tpo-topbar-right">
             <div className="tpo-topbar-actions">

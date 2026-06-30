@@ -136,9 +136,11 @@ def student_dashboard():
 
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
 
+    student_state = frappe.get_cached_value("Scout Student Profile", user_id, "state") or ""
+
     listed_jobs = _enrich_jobs(
 
-        _fetch_active_jobs(limit=HOME_JOBS_LIMIT),
+        _fetch_active_jobs(limit=HOME_JOBS_LIMIT, student_state=student_state),
 
         application_by_job,
 
@@ -146,7 +148,7 @@ def student_dashboard():
 
     )
 
-    suggested_jobs = build_suggested_jobs(user_id, application_by_job)
+    suggested_jobs = build_suggested_jobs(user_id, application_by_job, student_state=student_state)
 
     application_status, applications_truncated = application_status_for_student(user_id)
 

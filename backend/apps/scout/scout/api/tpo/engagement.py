@@ -73,10 +73,10 @@ def invite_hr_partner():
     subject = _("Campus drive invite: {0}").format(drive_title)
     message = (
         f"Hello {greeting},<br><br>"
-        f"{tpo_name} invited you to collaborate on Scout Express for <b>{drive_title}</b>.<br><br>"
+        f"{tpo_name} invited you to collaborate on DiscoveHR for <b>{drive_title}</b>.<br><br>"
         f"Open your HR dashboard (no login required): <a href='{link}'>{link}</a><br>"
         f"This link expires in 14 days.<br><br>"
-        "Regards,<br>Scout Express"
+        "Regards,<br>DiscoveHR"
     )
     email_note = _("HR invite email sent.")
     try:

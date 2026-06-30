@@ -140,6 +140,13 @@ export function useCompanyDashboard() {
   }, []);
 
   useEffect(() => {
+    const sessionRaw = localStorage.getItem("scout_session");
+    const session = sessionRaw ? (JSON.parse(sessionRaw) as { role?: string }) : null;
+    if (session?.role !== "company") {
+      router.replace("/login");
+      return;
+    }
+
     let cancelled = false;
     async function bootstrap() {
       try {
@@ -239,6 +246,10 @@ export function useCompanyDashboard() {
     if (!closeTarget) return;
     await handleUpdateJobStatus(closeTarget.id, "Closed");
     setCloseTarget(null);
+  }
+
+  function handleJobUpdated(updatedJob: JobItem) {
+    setJobs((prev) => prev.map((j) => (j.id === updatedJob.id ? updatedJob : j)));
   }
 
   async function handleAssessmentSubmit(event: FormEvent<HTMLFormElement>) {
@@ -425,6 +436,6 @@ export function useCompanyDashboard() {
     handleViewApplicants, handleInviteCollege, handleResendCollegeInvite,
     handleApplicantStatusChange, handleShortlistConfirm,
     refreshApplicants, refreshCreditWallet, loadCollegeInvites,
-    handleJobChange,
+    handleJobChange, handleJobUpdated,
   };
 }

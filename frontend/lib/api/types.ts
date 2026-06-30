@@ -584,6 +584,14 @@ export type CollegeOption = {
   website?: string;
 };
 
+export type JobDisplayStatus =
+  | "Draft"
+  | "Active"
+  | "Expiring Soon"
+  | "Expired"
+  | "Boosted"
+  | "Closed";
+
 export type JobItem = {
   id: string;
   title: string;
@@ -593,9 +601,16 @@ export type JobItem = {
   skills: string;
   minExperience: string;
   status: "Draft" | "Active" | "Closed";
+  displayStatus?: JobDisplayStatus;
   totalViews: number;
   applications: number;
   createdAt: string;
+  postedAt?: string;
+  expiresAt?: string;
+  remainingDays?: number | null;
+  isFirstPost?: boolean;
+  isBoosted?: boolean;
+  boostExpiresAt?: string;
   description: string;
   companyName: string;
   companyAbout: string;
@@ -694,6 +709,7 @@ export type JobFormPayload = {
   maxSalary: string;
   screeningQuestion: string;
   journeyStages?: JourneyStageDef[];
+  targetStates?: string;
 };
 
 export type CompanyLoginResponse = {

@@ -31,6 +31,9 @@ const NAV_ICONS: Record<MenuKey, React.ReactNode> = {
   "sub-admins": (
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
   ),
+  "hrms": (
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 8h2"/><path d="M7 12h10"/></svg>
+  ),
 };
 
 const NAV_SECTIONS: { label: string; items: MenuKey[] }[] = [
@@ -38,6 +41,7 @@ const NAV_SECTIONS: { label: string; items: MenuKey[] }[] = [
   { label: "Jobs", items: ["post-job", "job-listings", "job-journey"] },
   { label: "Talent", items: ["view-applicants", "interview-scheduler", "freelancer-interviewers"] },
   { label: "Tools", items: ["assessments", "credit-purchase", "sub-admins"] },
+  { label: "HR", items: ["hrms"] },
 ];
 
 const SUB_ADMIN_VISIBLE: MenuKey[] = ["dashboard", "job-listings", "view-applicants"];

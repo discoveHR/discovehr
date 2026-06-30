@@ -2,6 +2,7 @@ import json
 
 import frappe
 from frappe import _
+from frappe.utils import get_datetime
 
 TPO_ROLE_NAMES = frozenset(
     {
@@ -161,12 +162,61 @@ def get_admin_session_user():
     return user_id, None
 
 
-def row_to_job(row):
+def job_display_status(doc_status: str, expires_at, is_boosted: bool) -> str:
+    """Compute the UI-facing display status for a job."""
+    if doc_status in ("Draft", "Closed"):
+        return doc_status
+    if not expires_at:
+        return "Boosted" if is_boosted else "Active"
+    now = frappe.utils.now_datetime()
+    from frappe.utils import get_datetime
+    expires_dt = get_datetime(expires_at)
+    days_left = (expires_dt - now).days
+    if days_left < 0:
+        return "Expired"
+    if is_boosted:
+        return "Boosted"
+    if days_left <= 3:
+        return "Expiring Soon"
+    return "Active"
+
+
+def company_info_map(rows: list[dict]) -> dict[str, dict]:
+    """Batch-fetch full_name and bio for all unique company_user IDs in a list of job rows.
+
+    Pass the result as ``cinfo`` to :func:`row_to_job` to avoid one cache/DB
+    round-trip per job when serialising a list.
+    """
+    users = list({r.get("company_user") for r in rows if r.get("company_user")})
+    if not users:
+        return {}
+    fetched = frappe.get_all("User", filters={"name": ["in", users]}, fields=["name", "full_name", "bio"])
+    return {r["name"]: {"full_name": r.get("full_name") or "", "bio": r.get("bio") or ""} for r in fetched}
+
+
+def row_to_job(row, cinfo: dict | None = None):
     from scout.api.recruitment_journey import parse_journey_stage_defs, parse_journey_stages
+
+    company_user = row.get("company_user")
+    ci = (cinfo or {}).get(company_user or "") or {}
+    now = frappe.utils.now_datetime()
 
     created_at = row.get("creation")
     created_at = frappe.utils.formatdate(created_at, "dd MMM yyyy") if created_at else ""
-    company_user = row.get("company_user")
+
+    doc_status = row.get("status") or "Draft"
+    is_boosted = bool(row.get("is_boosted"))
+    expires_at = row.get("expires_at")
+    boost_expires_at = row.get("boost_expires_at")
+
+    if is_boosted and boost_expires_at and get_datetime(boost_expires_at) < now:
+        is_boosted = False
+
+    display_status = job_display_status(doc_status, expires_at, is_boosted)
+
+    remaining_days = None
+    if expires_at:
+        remaining_days = max((get_datetime(expires_at) - now).days, -1)
 
     return {
         "id": row.get("name"),
@@ -176,15 +226,23 @@ def row_to_job(row):
         "openings": int(row.get("openings") or 0),
         "skills": row.get("skills") or "",
         "minExperience": row.get("min_experience") or "0 year",
-        "status": row.get("status") or "Draft",
+        "status": doc_status,
+        "displayStatus": display_status,
         "totalViews": int(row.get("total_views") or 0),
         "applications": int(row.get("applications") or 0),
         "createdAt": created_at,
+        "postedAt": frappe.utils.formatdate(row.get("posted_at"), "dd MMM yyyy") if row.get("posted_at") else "",
+        "expiresAt": frappe.utils.formatdate(expires_at, "dd MMM yyyy") if expires_at else "",
+        "remainingDays": remaining_days,
+        "isFirstPost": bool(row.get("is_first_post")),
+        "isBoosted": is_boosted,
+        "boostExpiresAt": frappe.utils.formatdate(boost_expires_at, "dd MMM yyyy") if boost_expires_at else "",
         "description": row.get("description") or "",
-        "companyName": frappe.get_cached_value("User", company_user, "full_name") if company_user else "",
-        "companyAbout": frappe.get_cached_value("User", company_user, "bio") if company_user else "",
+        "companyName": ci.get("full_name") or (frappe.get_cached_value("User", company_user, "full_name") if company_user else ""),
+        "companyAbout": ci.get("bio") or (frappe.get_cached_value("User", company_user, "bio") if company_user else ""),
         "journeyStages": parse_journey_stages(row.get("journey_stages")),
         "journeyStageDefs": parse_journey_stage_defs(row.get("journey_stages")),
+        "targetStates": row.get("target_states") or "",
     }
 
 

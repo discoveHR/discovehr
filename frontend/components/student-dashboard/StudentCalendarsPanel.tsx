@@ -76,7 +76,7 @@ export function StudentCalendarsPanel({ studentEmail, onError, onSuccess }: Prop
         amountPaise: order.amountPaise,
         currency: order.currency,
         orderId: order.razorpayOrderId,
-        name: "Scout Express",
+        name: "DiscoveHR",
         description: exam.title,
         prefillEmail: studentEmail,
         onSuccess: async (rzp) => {

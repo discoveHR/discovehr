@@ -4,7 +4,30 @@
       "PowerShell(wsl bash -c \"Get-Content ~/frappe-bench/apps/scout/scout/api/company/jobs_applications.py | Select-Object -First 60\" 2>&1)",
       "PowerShell(wsl bash -c \"cat ~/frappe-bench/apps/scout/scout/api/company/jobs_applications.py | python3 -c 'import sys; lines = sys.stdin.readlines\\(\\); print\\(\\\\\"\\\\\".join\\(lines[:60]\\)\\)'\")",
       "PowerShell(wsl -d Ubuntu -u dell -- /bin/bash -lc \"curl -s 'http://localhost:8000/api/method/scout.api.company_api.list_sub_admins' | python3 -c 'import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\(\\\\\"exception\\\\\",\\\\\"no exception\\\\\"\\)[:100] if \\\\\"exception\\\\\" in d else d.get\\(\\\\\"message\\\\\",\\\\\"no message\\\\\"\\)\\)' 2>/dev/null\")",
-      "PowerShell(wsl -d Ubuntu -u dell -- /bin/bash -lc \"curl -s -X POST http://localhost:8000/api/method/scout.api.company_api.create_sub_admin 2>&1 | head -c 200\")"
+      "PowerShell(wsl -d Ubuntu -u dell -- /bin/bash -lc \"curl -s -X POST http://localhost:8000/api/method/scout.api.company_api.create_sub_admin 2>&1 | head -c 200\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(wsl -e bash -lc \"cat /etc/os-release | head -5\")",
+      "Bash(wsl -e bash -lc 'echo \"user=$\\(whoami\\); home=$HOME; id=$\\(id\\)\"')",
+      "Bash(wsl -e bash -lc 'cat ~/scout-setup.log 2>/dev/null | tail -20 || echo \"Log not found yet\"')",
+      "Bash(wsl -e bash -lc 'curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/api/method/frappe.ping 2>/dev/null; echo \"\"')",
+      "Bash(wsl -e bash -lc 'python3 --version && pip3 --version 2>/dev/null || python3 -m pip --version 2>/dev/null; which bench 2>/dev/null || echo \"bench not found\"; ls ~/frappe-bench 2>/dev/null || echo \"no frappe-bench dir\"')",
+      "Bash(wsl -e bash -lc 'which pip3 2>/dev/null || echo \"no pip3\"; which mariadb 2>/dev/null || echo \"no mariadb\"; which redis-server 2>/dev/null || echo \"no redis\"; which node 2>/dev/null || echo \"no node\"; which bench 2>/dev/null || echo \"no bench\"; ls ~/frappe-bench 2>/dev/null || echo \"no frappe-bench\"; cat ~/scout-setup.log 2>/dev/null | tail -5 || echo \"no log\"')",
+      "Bash(wsl -u root -e bash -lc 'mysql -e \"SHOW DATABASES;\" 2>&1 && mysql -e \"SELECT COUNT\\(*\\) as tables FROM information_schema.tables WHERE table_schema='\"'\"'scout_dev'\"'\"';\" 2>&1')",
+      "Bash(wsl -u root -e bash -lc 'mysql -uroot -e \"SELECT user, host, plugin FROM mysql.user WHERE user='\"'\"'root'\"'\"';\" 2>&1')",
+      "Bash(wsl -u root -e bash -lc ' *)",
+      "Bash(wsl -u root -e bash -lc 'mysql -e \"SELECT COUNT\\(*\\) FROM information_schema.tables WHERE table_schema='\"'\"'scout_dev'\"'\"';\" 2>&1 | tail -1; ps aux | grep \"bench_helper\" | grep -v grep | head -3')",
+      "Bash(wsl bash -lc ' *)",
+      "Bash(wsl bash *)",
+      "Bash(curl -s -u \"rzp_live_SxqGe2Ul8OzPTo:XcjTaK1kRESnkY7RDjxtA3Tj\" \"https://api.razorpay.com/v1/orders/order_T10dxWp77v0WRm\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Order status:', d.get\\('status'\\), '| Amount:', d.get\\('amount'\\), 'paise | Receipt:', d.get\\('receipt'\\)\\)\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\admin\\\\Documents\\\\discovehr\\\\frontend\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(npm ls *)",
+      "Bash(npm install *)",
+      "PowerShell(wsl cat /home/athul/frappe-bench/Procfile)",
+      "Skill(code-review)",
+      "Skill(code-review:*)"
     ]
   }
 }

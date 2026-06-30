@@ -62,7 +62,7 @@ export function TpoEngagementPanel({ onError, onSuccess }: Props) {
         amountPaise: order.amountPaise,
         currency: "INR",
         orderId: order.razorpayOrderId,
-        name: "Scout Express",
+        name: "DiscoveHR",
         description: "Student credit pack",
         onSuccess: async (rzp) => {
           const msg = await purchaseStudentCreditsVerify({

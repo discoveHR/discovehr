@@ -7,6 +7,7 @@ import secrets
 
 import frappe
 from frappe import _
+from frappe.exceptions import OutgoingEmailError
 from frappe.model.naming import make_autoname
 
 from scout.api.common import get_tpo_session_user
@@ -58,6 +59,18 @@ def _process_bulk_rows(
     cache = frappe.cache()
 
     tpo_college = norm(frappe.db.get_value("Scout TPO Profile", {"tpo_user": tpo_user_id}, "college_name"))
+    tpo_name = frappe.get_cached_value("User", tpo_user_id, "full_name") or "Your TPO"
+
+    frontend_base_url = None
+    if create_invite_for_missing:
+        from scout.utils.env_config import get_frontend_base_url
+        from scout.utils.email import scout_send_email as _send_email
+        try:
+            frontend_base_url = get_frontend_base_url()
+        except Exception:
+            pass
+
+    invite_subject = _("You're invited to DiscoveHR — complete your student profile")
 
     for index, raw_row in enumerate(rows, start=2):
         mapped = _map_row_fields(raw_row)
@@ -167,6 +180,22 @@ def _process_bulk_rows(
                         )
                         invite_doc.insert(ignore_permissions=True, set_name=candidate_name)
                         invites_created += 1
+                        if frontend_base_url:
+                            invite_link = f"{frontend_base_url}/student/accept-invite/{raw_token}"
+                            invite_message = (
+                                f"Hello,<br><br>"
+                                f"{tpo_name} invited you to join DiscoveHR as a student.<br><br>"
+                                f"Click to create your account and set a password: "
+                                f"<a href='{invite_link}'>{invite_link}</a><br>"
+                                f"After signing in, finish your college placement details under "
+                                f"<strong>Profile</strong>.<br>"
+                                f"This link expires in 72 hours.<br><br>"
+                                "Regards,<br>DiscoveHR"
+                            )
+                            try:
+                                _send_email([email], invite_subject, invite_message)
+                            except (OutgoingEmailError, Exception):
+                                pass  # Email failure must not block the bulk import
                         break
                     except frappe.DuplicateEntryError:
                         invite_doc = None
@@ -181,7 +210,6 @@ def _process_bulk_rows(
                 errors.append(f"Row {index}: user not found for {email}.")
 
         if progress_upload_id and processed % BULK_COMMIT_EVERY == 0:
-            frappe.db.commit()
             cache.set_value(
                 _upload_cache_key(progress_upload_id),
                 {
@@ -195,8 +223,6 @@ def _process_bulk_rows(
                 },
                 expires_in_sec=BULK_UPLOAD_CACHE_TTL,
             )
-
-    frappe.db.commit()
     from scout.api.tpo.student_scope import invalidate_tpo_student_ids_cache
 
     invalidate_tpo_student_ids_cache(tpo_user_id)

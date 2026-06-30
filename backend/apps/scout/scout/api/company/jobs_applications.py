@@ -109,8 +109,13 @@ def list_jobs():
             "description",
             "creation",
             "journey_stages",
+            "posted_at",
+            "expires_at",
+            "is_first_post",
+            "is_boosted",
+            "boost_expires_at",
         ],
-        order_by="creation desc",
+        order_by="is_boosted desc, creation desc",
     )
     return {"ok": True, "data": {"jobs": [row_to_job(row) for row in rows]}}
 
@@ -201,7 +206,7 @@ def invite_college_for_job():
     subject = _("Placement Invitation: {0}").format(job.get("title") or "New Opportunity")
     message = (
         f"Hello,<br><br>"
-        f"{company_name} invites your college to participate in a placement opportunity on Scout Express.<br><br>"
+        f"{company_name} invites your college to participate in a placement opportunity on DiscoveHR.<br><br>"
         f"<b>Job:</b> {job.get('title') or ''}<br>"
         f"<b>Location:</b> {job.get('location_type') or ''}<br>"
         f"<b>Skills:</b> {job.get('skills') or ''}<br>"
@@ -629,6 +634,7 @@ def create_job():
         "min_salary": payload.get("minSalary") or "",
         "max_salary": payload.get("maxSalary") or "",
         "screening_question": payload.get("screeningQuestion") or "",
+        "target_states": payload.get("targetStates") or "",
         "status": "Draft",
         "total_views": 0,
         "applications": 0,
@@ -676,8 +682,13 @@ def create_job():
             "description",
             "creation",
             "journey_stages",
+            "posted_at",
+            "expires_at",
+            "is_first_post",
+            "is_boosted",
+            "boost_expires_at",
         ],
-        order_by="creation desc",
+        order_by="is_boosted desc, creation desc",
     )
     jobs = [row_to_job(row) for row in rows]
     job = next((item for item in jobs if item["id"] == doc.name), None)
@@ -703,6 +714,20 @@ def update_job_status():
         return {"ok": False, "message": _("You are not allowed to modify this job.")}
 
     doc.status = next_status
+
+    if next_status == "Active" and not doc.get("posted_at"):
+        now = frappe.utils.now_datetime()
+        doc.posted_at = now
+        # First job ever activated by this company gets 30 days free; others get 15 days.
+        prior_active = frappe.db.count(
+            "Scout Job",
+            filters={"company_user": user_id, "posted_at": ["is", "set"], "name": ["!=", job_id]},
+        )
+        days = 30 if prior_active == 0 else 15
+        doc.is_first_post = 1 if prior_active == 0 else 0
+        import datetime
+        doc.expires_at = now + datetime.timedelta(days=days)
+
     doc.save(ignore_permissions=True)
     frappe.db.commit()
     return {"ok": True, "message": _("Job status updated successfully."), "data": {"job": row_to_job(doc.as_dict())}}
