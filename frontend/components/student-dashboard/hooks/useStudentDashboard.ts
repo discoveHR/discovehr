@@ -85,6 +85,9 @@ export function useStudentDashboard() {
   const [applyingJobId, setApplyingJobId] = useState<string | null>(null);
   const [profileApplyModalOpen, setProfileApplyModalOpen] = useState(false);
   const [priCapModalOpen, setPriCapModalOpen] = useState(false);
+  const [upgradeProModalOpen, setUpgradeProModalOpen] = useState(false);
+  const [isPro, setIsPro] = useState(false);
+  const [coinBalance, setCoinBalance] = useState(0);
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
   const [collegiateInvite, setCollegiateInvite] = useState<StudentCollegiateInvite | null>(null);
   const [candidateType, setCandidateType] = useState<string>("Independent");
@@ -200,6 +203,8 @@ export function useStudentDashboard() {
     const invite = data.collegiateInvite;
     setCollegiateInvite(invite?.inviteId ? invite : null);
     setCandidateType(data.candidateType || "Independent");
+    setIsPro(Boolean(data.isPro));
+    setCoinBalance(data.coinBalance ?? 0);
 
     setProfileForm((prev) => ({
       ...prev,
@@ -335,7 +340,19 @@ export function useStudentDashboard() {
     }
   }
 
+  function openUpgradeProModal() {
+    setUpgradeProModalOpen(true);
+  }
+
+  function closeUpgradeProModal() {
+    setUpgradeProModalOpen(false);
+  }
+
   function onApplyJobClick(jobId: string) {
+    if (!isPro) {
+      setUpgradeProModalOpen(true);
+      return;
+    }
     if (!profileFlags.canApplyToJobs) {
       setProfileApplyModalOpen(true);
       return;
@@ -752,6 +769,13 @@ export function useStudentDashboard() {
     isResumeSaving,
     handleSaveResume,
     applyingJobId,
+    isPro,
+    setIsPro,
+    coinBalance,
+    setCoinBalance,
+    upgradeProModalOpen,
+    openUpgradeProModal,
+    closeUpgradeProModal,
     profileApplyModalOpen,
     setProfileApplyModalOpen,
     priCapModalOpen,

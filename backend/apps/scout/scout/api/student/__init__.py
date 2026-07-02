@@ -40,6 +40,12 @@ from scout.api.kyc import (
     generate_aadhaar_otp,
     verify_aadhaar_otp,
 )
+from scout.api.student.wallet import (
+    create_coin_purchase_order,
+    get_wallet,
+    upgrade_to_pro,
+    verify_coin_purchase,
+)
 
 __all__ = [
     "generate_aadhaar_otp",
@@ -71,4 +77,8 @@ __all__ = [
     "submit_psychometric_dev_result",
     "update_student_profile",
     "verify_mock_exam_payment",
+    "create_coin_purchase_order",
+    "get_wallet",
+    "upgrade_to_pro",
+    "verify_coin_purchase",
 ]

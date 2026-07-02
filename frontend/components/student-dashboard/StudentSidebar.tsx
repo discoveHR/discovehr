@@ -8,9 +8,11 @@ type StudentSidebarProps = {
   documentPendingCount?: number;
   isOpen?: boolean;
   onClose?: () => void;
+  isPro?: boolean;
+  coinBalance?: number;
 };
 
-export function StudentSidebar({ student, activeMenu, onMenuChange, onLogout, documentPendingCount = 0, isOpen, onClose }: StudentSidebarProps) {
+export function StudentSidebar({ student, activeMenu, onMenuChange, onLogout, documentPendingCount = 0, isOpen, onClose, isPro = false, coinBalance = 0 }: StudentSidebarProps) {
   return (
     <aside className={`company-sidebar${isOpen ? " sidebar--open" : ""}`}>
       {onClose && (
@@ -33,6 +35,12 @@ export function StudentSidebar({ student, activeMenu, onMenuChange, onLogout, do
         </div>
         <h2>Student Hub</h2>
         <p>{student?.full_name || "Student User"}</p>
+        <div className="sidebar-pro-row">
+          <span className={`sidebar-pro-badge${isPro ? " sidebar-pro-badge--pro" : " sidebar-pro-badge--normal"}`}>
+            {isPro ? "⭐ Pro" : "Normal"}
+          </span>
+          <span className="sidebar-coin-count">{coinBalance} coins</span>
+        </div>
       </div>
       <nav className="company-nav">
         <div className="company-nav-section" role="presentation">Dashboard</div>
@@ -90,6 +98,13 @@ export function StudentSidebar({ student, activeMenu, onMenuChange, onLogout, do
         <button type="button" className={`company-nav-item ${activeMenu === "purchase-courses" ? "active" : ""}`} onClick={() => onMenuChange("purchase-courses")}>
           <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           Courses & account
+        </button>
+        <button type="button" className={`company-nav-item ${activeMenu === "wallet" ? "active" : ""}`} onClick={() => onMenuChange("wallet")}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
+          </svg>
+          Wallet & Pro
+          {!isPro && <span className="sidebar-upgrade-dot" />}
         </button>
       </nav>
       <button className="company-logout" onClick={onLogout} type="button">

@@ -6,15 +6,17 @@ import { render, screen } from "@testing-library/react";
 import { TpoHomePanel } from "../components/tpo-dashboard/TpoHomePanel";
 
 const BASE_PROFILE = {
+  tpoName: "TPO Admin",
   collegeName: "Test College",
   collegeLocation: "Mumbai",
   state: "Maharashtra",
   country: "India",
-  tpoUserId: "tpo@test.com",
-  tpoUserName: "TPO Admin",
-  website: "",
-  affiliatedTo: "",
-  establishedYear: "",
+  district: "",
+  address: "",
+  pincode: "",
+  websiteLink: "",
+  linkedinUrl: "",
+  socialMediaLink: "",
 };
 
 const BASE_PROPS = {
@@ -25,6 +27,7 @@ const BASE_PROPS = {
   tpoProfile: BASE_PROFILE,
   activePostingsCount: 3,
   pendingInvitesCount: 5,
+  setActiveMenu: jest.fn(),
 };
 
 describe("TpoHomePanel", () => {
@@ -49,7 +52,7 @@ describe("TpoHomePanel", () => {
     render(
       <TpoHomePanel
         {...BASE_PROPS}
-        dashboardRollup={{ studentCount: 300, applicationCount: 50, trainingAllCompletedCount: 20, pendingInviteCount: 8 }}
+        dashboardRollup={{ studentCount: 300, applicationCount: 50, trainingAllCompletedCount: 20, pendingInviteCount: 8, lastRefreshed: "" }}
       />
     );
     expect(screen.getByText("300")).toBeInTheDocument();
@@ -83,7 +86,7 @@ describe("TpoHomePanel", () => {
     render(
       <TpoHomePanel
         {...BASE_PROPS}
-        dashboardRollup={{ studentCount: 100, applicationCount: 42, trainingAllCompletedCount: 10, pendingInviteCount: 2 }}
+        dashboardRollup={{ studentCount: 100, applicationCount: 42, trainingAllCompletedCount: 10, pendingInviteCount: 2, lastRefreshed: "" }}
       />
     );
     expect(screen.getByText("42")).toBeInTheDocument();

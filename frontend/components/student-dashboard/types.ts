@@ -18,7 +18,8 @@ export type StudentMenuKey =
   | "messages"
   | "documents"
   | "profile"
-  | "purchase-courses";
+  | "purchase-courses"
+  | "wallet";
 
 export type StudentProfileFlags = {
   profileSubmitted: boolean;

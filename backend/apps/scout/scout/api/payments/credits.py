@@ -36,7 +36,7 @@ def grant_credits(student_user: str, credits: int, tpo_user: str = "", note: str
     ).insert(ignore_permissions=True)
 
 
-def spend_credits(student_user: str, credits: int, note: str = "") -> bool:
+def spend_credits(student_user: str, credits: int, note: str = "", txn_type: str = "Student Spend") -> bool:
     wallet = get_or_create_wallet(student_user)
     bal = int(wallet.balance_credits or 0)
     if bal < credits:
@@ -47,7 +47,7 @@ def spend_credits(student_user: str, credits: int, note: str = "") -> bool:
         {
             "doctype": "Scout Credit Transaction",
             "student_user": student_user,
-            "transaction_type": "Student Spend",
+            "transaction_type": txn_type,
             "credits": -credits,
             "note": note,
         }

@@ -66,6 +66,7 @@ def apply_to_job():
                 "pin_code",
                 "resume_file",
                 "profile_submitted",
+                "is_pro",
             ],
             as_dict=True,
         )
@@ -75,6 +76,14 @@ def apply_to_job():
             return {
                 "ok": False,
                 "message": _("Complete and submit your profile before applying to jobs."),
+            }
+
+        if not cint(profile.get("is_pro")):
+            frappe.local.response["http_status_code"] = 403
+            return {
+                "ok": False,
+                "message": _("Upgrade to Pro to apply for jobs."),
+                "upgradeRequired": True,
             }
 
     if not can_apply_to_public_job(user_id, job_id=job_id, include_moodle=True):

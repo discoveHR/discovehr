@@ -6,6 +6,7 @@ import { listMyDocumentRequests } from "../../lib/api/student-documents";
 import type { StudentDashboardModel } from "./hooks/useStudentDashboard";
 import { PriCapModal } from "./PriCapModal";
 import { ProfileRequiredModal } from "./ProfileRequiredModal";
+import { UpgradeProModal } from "./UpgradeProModal";
 // Light always-visible panels — loaded eagerly
 import { StudentApplicationsPanel } from "./StudentApplicationsPanel";
 import { StudentInternalPostings } from "./StudentInternalPostings";
@@ -23,6 +24,7 @@ const StudentLmsPanel         = dynamic(() => import("./StudentLmsPanel").then(m
 const StudentTestsAssessmentsPanel = dynamic(() => import("./StudentTestsAssessmentsPanel").then(m => m.StudentTestsAssessmentsPanel), { loading: PanelLoading });
 const StudentCreditsPanel     = dynamic(() => import("./StudentCreditsPanel").then(m => m.StudentCreditsPanel),       { loading: PanelLoading });
 const StudentPriPanel         = dynamic(() => import("./StudentPriPanel").then(m => m.StudentPriPanel),               { loading: PanelLoading });
+const StudentWalletPanel      = dynamic(() => import("./StudentWalletPanel").then(m => m.StudentWalletPanel),         { loading: PanelLoading });
 
 type StudentDashboardViewProps = {
   dashboard: StudentDashboardModel;
@@ -50,6 +52,8 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
           documentPendingCount={docPendingCount}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
+          isPro={d.isPro}
+          coinBalance={d.coinBalance}
         />
 
         <div className="company-main">
@@ -94,6 +98,8 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
               expandedJobId={d.expandedJobId}
               onApplyJobClick={d.onApplyJobClick}
               onToggleDetails={d.toggleDetails}
+              isPro={d.isPro}
+              onUpgradeClick={d.openUpgradeProModal}
             />
           ) : null}
 
@@ -114,6 +120,8 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
                 expandedJobId={d.expandedJobId}
                 onApplyJobClick={d.onApplyJobClick}
                 onToggleDetails={d.toggleDetails}
+                isPro={d.isPro}
+                onUpgradeClick={d.openUpgradeProModal}
               />
               {d.jobsPagination.totalPages > 1 ? (
                 <div className="table-pagination" style={{ marginTop: 12, display: "flex", gap: 8, alignItems: "center" }}>
@@ -196,9 +204,28 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
             />
           ) : null}
 
+          {d.activeMenu === "wallet" ? (
+            <StudentWalletPanel
+              isPro={d.isPro}
+              coinBalance={d.coinBalance}
+              onError={(m) => d.setError(m)}
+              onSuccess={(m) => d.showToast(m, "success")}
+              onProUpgrade={() => d.setIsPro(true)}
+              onBalanceChange={(bal, pro) => { d.setCoinBalance(bal); if (pro) d.setIsPro(true); }}
+            />
+          ) : null}
+
           {d.activeMenu === "lms" ? <StudentLmsPanel lmsContext={d.lmsContext} isLmsLoading={d.isLmsLoading} onOpenLms={d.openLms} /> : null}
 
           {d.activeMenu === "profile" ? <StudentProfileSection dashboard={d} /> : null}
+
+          <UpgradeProModal
+            open={d.upgradeProModalOpen}
+            coinBalance={d.coinBalance}
+            onClose={d.closeUpgradeProModal}
+            onUpgradeSuccess={(newBal) => { d.setCoinBalance(newBal); d.setIsPro(true); }}
+            onGoToWallet={() => { d.closeUpgradeProModal(); d.setActiveMenu("wallet"); }}
+          />
 
           <ProfileRequiredModal
             open={d.profileApplyModalOpen}

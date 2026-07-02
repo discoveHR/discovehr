@@ -156,6 +156,8 @@ export type StudentDashboardData = {
   collegiateInvite?: StudentCollegiateInvite | null;
   candidateType?: string;
   jobsUsePagination?: boolean;
+  isPro?: boolean;
+  coinBalance?: number;
 };
 
 export type ListStudentJobsParams = {
@@ -614,11 +616,35 @@ export type JobItem = {
   description: string;
   companyName: string;
   companyAbout: string;
+  companyHidden?: boolean;
   isApplied?: boolean;
   suggestedByTpo?: boolean;
   applicationStatus?: "Not Applied" | "Submitted" | "In Review" | "Shortlisted" | "Rejected" | "Selected";
   journeyStages?: string[];
   journeyStageDefs?: JourneyStageDef[];
+};
+
+export type CoinPackage = {
+  id: string;
+  coins: number;
+  priceInr: number;
+  label: string;
+};
+
+export type WalletTransaction = {
+  id: string;
+  type: string;
+  coins: number;
+  amountInr: number;
+  note: string;
+  at: string;
+};
+
+export type StudentWalletData = {
+  coinBalance: number;
+  isPro: boolean;
+  packages: CoinPackage[];
+  transactions: WalletTransaction[];
 };
 
 export type JobRecruitmentJourneyData = {

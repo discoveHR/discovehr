@@ -269,6 +269,16 @@ def application_status_for_student(user_id: str) -> tuple[list[dict], bool]:
     )
 
 
+def _mask_company_for_non_pro(jobs: list[dict], is_pro: bool) -> list[dict]:
+    if is_pro:
+        return jobs
+    for job in jobs:
+        job["companyName"] = ""
+        job["companyAbout"] = ""
+        job["companyHidden"] = True
+    return jobs
+
+
 @frappe.whitelist(methods=["GET"])
 def list_student_jobs():
     user_id, err = get_student_session_user()
@@ -283,7 +293,14 @@ def list_student_jobs():
     base_filters = _base_job_filters()
     application_by_job = _student_application_map(user_id)
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
-    student_state = frappe.get_cached_value("Scout Student Profile", user_id, "state") or ""
+    profile_basic = frappe.db.get_value(
+        "Scout Student Profile",
+        {"student_user": user_id},
+        ["state", "is_pro"],
+        as_dict=True,
+    ) or {}
+    student_state = (profile_basic.get("state") or "").strip()
+    is_pro = bool(profile_basic.get("is_pro"))
 
     jobs: list[dict] = []
     total = 0
@@ -351,6 +368,8 @@ def list_student_jobs():
             application_by_job,
             inbound_ids,
         )
+
+    jobs = _mask_company_for_non_pro(jobs, is_pro)
 
     return {
         "ok": True,

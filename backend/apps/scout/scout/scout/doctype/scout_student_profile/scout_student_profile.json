@@ -5,7 +5,7 @@
  "creation": "2026-04-30 11:45:00.000000",
  "doctype": "DocType",
  "engine": "InnoDB",
-  "field_order": [
+ "field_order": [
   "student_user",
   "candidate_type",
   "linked_tpo_user",
@@ -54,7 +54,9 @@
   "pri_score",
   "profile_submitted",
   "profile_edit_requested",
-  "profile_edit_approved"
+  "profile_edit_approved",
+  "is_pro",
+  "pro_activated_at"
  ],
  "fields": [
   {
@@ -330,6 +332,17 @@
    "fieldname": "profile_edit_approved",
    "fieldtype": "Check",
    "label": "TPO approved profile edit"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_pro",
+   "fieldtype": "Check",
+   "label": "Pro Student"
+  },
+  {
+   "fieldname": "pro_activated_at",
+   "fieldtype": "Datetime",
+   "label": "Pro activated at"
   }
  ],
  "grid_page_length": 50,

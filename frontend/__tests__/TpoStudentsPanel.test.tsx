@@ -26,7 +26,7 @@ jest.mock("../components/common/MailerStatusBanner", () => ({
 import { searchTpoStudents } from "../lib/api";
 const mockSearch = searchTpoStudents as jest.Mock;
 
-const EMPTY_PAGINATION = { page: 1, pageSize: 50, total: 0, totalPages: 1, truncated: false };
+const EMPTY_PAGINATION = { page: 1, pageSize: 50, total: 0, totalPages: 1, truncated: false, hasNext: false, hasPrev: false };
 const SAMPLE_STUDENT = {
   studentId: "u1@test.com", fullName: "Alice Smith", email: "u1@test.com",
   branch: "CS", batch: "2025", college: "IIT", phone: "", state: "", country: "",
@@ -38,7 +38,7 @@ const BASE_PROPS = {
   setActiveStudentTab: jest.fn(),
   isStudentsLoading: false,
   studentRows: [SAMPLE_STUDENT],
-  studentPagination: { page: 1, pageSize: 50, total: 1, totalPages: 1, truncated: false },
+  studentPagination: { page: 1, pageSize: 50, total: 1, totalPages: 1, truncated: false, hasNext: false, hasPrev: false },
   goToStudentPage: jest.fn(),
   batchFilter: "",
   setBatchFilter: jest.fn(),
@@ -54,7 +54,7 @@ const BASE_PROPS = {
   profileEditRequests: [],
   loadProfileEditRequests: jest.fn(),
   handleApproveProfileEdit: jest.fn(),
-  approvingStudentId: null,
+  approvingStudentId: "",
   bulkUploadForm: { defaultBatch: "", defaultDepartment: "", defaultYear: "", createInviteForMissing: true },
   setBulkUploadForm: jest.fn(),
   bulkUploadFile: null,
@@ -208,7 +208,7 @@ describe("TpoStudentsPanel — Bulk Upload tab", () => {
   });
 
   it("calls handleBulkStudentUpload on form submit", () => {
-    const handleBulk = jest.fn((e: React.FormEvent) => e.preventDefault());
+    const handleBulk = jest.fn(async (e: React.FormEvent) => { e.preventDefault(); });
     const file = new File(["email\nalice@test.com"], "students.csv", { type: "text/csv" });
     render(<TpoStudentsPanel {...BULK_PROPS} bulkUploadFile={file} handleBulkStudentUpload={handleBulk} />);
     const btn = screen.getByRole("button", { name: /Upload Students/i });
@@ -264,7 +264,7 @@ describe("TpoStudentsPanel — Invites tab", () => {
 
   it("renders invite rows when invites exist", () => {
     const invites = [{
-      id: "inv1", email: "bob@test.com", status: "Pending",
+      id: "inv1", email: "bob@test.com", status: "Pending" as const,
       branch: "CS", batch: "2025", year: "3", expiresAt: "2026-07-01", acceptedAt: "",
     }];
     render(<TpoStudentsPanel {...BASE_PROPS} activeStudentTab="invites" studentInvites={invites} />);

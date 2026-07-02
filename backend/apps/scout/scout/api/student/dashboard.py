@@ -1,8 +1,16 @@
 import frappe
 
-
-
 from scout.api.common import get_student_session_user, row_to_job
+
+
+def _mask_company_for_non_pro(jobs: list, is_pro: bool) -> list:
+    if is_pro:
+        return jobs
+    for job in jobs:
+        job["companyName"] = ""
+        job["companyAbout"] = ""
+        job["companyHidden"] = True
+    return jobs
 
 from scout.api.student.jobs import (
 
@@ -136,11 +144,22 @@ def student_dashboard():
 
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
 
-    student_state = frappe.get_cached_value("Scout Student Profile", user_id, "state") or ""
+    profile_basic = frappe.db.get_value(
+        "Scout Student Profile",
+        {"student_user": user_id},
+        ["state", "is_pro"],
+        as_dict=True,
+    ) or {}
+    student_state = (profile_basic.get("state") or "").strip()
+    is_pro = bool(profile_basic.get("is_pro"))
+
+    from scout.api.payments.credits import get_or_create_wallet
+    wallet = get_or_create_wallet(user_id)
+    coin_balance = int(wallet.balance_credits or 0)
 
     listed_jobs = _enrich_jobs(
 
-        _fetch_active_jobs(limit=HOME_JOBS_LIMIT, student_state=student_state),
+        _mask_company_for_non_pro(_fetch_active_jobs(limit=HOME_JOBS_LIMIT, student_state=student_state), is_pro),
 
         application_by_job,
 
@@ -149,6 +168,7 @@ def student_dashboard():
     )
 
     suggested_jobs = build_suggested_jobs(user_id, application_by_job, student_state=student_state)
+    suggested_jobs = _mask_company_for_non_pro(suggested_jobs, is_pro)
 
     application_status, applications_truncated = application_status_for_student(user_id)
 
@@ -281,6 +301,10 @@ def student_dashboard():
             "candidateType": candidate_type,
 
             "jobsUsePagination": True,
+
+            "isPro": is_pro,
+
+            "coinBalance": coin_balance,
 
         },
 
