@@ -6,6 +6,7 @@ import { listMyDocumentRequests } from "../../lib/api/student-documents";
 import type { StudentDashboardModel } from "./hooks/useStudentDashboard";
 import { PriCapModal } from "./PriCapModal";
 import { ProfileRequiredModal } from "./ProfileRequiredModal";
+import { StudentHeaderWallet } from "./StudentHeaderWallet";
 import { UpgradeProModal } from "./UpgradeProModal";
 // Light always-visible panels — loaded eagerly
 import { StudentApplicationsPanel } from "./StudentApplicationsPanel";
@@ -67,6 +68,14 @@ export function StudentDashboardView({ dashboard: d }: StudentDashboardViewProps
             onToggleTheme={d.toggleTheme}
             notificationCount={1}
             onSidebarToggle={() => setSidebarOpen(true)}
+            extraActions={
+              <StudentHeaderWallet
+                coinBalance={d.coinBalance}
+                isPro={d.isPro}
+                onOpenWallet={() => d.setActiveMenu("wallet")}
+                onOpenUpgrade={d.openUpgradeProModal}
+              />
+            }
           />
 
           {d.activeMenu === "all-jobs" ? <StudentInternalPostings internalPostings={d.internalPostings} /> : null}

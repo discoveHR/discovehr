@@ -10,7 +10,7 @@ async function parse<T>(response: Response): Promise<T> {
 }
 
 export async function getStudentWallet(): Promise<StudentWalletData> {
-  const response = await fetch(`${API_URL}/api/method/scout.api.student.get_wallet`, {
+  const response = await fetch(`${API_URL}/api/method/scout.api.student.wallet.get_wallet`, {
     method: "GET",
     headers: scoutJsonHeaders(),
     credentials: "include",
@@ -29,7 +29,7 @@ export type CoinPurchaseOrder = {
 };
 
 export async function createCoinPurchaseOrder(packId: string): Promise<CoinPurchaseOrder> {
-  const response = await fetch(`${API_URL}/api/method/scout.api.student.create_coin_purchase_order`, {
+  const response = await fetch(`${API_URL}/api/method/scout.api.student.wallet.create_coin_purchase_order`, {
     method: "POST",
     headers: scoutJsonHeaders(),
     credentials: "include",
@@ -46,7 +46,7 @@ export async function verifyCoinPurchase(payload: {
   razorpayOrderId: string;
   razorpaySignature: string;
 }): Promise<VerifyCoinPurchaseResult> {
-  const response = await fetch(`${API_URL}/api/method/scout.api.student.verify_coin_purchase`, {
+  const response = await fetch(`${API_URL}/api/method/scout.api.student.wallet.verify_coin_purchase`, {
     method: "POST",
     headers: scoutJsonHeaders(),
     credentials: "include",
@@ -63,7 +63,7 @@ export type UpgradeProResult = {
 };
 
 export async function upgradeStudentToPro(): Promise<UpgradeProResult & { message?: string }> {
-  const response = await fetch(`${API_URL}/api/method/scout.api.student.upgrade_to_pro`, {
+  const response = await fetch(`${API_URL}/api/method/scout.api.student.wallet.upgrade_to_pro`, {
     method: "POST",
     headers: scoutJsonHeaders(),
     credentials: "include",
