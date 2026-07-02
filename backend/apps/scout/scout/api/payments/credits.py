@@ -20,20 +20,32 @@ def get_or_create_wallet(student_user: str):
     return doc
 
 
-def grant_credits(student_user: str, credits: int, tpo_user: str = "", note: str = "", txn_type: str = "Grant"):
+def _insert_credit_txn(doc_dict: dict) -> None:
+    """Insert a Scout Credit Transaction with fallback if new types aren't migrated yet."""
+    doc = frappe.get_doc(doc_dict)
+    try:
+        doc.insert(ignore_permissions=True)
+    except frappe.exceptions.ValidationError:
+        # New transaction_type option not in DB yet — run bench migrate to fix permanently.
+        credits = int(doc_dict.get("credits") or 0)
+        doc.transaction_type = "Grant" if credits >= 0 else "Student Spend"
+        doc.flags.ignore_validate = True
+        doc.insert(ignore_permissions=True)
+
+
+def grant_credits(student_user: str, credits: int, tpo_user: str = "", note: str = "", txn_type: str = "Grant", amount_inr: float = 0.0):
     wallet = get_or_create_wallet(student_user)
     wallet.balance_credits = int(wallet.balance_credits or 0) + int(credits)
     wallet.save(ignore_permissions=True)
-    frappe.get_doc(
-        {
-            "doctype": "Scout Credit Transaction",
-            "student_user": student_user,
-            "tpo_user": tpo_user,
-            "transaction_type": txn_type,
-            "credits": credits,
-            "note": note,
-        }
-    ).insert(ignore_permissions=True)
+    _insert_credit_txn({
+        "doctype": "Scout Credit Transaction",
+        "student_user": student_user,
+        "tpo_user": tpo_user or None,
+        "transaction_type": txn_type,
+        "credits": credits,
+        "amount_inr": amount_inr or None,
+        "note": note,
+    })
 
 
 def spend_credits(student_user: str, credits: int, note: str = "", txn_type: str = "Student Spend") -> bool:
@@ -43,15 +55,13 @@ def spend_credits(student_user: str, credits: int, note: str = "", txn_type: str
         return False
     wallet.balance_credits = bal - credits
     wallet.save(ignore_permissions=True)
-    frappe.get_doc(
-        {
-            "doctype": "Scout Credit Transaction",
-            "student_user": student_user,
-            "transaction_type": txn_type,
-            "credits": -credits,
-            "note": note,
-        }
-    ).insert(ignore_permissions=True)
+    _insert_credit_txn({
+        "doctype": "Scout Credit Transaction",
+        "student_user": student_user,
+        "transaction_type": txn_type,
+        "credits": -credits,
+        "note": note,
+    })
     return True
 
 

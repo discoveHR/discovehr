@@ -66,7 +66,6 @@ def apply_to_job():
                 "pin_code",
                 "resume_file",
                 "profile_submitted",
-                "is_pro",
             ],
             as_dict=True,
         )
@@ -78,7 +77,12 @@ def apply_to_job():
                 "message": _("Complete and submit your profile before applying to jobs."),
             }
 
-        if not cint(profile.get("is_pro")):
+        try:
+            is_pro = cint(frappe.db.get_value("Scout Student Profile", user_id, "is_pro"))
+        except Exception:
+            is_pro = 0
+
+        if not is_pro:
             frappe.local.response["http_status_code"] = 403
             return {
                 "ok": False,

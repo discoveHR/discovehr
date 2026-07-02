@@ -18,16 +18,15 @@ PRO_UPGRADE_COST = 120
 
 
 def _get_pro_status(student_user: str) -> tuple[str, bool]:
-    """Return (profile_name, is_pro). profile_name is empty if no profile."""
-    row = frappe.db.get_value(
-        "Scout Student Profile",
-        {"student_user": student_user},
-        ["name", "is_pro"],
-        as_dict=True,
-    )
-    if not row:
+    """Return (profile_name, is_pro). Resilient to is_pro column not yet migrated."""
+    name = frappe.db.get_value("Scout Student Profile", {"student_user": student_user}, "name")
+    if not name:
         return "", False
-    return row["name"], bool(row.get("is_pro"))
+    try:
+        is_pro = bool(frappe.db.get_value("Scout Student Profile", name, "is_pro"))
+    except Exception:
+        is_pro = False
+    return name, is_pro
 
 
 @frappe.whitelist(methods=["GET"])
@@ -103,7 +102,7 @@ def verify_coin_purchase():
     if meta.get("studentUser") != user_id:
         frappe.throw(_("Not allowed."))
     coins = int(meta.get("coins") or 0)
-    grant_credits(user_id, coins, note=order_doc.name, txn_type="Student Purchase")
+    grant_credits(user_id, coins, note=order_doc.name, txn_type="Student Purchase", amount_inr=float(order_doc.amount_inr or 0))
     frappe.db.commit()
     wallet = get_or_create_wallet(user_id)
     return {
@@ -124,6 +123,13 @@ def upgrade_to_pro():
         return {"ok": False, "message": _("Student profile not found. Please complete your profile first.")}
     if is_pro:
         return {"ok": True, "message": _("Your account is already Pro!"), "data": {"isPro": True}}
+
+    # Verify is_pro column is migrated before charging coins
+    try:
+        frappe.db.get_value("Scout Student Profile", profile_name, "is_pro")
+    except Exception:
+        frappe.local.response["http_status_code"] = 503
+        return {"ok": False, "message": _("Pro upgrade requires database migration. Please ask your administrator to run bench migrate.")}
 
     wallet = get_or_create_wallet(user_id)
     balance = int(wallet.balance_credits or 0)

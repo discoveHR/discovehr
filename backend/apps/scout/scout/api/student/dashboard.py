@@ -144,14 +144,13 @@ def student_dashboard():
 
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
 
-    profile_basic = frappe.db.get_value(
-        "Scout Student Profile",
-        {"student_user": user_id},
-        ["state", "is_pro"],
-        as_dict=True,
-    ) or {}
-    student_state = (profile_basic.get("state") or "").strip()
-    is_pro = bool(profile_basic.get("is_pro"))
+    student_state = (frappe.db.get_value(
+        "Scout Student Profile", {"student_user": user_id}, "state",
+    ) or "").strip()
+    try:
+        is_pro = bool(frappe.db.get_value("Scout Student Profile", {"student_user": user_id}, "is_pro"))
+    except Exception:
+        is_pro = False
 
     from scout.api.payments.credits import get_or_create_wallet
     wallet = get_or_create_wallet(user_id)
