@@ -18,15 +18,29 @@ PRO_UPGRADE_COST = 120
 
 
 def _get_pro_status(student_user: str) -> tuple[str, bool]:
-    """Return (profile_name, is_pro). Resilient to is_pro column not yet migrated."""
-    name = frappe.db.get_value("Scout Student Profile", {"student_user": student_user}, "name")
-    if not name:
-        return "", False
+    """Return (profile_name, is_pro). Uses raw SQL so Frappe ORM quirks can't add is_pro
+    to queries before the column exists (pre bench-migrate)."""
     try:
-        is_pro = bool(frappe.db.get_value("Scout Student Profile", name, "is_pro"))
+        rows = frappe.db.sql(
+            "SELECT `name`, `is_pro` FROM `tabScout Student Profile` WHERE `student_user` = %s LIMIT 1",
+            (student_user,),
+            as_dict=True,
+        )
+        if not rows:
+            return "", False
+        return rows[0].get("name") or "", bool(rows[0].get("is_pro"))
     except Exception:
-        is_pro = False
-    return name, is_pro
+        pass
+    # is_pro column missing (run bench migrate) — return name only
+    try:
+        rows = frappe.db.sql(
+            "SELECT `name` FROM `tabScout Student Profile` WHERE `student_user` = %s LIMIT 1",
+            (student_user,),
+            as_dict=True,
+        )
+        return (rows[0].get("name") or "") if rows else "", False
+    except Exception:
+        return "", False
 
 
 @frappe.whitelist(methods=["GET"])
@@ -124,12 +138,15 @@ def upgrade_to_pro():
     if is_pro:
         return {"ok": True, "message": _("Your account is already Pro!"), "data": {"isPro": True}}
 
-    # Verify is_pro column is migrated before charging coins
+    # Verify is_pro column exists in DB before charging coins (guard against pre-migration state)
     try:
-        frappe.db.get_value("Scout Student Profile", profile_name, "is_pro")
+        frappe.db.sql(
+            "SELECT `is_pro` FROM `tabScout Student Profile` WHERE `name` = %s LIMIT 1",
+            (profile_name,),
+        )
     except Exception:
         frappe.local.response["http_status_code"] = 503
-        return {"ok": False, "message": _("Pro upgrade requires database migration. Please ask your administrator to run bench migrate.")}
+        return {"ok": False, "message": _("Pro upgrade requires a database migration. Please ask your administrator to run bench migrate.")}
 
     wallet = get_or_create_wallet(user_id)
     balance = int(wallet.balance_credits or 0)

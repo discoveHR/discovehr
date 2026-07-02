@@ -78,7 +78,11 @@ def apply_to_job():
             }
 
         try:
-            is_pro = cint(frappe.db.get_value("Scout Student Profile", user_id, "is_pro"))
+            _pro_row = frappe.db.sql(
+                "SELECT `is_pro` FROM `tabScout Student Profile` WHERE `name` = %s LIMIT 1",
+                (user_id,),
+            )
+            is_pro = cint(_pro_row[0][0]) if _pro_row else 0
         except Exception:
             is_pro = 0
 

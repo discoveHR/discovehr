@@ -293,12 +293,22 @@ def list_student_jobs():
     base_filters = _base_job_filters()
     application_by_job = _student_application_map(user_id)
     inbound_ids = inbound_suggested_job_ids_for_student(user_id)
-    student_state = (frappe.db.get_value(
-        "Scout Student Profile", {"student_user": user_id}, "state",
-    ) or "").strip()
     try:
-        is_pro = bool(frappe.db.get_value("Scout Student Profile", {"student_user": user_id}, "is_pro"))
+        _row = frappe.db.sql(
+            "SELECT `state`, `is_pro` FROM `tabScout Student Profile` WHERE `student_user` = %s LIMIT 1",
+            (user_id,), as_dict=True,
+        )
+        student_state = ((_row[0].get("state") if _row else None) or "").strip()
+        is_pro = bool(_row[0].get("is_pro")) if _row else False
     except Exception:
+        try:
+            _state = frappe.db.sql(
+                "SELECT `state` FROM `tabScout Student Profile` WHERE `student_user` = %s LIMIT 1",
+                (user_id,),
+            )
+            student_state = ((_state[0][0] if _state else None) or "").strip()
+        except Exception:
+            student_state = ""
         is_pro = False
 
     jobs: list[dict] = []
